@@ -44,7 +44,7 @@
                         <td>2024-02-01</td>
                         <td>2024-02-10</td>
                         <td>
-                            <a href="edit.html?id=1" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{{ route("books.edit", 1 ) }}" class="btn btn-warning btn-sm">Edit</a>
                             
                         </td>
                     </tr>
