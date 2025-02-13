@@ -11,7 +11,7 @@
 <body>
     <div class="container mt-4">
         <h1 class="text-center text-primary">Liste des Livres</h1>
-        <a href="{{ route('books.create') }}" class="btn btn-success mb-3">Add</a>
+        <a href="{{ route('books.index') }}" class="btn btn-success mb-3">Add</a>
         <table class="table table-striped">
             <thead class="table-dark">
                 <tr>

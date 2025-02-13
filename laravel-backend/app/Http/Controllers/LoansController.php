@@ -12,7 +12,7 @@ class LoansController extends Controller
      */
     public function index()
     {
-        //
+        return view('books.loans.list');
     }
 
     /**
@@ -20,7 +20,8 @@ class LoansController extends Controller
      */
     public function create()
     {
-        //
+        return view('books.loans.loan');
+        
     }
 
     /**

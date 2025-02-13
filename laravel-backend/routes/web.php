@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BooksController;
+use App\Http\Controllers\LoansController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PenalitesController;
@@ -21,5 +22,8 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('books',BooksController::class);
 Route::resource('penalites',PenalitesController::class);
+Route::resource('loans',LoansController::class);
+
+
 
 require __DIR__.'/auth.php';
