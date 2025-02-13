@@ -11,7 +11,7 @@ class CreateBookRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,7 +25,7 @@ class CreateBookRequest extends FormRequest
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
             'isbn' => 'required|string|unique:books|max:20',
-            'published_year' => 'required|integer|min:1000|max:' . date('Y'),
+            'published_year' => 'required|integer|min:1900|max:' . date('Y'),
         ];
     }
 

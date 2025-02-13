@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateBookRequest;
 use App\Models\Books;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,7 @@ class BooksController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateBookRequest $request)
     {
         try {
             $livre = new Books();
@@ -40,7 +41,6 @@ class BooksController extends Controller
 
             return redirect()->route('books.index')->with('success', 'Livre ajouté avec succès.');
         } catch (\Exception $e) {
-            dd($e);
         }
     }
 

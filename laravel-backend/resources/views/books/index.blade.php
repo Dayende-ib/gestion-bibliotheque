@@ -5,20 +5,35 @@
         </h2>
     </x-slot>
 
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            .container {
+                max-width: 90%;
+                margin: auto;
+            }
+            .table th, .table td {
+                text-align: center;
+            }
+            .btn {
+                margin: 2px;
+            }
+        </style>
+    </head>
+
     <div class="container mt-4">
         <h1 class="text-center text-primary">Liste des Livres</h1>
-        <a href="{{ route('books.create') }}" class="btn btn-success mb-3">Ajouter un Livre</a>
+        <a href="{{ route('books.create') }}" class="btn btn-success mb-3">Add book</a>
         
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
+        @if(Session::get('success'))
+            <div class="alert alert-success" style="background-color: green; color: white;">
+                {{ Session::get('success') }}
             </div>
         @endif
         
-        <table class="table table-striped">
+        <table class="table table-striped table-hover table-bordered">
             <thead class="table-dark">
                 <tr>
-                    <th>ID</th>
                     <th>Titre</th>
                     <th>Auteur</th>
                     <th>ISBN</th>
@@ -30,7 +45,6 @@
             <tbody>
                 @foreach($books as $book)
                     <tr>
-                        <td>{{ $book->id }}</td>
                         <td>{{ $book->title }}</td>
                         <td>{{ $book->author }}</td>
                         <td>{{ $book->isbn }}</td>

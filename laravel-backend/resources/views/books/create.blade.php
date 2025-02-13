@@ -20,24 +20,36 @@
                     <label for="title" class="form-label">Title</label>
                     <input type="text" class="form-control" id="title" name="title" required>
                 </div>
+                @error('title')
+                    <div class="text-danger">{{$message}}</div>
+                @enderror
 
                 <!-- Champ Auteur -->
                 <div class="mb-3">
                     <label for="author" class="form-label">Author</label>
                     <input type="text" class="form-control" id="author" name="author" required>
                 </div>
+                @error('author')
+                    <div class="text-danger">{{$message}}</div>
+                @enderror
 
                 <!-- Champ ISBN -->
                 <div class="mb-3">
                     <label for="isbn" class="form-label">ISBN</label>
                     <input type="text" class="form-control" id="isbn" name="isbn" required>
                 </div>
+                @error('isbn')
+                    <div class="text-danger">{{$message}}</div>
+                @enderror
 
                 <!-- Champ Année de publication -->
                 <div class="mb-3">
                     <label for="published_year" class="form-label">Published Year</label>
                     <input type="number" class="form-control" id="published_year" name="published_year" required>
                 </div>
+                @error('published_year')
+                    <div class="text-danger">{{$message}}</div>
+                @enderror
 
                 <!-- Bouton de soumission -->
                 <div class="text-center">
