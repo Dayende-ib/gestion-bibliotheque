@@ -6,9 +6,9 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
-                        
+                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" style="width: 4rem;" />
                     </a>
+                    
                 </div>
 
                 <!-- Navigation Links -->
@@ -16,10 +16,10 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('books.index')" :active="request()->routeIs('books.index')">
+                    <x-nav-link :href="route('books.index')" :active="request()->routeIs('books.index') || request()->routeIs('books.create') || request()->routeIs('books.edit')">
                         {{ __('Books') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('books.index')" :active="request()->routeIs('loans')">
+                    <x-nav-link :href="route('loans.index')" :active="request()->routeIs('loans.index')">
                         {{ __('Loans') }}
                     </x-nav-link>
                 </div>
