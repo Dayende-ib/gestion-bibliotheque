@@ -12,7 +12,7 @@ class PenalitesController extends Controller
      */
     public function index()
     {
-        //
+        return view('penalites.create');
     }
 
     /**

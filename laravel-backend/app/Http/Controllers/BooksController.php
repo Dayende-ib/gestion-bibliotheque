@@ -12,7 +12,8 @@ class BooksController extends Controller
      */
     public function index()
     {
-        //
+        $books = Books::all();
+        return view('books.index', compact('books'));
     }
 
     /**
@@ -20,7 +21,7 @@ class BooksController extends Controller
      */
     public function create()
     {
-        //
+        return view('books.create');
     }
 
     /**
@@ -28,7 +29,19 @@ class BooksController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $livre = new Books();
+            $livre->title = $request->input('title');
+            $livre->author = $request->input('author');
+            $livre->isbn = $request->input('isbn');
+            $livre->published_year = $request->input('published_year');
+
+            $livre->save();
+
+            return redirect()->route('books.index')->with('success', 'Livre ajouté avec succès.');
+        } catch (\Exception $e) {
+            dd($e);
+        }
     }
 
     /**
@@ -44,7 +57,7 @@ class BooksController extends Controller
      */
     public function edit(Books $books)
     {
-        //
+        return view('books.edit');
     }
 
     /**

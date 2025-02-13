@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\BooksController;
+use App\Http\Controllers\LoansController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PenalitesController;
 use App\Http\Controllers\MembersController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,5 +23,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::resource('books',BooksController::class);
+Route::resource('penalites',PenalitesController::class);
+Route::resource('loans',LoansController::class);
+
+
 
 require __DIR__.'/auth.php';
