@@ -1,85 +1,52 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Loans') }}
+            {{ __('Liste des Livres') }}
         </h2>
     </x-slot>
-    
-    <!DOCTYPE html>
-    <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Liste des livres</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    </head>
-    <body>
-        <div class="container mt-4">
-            <h1 class="text-center text-primary">Liste des Livres</h1>
-            <a href="{{ route('books.create') }}" class="btn btn-success mb-3">Add</a>
-            <table class="table table-striped">
-                <thead class="table-dark">
+
+    <div class="container mt-4">
+        <h1 class="text-center text-primary">Liste des Livres</h1>
+        <a href="{{ route('books.create') }}" class="btn btn-success mb-3">Ajouter un Livre</a>
+        
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Titre</th>
+                    <th>Auteur</th>
+                    <th>ISBN</th>
+                    <th>Année de publication</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($books as $book)
                     <tr>
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>Author</th>
-                        <th>ISBN</th>
-                        <th>Published Year</th>
-                        <th>Status</th>
-                        <th>Created at</th>
-                        <th>Updated at</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>The Great Gatsby</td>
-                        <td>F. Scott Fitzgerald</td>
-                        <td>9780743273565</td>
-                        <td>1925</td>
-                        <td>Available</td>
-                        <td>2024-02-01</td>
-                        <td>2024-02-10</td>
+                        <td>{{ $book->id }}</td>
+                        <td>{{ $book->title }}</td>
+                        <td>{{ $book->author }}</td>
+                        <td>{{ $book->isbn }}</td>
+                        <td>{{ $book->published_year }}</td>
+                        <td>{{ $book->status }}</td>
                         <td>
-                            <a href="{{ route("books.edit", 1 ) }}" class="btn btn-warning btn-sm">Edit</a>
-                            
+                            <a href="{{ route('books.edit', $book->id) }}" class="btn btn-warning btn-sm">Modifier</a>
+                            <form action="{{ route('books.destroy', $book->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                            </form>
                         </td>
                     </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>1984</td>
-                        <td>George Orwell</td>
-                        <td>9780451524935</td>
-                        <td>1949</td>
-                        <td>Checked Out</td>
-                        <td>2024-01-15</td>
-                        <td>2024-02-05</td>
-                        <td>
-                            <a href="edit.html?id=2" class="btn btn-warning btn-sm">Edit</a>
-                            
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>To Kill a Mockingbird</td>
-                        <td>Harper Lee</td>
-                        <td>9780061120084</td>
-                        <td>1960</td>
-                        <td>Available</td>
-                        <td>2024-01-20</td>
-                        <td>2024-02-07</td>
-                        <td>
-                            <a href="edit.html?id=3" class="btn btn-warning btn-sm">Edit</a>
-                            
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </body>
-    </html>
-    
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 </x-app-layout>
