@@ -69,39 +69,47 @@ button:hover {
         <div class="place">
             <fieldset>
                 <legend>Loan Form</legend>
-                <form id="loanForm">
+
+                <form id="loanForm" method="POST" action="{{ route('loans.store')}}">
+                @csrf
+
                     <label for="id">Book ID</label>
-                    <select id="id">
-                        <option value="">Choose one option</option>
-                        <option value="HTML">HTML</option>
-                        <option value="CSS">CSS</option>
-                        <option value="JavaScript">JavaScript</option>
+                    <select id="id" name="book_id">
+                        <option value="">Choose a book</option>
+
+                        @foreach ($books as $book)
+                            <option value="{{ $book->id }}">{{ $book->title }}</option>
+                        @endforeach
+
                     </select>
+                    @error('book_id')
+                        <div class="text-danger" style="color: red;">{{$message}}</div>
+                    @enderror
 
                     <label for="member">Member ID</label>
-                    <select id="member">
+                    <select id="member" name="member_id">
                         <option value="">Choose one option</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
                         <option value="5">5</option>
                     </select>
+                    @error('member_id')
+                        <div class="text-danger" style="color: red;">{{$message}}</div>
+                    @enderror
 
                     <label for="pret">Loan Date</label>
-                    <input id="pret" type="date">
+                    <input id="pret" name="loan_date" type="date" value="{{ date('Y-m-d') }}" />
+                    @error('loan_date')
+                        <div class="text-danger" style="color: red;">{{$message}}</div>
+                    @enderror
 
                     <label for="return">Return Date</label>
-                    <input id="return" type="date">
+                    <input id="return" name="return_date" type="date">
+                    @error('return_date')
+                        <div class="text-danger" style="color: red;">{{$message}}</div>
+                    @enderror
 
-                    <label for="st">Status</label>
-                    <select id="st">
-                        <option value="">Choose one option</option>
-                        <option value="Handed Over">Handed Over</option>
-                        <option value="Still on Loan">Still on Loan</option>
-                    </select>
+                    <input name="status" type="hidden">
 
-                    <button type="submit">Save</button>
+                    <button type="submit">Save loan</button>
                 </form>
             </fieldset> 
         </div> 

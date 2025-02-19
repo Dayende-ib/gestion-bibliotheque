@@ -1,0 +1,24 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+table {
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f0f0f0;
+}
+
+td {
+    background-color: #fff;
+}
+
+.nav-tabs {
+    margin-top: 20px;
+}

@@ -7,6 +7,7 @@
 
     <head>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        
         <style>
             .container {
                 max-width: 90%;
@@ -50,17 +51,28 @@
                         <td>{{ $book->isbn }}</td>
                         <td>{{ $book->published_year }}</td>
                         <td>{{ $book->status }}</td>
-                        <td>
+                        @if (Auth::user()->role == 'admin')
+                            <td>
                             <a href="{{ route('books.edit', $book->id) }}" class="btn btn-warning btn-sm">Modifier</a>
                             <form action="{{ route('books.destroy', $book->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
                             </form>
-                        </td>
+                            </td>
+                        @else
+                            <td>
+                                <form action="{{ route('loans.index', $book->id) }}" method="GET" style="display:inline;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger btn-sm">Emprunter</button>
+                                </form>
+                            </td>
+                        @endif
+                        
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+
 </x-app-layout>

@@ -16,6 +16,10 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('phone');
             $table->string('address');
+			$table->string('membership_number')->unique();
+            $table->date('join_date');
+            $table->date('expiry_date')->nullable();
+			$table->enum('status', ['Active', 'Inactive', 'Banned'])->default('Active');
             $table->timestamps();
         });
     }

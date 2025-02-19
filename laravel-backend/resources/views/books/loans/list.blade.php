@@ -20,9 +20,8 @@
             }
 
             button{
-                width: 100%;
                 padding: 10px;
-                margin-top: 10px;
+                margin: 20px 20px 20px 30px;
                 font-size: 1rem;
                 font-weight: bold;
                 color: white;
@@ -36,9 +35,13 @@
                 background-color: #1a5276;
             }
 
+            .btn-danger {
+                background-color: rgba(187, 0, 0, 0.849);
+            }
+
             /* Tableau */
             table {
-                width: 90%;
+                width: 80%;
                 margin: auto;
                 border-collapse: collapse;
                 background: white;
@@ -61,13 +64,29 @@
 
         </style>
     </head>
+    @if(Session::get('success'))
+            <div class="alert alert-success" style="background-color: green; color: white;">
+                {{ Session::get('success') }}
+            </div>
+        @endif
+        @if(Session::get('error'))
+            <div class="alert alert-danger" style="background-color: rgb(114, 13, 13); color: white;">
+                {{ Session::get('error') }}
+            </div>
+        @endif
     <body class="container-fluid">
+
             <h1>📜 Loan List</h1>
+
+            <a href="{{ route('loans.create') }}">
+                <button class="btn btn-primary"> Add new loan</button>
+            </a>
+
             <table>
                 <thead>
                     <tr>
-                        <th>Book ID</th>
                         <th>Member ID</th>
+                        <th>Book name</th>
                         <th>Loan Date</th>
                         <th>Return Date</th>
                         <th>Status</th>
@@ -75,9 +94,29 @@
                     </tr>
                 </thead>
                 <tbody id="loanTableBody">
+                    @forelse ($loans as $loan)
+                    <tr>
+                        <td>{{ $loan->member_id }}</td>
+                        <td>{{ $loan->book->title }}</td>
+                        <td>{{ $loan->loan_date}}</td>
+                        <td>{{ $loan->return_date }}</td>
+                        <td>{{ $loan->status }}</td>
+                        <td>
+                            <form action="{{ route('loans.destroy', $loan->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                    @empty
+                         <tr>
+                            <td class="cell text-center" colspan="6">Aucun emprunt ajouté</td>
+                        </tr>
+                @endforelse
                 </tbody>
             </table>
-            <a href="{{ route('loans.create') }}"> Back</a>
+            
 
     </body>
 </x-app-layout>

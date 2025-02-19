@@ -1,20 +1,11 @@
-<!DOCTYPE html>
-<html lang="fr">
+<x-app-layout>
+    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Penalite Management</title>
     <link rel="stylesheet" href="style.css">
     <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #1b0ab0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-    }
     
     .container {
         background: white;
@@ -83,4 +74,5 @@
         </form>
     </div>
 </body>
-</html>
+
+</x-app-layout>

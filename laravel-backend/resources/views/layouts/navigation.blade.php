@@ -19,9 +19,19 @@
                     <x-nav-link :href="route('books.index')" :active="request()->routeIs('books.index') || request()->routeIs('books.create') || request()->routeIs('books.edit')">
                         {{ __('Books') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('loans.index')" :active="request()->routeIs('loans.index')">
-                        {{ __('Loans') }}
-                    </x-nav-link>
+
+                    @if (Auth::user()->role == 'admin')
+                        <x-nav-link :href="route('loans.index')" :active="request()->routeIs('loans.index')">
+                            {{ __('Loans') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('members.index')" :active="request()->routeIs('members.index')">
+                            {{ __('Members') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('penalites.create')" :active="request()->routeIs('penalites.create')">
+                            {{ __('Penalities') }}
+                        </x-nav-link>
+                    @endif
+                    
                 </div>
             </div>
 

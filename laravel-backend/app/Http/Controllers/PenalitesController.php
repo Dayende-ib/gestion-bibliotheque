@@ -20,7 +20,7 @@ class PenalitesController extends Controller
      */
     public function create()
     {
-        //
+        return view('penalites.create');
     }
 
     /**
