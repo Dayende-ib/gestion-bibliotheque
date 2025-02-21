@@ -25,6 +25,8 @@ return array(
     'App\\Http\\Requests\\Auth\\LoginRequest' => $baseDir . '/app/Http/Requests/Auth/LoginRequest.php',
     'App\\Http\\Requests\\CreateBookRequest' => $baseDir . '/app/Http/Requests/CreateBookRequest.php',
     'App\\Http\\Requests\\ProfileUpdateRequest' => $baseDir . '/app/Http/Requests/ProfileUpdateRequest.php',
+    'App\\Http\\Requests\\SaveLoanRequest' => $baseDir . '/app/Http/Requests/SaveLoanRequest.php',
+    'App\\Http\\Requests\\UpdateBookRequest' => $baseDir . '/app/Http/Requests/UpdateBookRequest.php',
     'App\\Models\\Books' => $baseDir . '/app/Models/Books.php',
     'App\\Models\\Loans' => $baseDir . '/app/Models/Loans.php',
     'App\\Models\\Members' => $baseDir . '/app/Models/Members.php',

@@ -622,6 +622,8 @@ class ComposerStaticInit626b9e7ddd47fb7eff9aaa53cce0c9ad
         'App\\Http\\Requests\\Auth\\LoginRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Auth/LoginRequest.php',
         'App\\Http\\Requests\\CreateBookRequest' => __DIR__ . '/../..' . '/app/Http/Requests/CreateBookRequest.php',
         'App\\Http\\Requests\\ProfileUpdateRequest' => __DIR__ . '/../..' . '/app/Http/Requests/ProfileUpdateRequest.php',
+        'App\\Http\\Requests\\SaveLoanRequest' => __DIR__ . '/../..' . '/app/Http/Requests/SaveLoanRequest.php',
+        'App\\Http\\Requests\\UpdateBookRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UpdateBookRequest.php',
         'App\\Models\\Books' => __DIR__ . '/../..' . '/app/Models/Books.php',
         'App\\Models\\Loans' => __DIR__ . '/../..' . '/app/Models/Loans.php',
         'App\\Models\\Members' => __DIR__ . '/../..' . '/app/Models/Members.php',
