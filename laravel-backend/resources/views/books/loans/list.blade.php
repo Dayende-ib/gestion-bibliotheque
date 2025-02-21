@@ -98,8 +98,8 @@
                     <tr>
                         <td>{{ $loan->member_id }}</td>
                         <td>{{ $loan->book->title }}</td>
-                        <td>{{ $loan->loan_date}}</td>
-                        <td>{{ $loan->return_date }}</td>
+                        <td>{{ $loan->borrowed_at}}</td>
+                        <td>{{ $loan->due_date }}</td>
                         <td>{{ $loan->status }}</td>
                         <td>
                             <form action="{{ route('loans.destroy', $loan->id) }}" method="POST" style="display:inline;">

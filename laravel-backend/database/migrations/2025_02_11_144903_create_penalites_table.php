@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('penalities', function (Blueprint $table) {
+        Schema::create('penalites', function (Blueprint $table) {
             $table->id();
             $table->foreignId('loan_id')->constrained('loans')->onDelete('cascade');
+            $table->foreignId('member_id')->constrained('members')->onDelete('cascade');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->decimal('amount', 8, 2);
             $table->enum('status', ['non paye', 'paye'])->default('non paye');
             $table->timestamps();
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('penalities');
+        Schema::dropIfExists('penalites');
     }
 };

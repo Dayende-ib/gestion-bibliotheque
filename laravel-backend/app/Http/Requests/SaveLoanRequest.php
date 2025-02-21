@@ -22,18 +22,24 @@ class SaveLoanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'book_id' => 'required|unique:loans|integer',
-            'loan_date' => 'required|date',
-            'return_date' => 'required|date',
+            'book_id' => 'required|exists:books,id',
+            'member_id' => 'required|exists:members,id',
+            'borrowed_at' => 'required|date',
+            'due_date' => 'required|date|after_or_equal:loan_date',
         ];
     }
 
     public function messages() {
         return [
-            'book_id.required' => 'Le titre est obligatoire.',
-            'loan_date.required' => 'L\'auteur est obligatoire.',
-            'return_date.required' => 'L\'ISBN est obligatoire.',
-            'book_id.unique' => 'Ce livre est déjà emprunté.',
+            'book_id.required' => 'Le livre est obligatoire.',
+            'book_id.exists' => 'Le livre sélectionné n\'existe pas.',
+            'member_id.required' => 'Le membre est obligatoire.',
+            'member_id.exists' => 'Le membre sélectionné n\'existe pas.',
+            'borrowed_at.required' => 'La date d\'emprunt est obligatoire.',
+            'borrowed_at.date' => 'La date d\'emprunt doit être une date valide.',
+            'due_date.required' => 'La date de retour est obligatoire.',
+            'due_date.date' => 'La date de retour doit être une date valide.',
+            'due_date.after_or_equal' => 'La date de retour doit être égale ou postérieure à la date d\'emprunt.',
         ];
     }
 }

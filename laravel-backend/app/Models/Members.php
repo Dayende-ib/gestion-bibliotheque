@@ -26,4 +26,5 @@ class Members extends Model
     {
         return $this->hasOne(Members::class);
     }
+    
 }

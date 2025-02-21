@@ -86,28 +86,30 @@ button:hover {
                         <div class="text-danger" style="color: red;">{{$message}}</div>
                     @enderror
 
-                    <label for="member">Member ID</label>
+                    <label for="member">Member</label>
                     <select id="member" name="member_id">
                         <option value="">Choose one option</option>
-                        <option value="5">5</option>
+                        @foreach ($members as $member)
+                            <option value="{{ $member->id }}">{{ $member->user->lastname }} {{ $member->user->firstname }}</option>
+                        @endforeach
                     </select>
                     @error('member_id')
                         <div class="text-danger" style="color: red;">{{$message}}</div>
                     @enderror
 
                     <label for="pret">Loan Date</label>
-                    <input id="pret" name="loan_date" type="date" value="{{ date('Y-m-d') }}" />
+                    <input id="pret" name="borrowed_at" type="date" value="{{ date('Y-m-d') }}" />
                     @error('loan_date')
                         <div class="text-danger" style="color: red;">{{$message}}</div>
                     @enderror
 
                     <label for="return">Return Date</label>
-                    <input id="return" name="return_date" type="date">
+                    <input id="return" name="due_date" type="date">
                     @error('return_date')
                         <div class="text-danger" style="color: red;">{{$message}}</div>
                     @enderror
 
-                    <input name="status" type="hidden">
+                    <input name="status" value="Borrowed" type="hidden">
 
                     <button type="submit">Save loan</button>
                 </form>

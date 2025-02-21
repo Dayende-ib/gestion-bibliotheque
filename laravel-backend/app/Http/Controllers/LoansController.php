@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SaveLoanRequest;
 use App\Models\Loans;
 use App\Models\Books;
+use App\Models\Penalites;
+use App\Models\Members;
 use Illuminate\Http\Request;
 
 class LoansController extends Controller
@@ -24,7 +26,8 @@ class LoansController extends Controller
     public function create(Loans $loans)
     {
         $books = Books::all();
-        return view('books.loans.loan', compact('loans', 'books'));
+        $members = Members::all();
+        return view('books.loans.loan', compact('loans', 'books', 'members'));
     }
 
     /**
@@ -34,16 +37,30 @@ class LoansController extends Controller
     {
         try {
             $loan = new Loans();
-
+    
             $loan->book_id = $request->input('book_id');
-            $loan->member_id = null;
-            $loan->loan_date = $request->input('loan_date');
-            $loan->return_date = $request->input('return_date');
-            $loan->status = 'en cours';
-
+            $loan->member_id = $request->input('member_id'); // Ensure member_id is part of the request
+            $loan->borrowed_at = $request->input('borrowed_at');
+            $loan->due_date = $request->input('due_date');
+            $loan->status = 'Borrowed';
             $loan->save();
+    
+            // Create a penalty for the loan
+            try {
+            $penalty = new Penalites();
+            $penalty->member_id = $loan->member_id; // Use the member_id from the loan
+            $penalty->loan_id = $loan->id; // Assign the loan_id to the penalty
+            $penalty->start_date = $loan->borrowed_at; // Set start_date to loan_date
+            $penalty->end_date = $loan->due_date; // Set end_date to return_date
+            $penalty->amount = 0.00; // Set a fixed penalty amount or calculate as needed
+            $penalty->save();
 
+            } catch (\Exception $e) {
+                dd($e);
+            }
+    
             return redirect()->route('loans.index')->with('success', 'loan ajouté avec succès.');
+
         } catch (\Exception $e) {
             dd($e);
         }

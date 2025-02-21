@@ -1,78 +1,38 @@
-<x-app-layout>
-    
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Penalite Management</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-    
-    .container {
-        background: white;
-        padding: 20px;
-        border-radius: 8px ;
-        width: 300px;
-        text-align: center;
-    }
-    
-    h2 {
-        margin-bottom: 20px;
-    }
-    
-    form {
-        display: flex;
-        flex-direction: column;
-    }
-    
-    label {
-        text-align: center;
-        margin: 5px 0;
-        
-    
-    }
-    
-    input, select {
-        padding: 8px;
-        margin-bottom: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-    
-    button {
-        background-color: #0c0c90;
-        color: white;
-        border: none;
-        padding: 10px;
-        cursor: pointer;
-        border-radius: 4px;
-    }
-    
-    button:hover {
-        background-color: #2d0c87;
-    }
-    
-</style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
 </head>
-<body>
-    <div class="container">
-        <h2>Penalite Management</h2>
-        <form action="#" method="POST">
-            <label for="loan_id">Loan_ID  :</label>
-            <input type="text" id="loan_id" name="loan_id" required>
-
-            <label for="amount">Amount :</label>
-            <input type="number" id="amount" name="amount" required>
-
-            <label for="status">Status :</label>
-            <select id="status" name="status" required>
-                <option value="pending">Pending</option>
-                <option value="paid">Paid</option>
-                <option value="overdue">Overdue</option>
+<x-app-layout>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>Créer une pénalité</h2>
+        <form action="{{ route('penalites.store') }}" method="POST">
+          @csrf
+          <div class="form-group">
+            <label for="member_id">Membre</label>
+            <select class="form-control" id="member_id" name="member_id">
+              @foreach($members as $member)
+                <option value="{{ $member->id }}">{{ $member->user->lastname }} {{ $member->user->firstname }}</option>
+              @endforeach
             </select>
-
-            <button type="submit">Submit</button>
+          </div>
+          <div class="form-group">
+            <label for="start_date">Date de début</label>
+            <input type="date" class="form-control" id="start_date" name="start_date">
+          </div>
+          <div class="form-group">
+            <label for="end_date">Date de fin</label>
+            <input type="date" class="form-control" id="end_date" name="end_date">
+          </div>
+          <div class="form-group">
+            <label for="amount">Montant</label>
+            <input type="number" class="form-control" id="amount" name="amount">
+          </div>
+          <button type="submit" class="btn btn-primary">Créer</button>
         </form>
+      </div>
     </div>
-</body>
-
+  </div>
 </x-app-layout>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
