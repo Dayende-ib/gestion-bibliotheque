@@ -16,6 +16,11 @@ class Members extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function loans()
+    {
+        return $this->hasMany(Loans::class);
+    }
+    
     // Relation One-to-One avec Member
     public function member()
     {
