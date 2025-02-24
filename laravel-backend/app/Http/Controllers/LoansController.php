@@ -36,6 +36,15 @@ class LoansController extends Controller
     public function store(SaveLoanRequest $request)
     {
         try {
+            // Check if the book is already borrowed
+            $existingLoan = Loans::where('book_id', $request->input('book_id'))
+            ->where('status', 'Borrowed') // Assuming 'en cours' indicates an active loan
+            ->first();
+
+        if ($existingLoan) {
+            return redirect()->back()->withErrors(['book_id' => 'Ce livre est déjà emprunté.']);
+        }else {
+
             $loan = new Loans();
     
             $loan->book_id = $request->input('book_id');
@@ -60,7 +69,7 @@ class LoansController extends Controller
             }
     
             return redirect()->route('loans.index')->with('success', 'loan ajouté avec succès.');
-
+        }
         } catch (\Exception $e) {
             dd($e);
         }
