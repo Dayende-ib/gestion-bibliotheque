@@ -6,6 +6,7 @@ use App\Http\Requests\CreateBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Models\Books;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BooksController extends Controller
 {
@@ -13,10 +14,24 @@ class BooksController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
+{
+    $user = Auth::user();
+    
+    if ($user->role == 'admin') {
+        // L'administrateur voit tous les livres
         $books = Books::all();
-        return view('books.index', compact('books'));
+    } else {
+        // Les utilisateurs normaux voient uniquement les livres qu'ils ont empruntés ou qui ne sont pas empruntés
+        $books = Books::whereDoesntHave('loans', function ($query) use ($user) {
+            $query->where('member_id', '!=', $user->id);
+        })->orWhereHas('loans', function ($query) use ($user) {
+            $query->where('member_id', $user->id);
+        })->get();
     }
+
+
+    return view('books.index', compact('books'));
+}
 
     /**
      * Show the form for creating a new resource.
@@ -67,15 +82,6 @@ class BooksController extends Controller
     public function update(UpdateBookRequest $request, Books $book)
     {
         try {
-            // $request->validate([
-            //     'title' => 'required|string|max:255',
-            //     'author' => 'required|string|max:255',
-            //     'isbn' => 'required|string|max:20|unique:books,isbn,' . $book->id,
-            //     'published_year' => 'required|integer|min:1900|max:' . date('Y'),
-            // ]);
-    
-            // $book->update($request->all());
-
             $book->title = $request->input('title');
             $book->author = $request->input('author');
             $book->isbn = $request->input('isbn') ;

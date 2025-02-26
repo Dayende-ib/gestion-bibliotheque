@@ -13,4 +13,14 @@ class Loans extends Model
     public function book(){
         return $this->belongsTo(Books::class);
     }
+
+    /**
+     * Get the user that owns the Loans
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function member()
+    {
+        return $this->belongsTo(Members::class);
+    }
 }

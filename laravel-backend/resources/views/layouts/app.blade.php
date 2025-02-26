@@ -12,10 +12,17 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="{{ asset('assets/css/styles.css')}} ">
         <link rel="stylesheet" href="{{ asset('build/assets/bootstrap-5.3.3-dist/css/bootstrap.min.css')}}" >
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script src="{{asset('build/assets/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js')}}"></script>
+        <script src="{{asset('build/assets/jquery-3.7.1/jquery-3.7.1.min.js')}}"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
