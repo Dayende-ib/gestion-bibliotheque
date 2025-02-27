@@ -28,6 +28,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        DB::table('loans')->delete(); // Delete existing loans before dropping the table
         Schema::dropIfExists('loans');
     }
 };
