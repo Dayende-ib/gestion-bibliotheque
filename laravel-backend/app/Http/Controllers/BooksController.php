@@ -16,18 +16,18 @@ class BooksController extends Controller
     public function index()
 {
     $user = Auth::user();
-    
-    if ($user->role == 'admin') {
-        // L'administrateur voit tous les livres
-        $books = Books::all();
-    } else {
-        // Les utilisateurs normaux voient uniquement les livres qu'ils ont empruntés ou qui ne sont pas empruntés
-        $books = Books::whereDoesntHave('loans', function ($query) use ($user) {
-            $query->where('member_id', '!=', $user->id);
-        })->orWhereHas('loans', function ($query) use ($user) {
-            $query->where('member_id', $user->id);
-        })->get();
-    }
+    $books = Books::all();
+    // if ($user->role == 'admin') {
+    //     // L'administrateur voit tous les livres
+    //     $books = Books::all();
+    // } else {
+    //     // Les utilisateurs normaux voient uniquement les livres qu'ils ont empruntés ou qui ne sont pas empruntés
+    //     $books = Books::whereDoesntHave('loans', function ($query) use ($user) {
+    //         $query->where('member_id', '!=', $user->id);
+    //     })->orWhereHas('loans', function ($query) use ($user) {
+    //         $query->where('member_id', $user->id);
+    //     })->get();
+    // }
 
 
     return view('books.index', compact('books'));

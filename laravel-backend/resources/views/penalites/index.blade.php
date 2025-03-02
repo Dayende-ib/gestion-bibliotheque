@@ -1,7 +1,4 @@
 <x-app-layout>
-    <head>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    </head>
   <div class="container">
     <div class="row">
       <div class="col-md-12">
@@ -21,7 +18,7 @@
             @forelse($penalties as $penalty)
               <tr>
                 <td>{{ $penalty->id }}</td>
-                <td>{{ $penalty->member->user->lastname }}</td>
+                <td>{{ $penalty->member->user->lastname }} {{ $penalty->member->user->firstname }}</td>
                 <td>{{ $penalty->start_date }}</td>
                 <td>{{ $penalty->end_date }}</td>
                 <td>{{ $penalty->amount }}</td>
@@ -46,5 +43,4 @@
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </x-app-layout>

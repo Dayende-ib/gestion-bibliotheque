@@ -24,6 +24,11 @@
                             {{ __('Loans') }}
                         </x-nav-link>
                     @else
+                    @if (!Auth::user()->member)
+                        <x-nav-link class="text-indigo-600" :href="route('members.create', ['user_id' => Auth::user()->id])" :active="request()->routeIs('members.create')">
+                            {{ __('Become a member') }}
+                        </x-nav-link>
+                    @endif
                     <x-nav-link :href="route('loans.index')" :active="request()->routeIs('loans.index')">
                             {{ __('My loans') }}
                         </x-nav-link>

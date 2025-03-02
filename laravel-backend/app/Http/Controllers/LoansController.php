@@ -24,9 +24,13 @@ class LoansController extends Controller
         // L'administrateur voit tous les emprunts
         $loans = Loans::with('book')->paginate(10);
     } else {
+        if (!$user->member) {
+            return redirect()->route('members.create')->withErrors(['errors' => 'Vous devez être membre pour voir vos emprunts. INSCRIVEZ VOUS ICI!!']);
+        } else {
         // Les utilisateurs normaux voient uniquement leurs propres emprunts
         $loans = Loans::with('book')->where('member_id', $user->member->id)->paginate(10);
-    }
+        }
+}
 
         return view('books.loans.index', compact('loans'));
     }
@@ -75,6 +79,15 @@ class LoansController extends Controller
             $loan->due_date = $request->input('due_date');
             $loan->status = 'Borrowed';
             $loan->save();
+
+            $book = Books::find($request->book_id);
+            if ($book) {
+                // Mettre à jour le statut du livre
+                $book->status = 'Borrowed';
+                $book->save();
+            } else {
+                // Gérer le cas où le livre n'existe pas
+            }
 
             // Create a penalty for the loan
                 $penalty = new Penalites();

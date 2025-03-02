@@ -29,12 +29,12 @@
         <table class="table table-striped table-hover table-bordered">
             <thead class="table-dark">
                 <tr>
-                    <th>Titre</th>
-                    <th>Auteur</th>
+                    <th>Title</th>
+                    <th>Author</th>
                     <th>ISBN</th>
-                    <th>Année de publication</th>
-                    <th>Statut</th>
-                    <th>Actions</th>
+                    <th>Publication Year</th>
+                    <th>Status</th>
+                    <th class="bg-transparent border-none"></th>
                 </tr>
             </thead>
             <tbody>
@@ -46,23 +46,30 @@
                         <td>{{ $book->published_year }}</td>
                         <td>{{ $book->status }}</td>
                         @if (Auth::user()->role == 'admin')
-                            <td>
-                            <a href="{{ route('books.edit', $book->id) }}" class="btn btn-warning btn-sm">Modifier</a>
+                            <td class="items-center">
+                            <a href="{{ route('books.edit', $book->id) }}" class="btn btn-warning btn-sm">Edit</a>
                             <form action="{{ route('books.destroy', $book->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                             </form>
                             </td>
                         @else
-                            <td>
-                                <a href="#" onclick="checkMembership({{ Auth::user()->member ? 'true' : 'false' }}, {{ $book->id }})" class="btn btn-primary btn-sm">Emprunter</a>
-                            </td>
+                            @if ($book->status == 'Borrowed')
+                                <td>
+                                    <a href="#" class="btn btn-secondary btn-sm disabled">Borrowed</a>
+                                </td>
+                                
+                            @else
+                                <td>
+                                <a href="#" onclick="checkMembership({{ Auth::user()->member ? 'true' : 'false' }}, {{ $book->id }})" class="btn btn-primary btn-sm">Borrow</a>
+                                </td>
+                            @endif
                         @endif
                     </tr>
                 @empty
                     <tr>
-                        <td class="text-center text-bg-info text-white" colspan="6">Aucun livre Ajouté</td>
+                        <td class="text-center text-bg-info text-white" colspan="6">No books to show</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -73,17 +80,17 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Devenir Membre</h5>
+                <h5 class="modal-title">Become a Member</h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Vous devez être membre pour emprunter un livre. Souhaitez-vous devenir membre ?</p>
+                <p>You need to be a member to borrow a book. Would you like to become a member?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <a href="{{ route('members.create') }}" class="btn btn-primary">Devenir Membre</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="{{ route('members.create') }}" class="btn btn-primary">Become a Member</a>
             </div>
         </div>
     </div>

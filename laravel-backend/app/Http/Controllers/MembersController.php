@@ -28,16 +28,36 @@ class MembersController extends Controller
 
     // Enregistrer un membre
     public function store(Request $request)
-    {
+    { 
+        // Vérifier si l'utilisateur a déjà un compte de membre
+        $existingMember = Members::where('user_id', $request->user_id)->first();
+        if ($existingMember) {
+            // L'utilisateur a déjà un compte de membre, renvoyer une erreur
+            return redirect()->back()->withErrors(['user_id' => 'Vous avez déjà un compte de membre']);
+        } else {
+            // L'utilisateur n'a pas de compte de membre, continuer avec la création du compte
 
         $request->validate([
             'user_id' => 'required|exists:users,id',
-            'phone' => 'required',
+            'phone' => 'required|unique:members,phone',
             'address' => 'required',
             'join_date' => 'required|date',
             'expiry_date' => 'required|date',
             'status' => 'required',
+        ], [
+            'user_id.required' => 'Le champ utilisateur est obligatoire',
+            'user_id.exists' => 'L\'utilisateur n\'existe pas',
+            'phone.required' => 'Le champ téléphone est obligatoire',
+            'phone.unique' => 'Le téléphone est déjà utilisé',
+            'address.required' => 'Le champ adresse est obligatoire',
+            'join_date.required' => 'Le champ date d\'adhésion est obligatoire',
+            'join_date.date' => 'Le champ date d\'adhésion doit être une date',
+            'expiry_date.required' => 'Le champ date d\'expiration est obligatoire',
+            'expiry_date.date' => 'Le champ date d\'expiration doit être une date',
+            'status.required' => 'Le champ statut est obligatoire',
         ]);
+
+        
 
         $member = new Members();
         $member->user_id = $request->input('user_id');
@@ -53,6 +73,7 @@ class MembersController extends Controller
         //Members::create($request->all());
 
         return redirect()->route('members.index')->with('success', 'Membre ajouté avec succès.');
+        }
     }
 
     // Formulaire d'édition
