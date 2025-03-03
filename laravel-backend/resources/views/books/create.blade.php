@@ -40,7 +40,7 @@
                 <!-- Champ Description -->
                 <div class="mb-3">
                     <label for="description">{{ __('Description') }}</label>
-                    <textarea id="description" class="form-control @error('description') is-invalid @enderror" name="description">{{ old('description') }}</textarea>
+                    <textarea id="description" class="form-control @error('description') is-invalid @enderror" name="description" required>{{ old('description') }}</textarea>
                     <div id="description-counter" class="text-end text-muted">0 / 191</div>
                     @error('description')
                         <span class="invalid-feedback" role="alert">

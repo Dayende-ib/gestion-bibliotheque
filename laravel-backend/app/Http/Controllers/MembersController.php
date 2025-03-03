@@ -19,7 +19,7 @@ class MembersController extends Controller
         $members = Members::all();
         return view('members.index', compact('members'));
         } else {
-            return redirect()->back()->withErrors(['role' => 'Vous ne pouvez pas acceder à cette page']);
+            return redirect()->route('books.index');
         }
 
     }
@@ -64,8 +64,6 @@ class MembersController extends Controller
             'expiry_date.date' => 'Le champ date d\'expiration doit être une date',
             'status.required' => 'Le champ statut est obligatoire',
         ]);
-
-        
 
         $member = new Members();
         $member->user_id = $request->input('user_id');

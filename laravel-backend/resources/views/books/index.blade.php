@@ -4,7 +4,6 @@
             {{ __('Books') }}
         </h2>
     </x-slot>
-
     <head>
         <style>
             .form-inline {
@@ -30,13 +29,15 @@
             .form-inline button[type="submit"]:hover {
                 background-color: #23527c;
             }
-
+        </style>
+         {{-- /*Style pour les grids*/ --}}
+        <style>
             .custom-card {
                 border: 1px solid #ddd;
                 border-radius: 10px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                height: 100%;
-                width: 100%;
+                height: 400px; /* Fixed height */
+                width: 100%; /* Fixed width */
                 display: flex;
                 flex-direction: column;
                 position: relative;
@@ -48,8 +49,8 @@
                 font-weight: bold;
                 display: -webkit-box;
                 -webkit-box-orient: vertical;
-                -webkit-line-clamp: 2; /* Number of lines to show */
-                line-clamp: 2;
+                -webkit-line-clamp: 1; /* Number of lines to show */
+                line-clamp: 1;
                 overflow: hidden;
             }
 
@@ -60,22 +61,24 @@
                 overflow: hidden;
                 display: -webkit-box;
                 -webkit-box-orient: vertical;
-                -webkit-line-clamp: 3; /* Number of lines to show */
-                line-clamp: 3;
+                -webkit-line-clamp: 2; /* Number of lines to show */
+                line-clamp: 2;
             }
 
             .custom-card img {
                 max-width: 100%;
-                height: 180px;
+                height: 60%; /* Fixed height */
                 border-bottom: 1px solid #ddd;
                 border-top-left-radius: 10px;
                 border-top-right-radius: 10px;
                 object-fit: cover;
+                transition: height 0.7s, transform 0.7s;
             }
-
             .custom-card:hover img {
-                height: auto;
-                max-height: 100%;
+                height: auto; /* Fixed height on hover */
+                width: 100%;
+                transform: scale(0.9);
+                
             }
 
             .card-body {
@@ -98,6 +101,12 @@
 
             .card-actions a, button {
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+            .card-author {
+                bottom: 10px;
+                right: 10px;
+                font-weight: bold;
+                color: #007bff; /* Primary color */
             }
         </style>
     </head>
@@ -134,7 +143,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ $book->title }}</h5>
                             <p class="card-text">{{ $book->description }}</p>
-                            <p class="card-text mt-3 font-bold text-primary text-right">{{ $book->author }}</p>
+                            <p class="card-author mt-2 font-bold text-primary text-right">{{ $book->author }}</p>
                             <div class="card-actions">
                                 @if (Auth::user()->role == 'admin')
                                     <a href="{{ route('books.edit', $book->id) }}" class="btn btn-warning btn-sm">Edit</a>
