@@ -7,49 +7,87 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <title>Add a Book</title>
+        
     </head>
     <body>
         <div class="container mt-4">
             <h1 class="text-center text-primary mb-4">Add a New Book</h1>
-            <form action="{{ route('books.store') }}" method="POST">
+            <form action="{{ route('books.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <!-- Champ Titre -->
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
-                    <input type="text" class="form-control" id="title" name="title" required>
+                    <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" required>
+                    @error('title')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
                 </div>
-                @error('title')
-                    <div class="text-danger">{{$message}}</div>
-                @enderror
 
                 <!-- Champ Auteur -->
                 <div class="mb-3">
                     <label for="author" class="form-label">Author</label>
-                    <input type="text" class="form-control" id="author" name="author" required>
+                    <input type="text" class="form-control @error('author') is-invalid @enderror" id="author" name="author" value="{{ old('author') }}" required>
+                    @error('author')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
-                @error('author')
-                    <div class="text-danger">{{$message}}</div>
-                @enderror
+
+                <!-- Champ Description -->
+                <div class="mb-3">
+                    <label for="description">{{ __('Description') }}</label>
+                    <textarea id="description" class="form-control @error('description') is-invalid @enderror" name="description">{{ old('description') }}</textarea>
+                    <div id="description-counter" class="text-end text-muted">0 / 191</div>
+                    @error('description')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
 
                 <!-- Champ ISBN -->
                 <div class="mb-3">
                     <label for="isbn" class="form-label">ISBN</label>
-                    <input type="text" class="form-control" id="isbn" name="isbn" required>
+                    <input type="text" class="form-control @error('isbn') is-invalid @enderror" id="isbn" name="isbn"  value="{{ old('isbn') }}" required>
+                    @error('isbn')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                     @enderror
                 </div>
-                @error('isbn')
-                    <div class="text-danger">{{$message}}</div>
-                @enderror
 
                 <!-- Champ Année de publication -->
                 <div class="mb-3">
                     <label for="published_year" class="form-label">Published Year</label>
-                    <input type="number" class="form-control" id="published_year" name="published_year" required>
+                    <input type="number" class="form-control @error('published_year') is-invalid @enderror" id="published_year" name="published_year" value="{{ old('published_year') }}" required>
+                    @error('published_year')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
-                @error('published_year')
-                    <div class="text-danger">{{$message}}</div>
-                @enderror
+
+                <!-- Champ Image -->
+                <div class="mb-3">
+                    <label for="image">{{ __('Book Image') }}</label>
+                    <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image">
+                    @error('image')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+
+                <input type="text" name="status" id="status" value="Available" hidden>
+                @error('status')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
 
                 <!-- Bouton de soumission -->
                 <div class="text-center">
@@ -58,81 +96,34 @@
             </form>
         </div>
     </body>
-    <style>
-    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const titleInput = document.getElementById('title');
+            const authorInput = document.getElementById('author');
+            const descriptionInput = document.getElementById('description');
+            const isbnInput = document.getElementById('isbn');
 
-    .container {
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin-top: 20px;
-    }
+            const titleCounter = document.getElementById('title-counter');
+            const authorCounter = document.getElementById('author-counter');
+            const descriptionCounter = document.getElementById('description-counter');
+            const isbnCounter = document.getElementById('isbn-counter');
 
-    h1 {
-        font-size: 2rem;
-        font-weight: bold;
-        margin-bottom: 20px;
-        color: #007bff;
-    }
+            titleInput.addEventListener('input', function () {
+                titleCounter.textContent = `${titleInput.value.length} / 255`;
+            });
 
-    /* Style des champs du formulaire */
-    .form-control {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 1rem;
-    }
+            authorInput.addEventListener('input', function () {
+                authorCounter.textContent = `${authorInput.value.length} / 255`;
+            });
 
-    .form-control:focus {
-        border-color: #007bff;
-        outline: none;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-    }
+            descriptionInput.addEventListener('input', function () {
+                descriptionCounter.textContent = `${descriptionInput.value.length} / 191`;
+            });
 
-    /* Style des labels */
-    .form-label {
-        font-weight: bold;
-        margin-bottom: 5px;
-        display: block;
-    }
-
-    /* Style du bouton */
-    .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-        font-size: 1rem;
-        padding: 10px 20px;
-        transition: background-color 0.3s ease;
-    }
-
-    .btn-primary:hover {
-        background-color: #0056b3;
-        border-color: #0056b3;
-    }
-
-    /* Style pour les écrans mobiles */
-    @media (max-width: 768px) {
-        .container {
-            padding: 15px;
-        }
-
-        h1 {
-            font-size: 1.5rem;
-        }
-
-        .form-control {
-            font-size: 0.875rem;
-        }
-
-        .btn-primary {
-            width: 100%;
-        }
-    }
-    </style>
-    </html>
+            isbnInput.addEventListener('input', function () {
+                isbnCounter.textContent = `${isbnInput.value.length} / 13`;
+            });
+        });
+    </script>
+</html>
 </x-app-layout>

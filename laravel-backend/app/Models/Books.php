@@ -12,10 +12,24 @@ class Books extends Model
     protected $fillable = [
         'title',
         'author',
+        'description',
         'isbn',
         'published_year',
-        'status'
+        'status',
+        'image',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->title = $model->title ?? 'Sans titre';
+            $model->author = $model->author ?? 'Unknown author';
+            $model->isbn = $model->isbn ?? 'Unknown ISBN';
+            $model->description = $model->description ?? 'Pas de description disponible';
+        });
+    }
 
     public function loans()
     {

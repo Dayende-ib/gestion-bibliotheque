@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('author');
+            $table->string('description')->nullable();
+            $table->string('image')->nullable();
             $table->string('isbn')->unique();
             $table->integer('published_year');
             $table->enum('status', ['Available', 'Borrowed'])->default('Available');
@@ -28,5 +30,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('books');
+        Schema::table('books', function (Blueprint $table) {
+            $table->dropColumn('image');
+        });
     }
 };

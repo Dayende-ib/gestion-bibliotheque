@@ -6,14 +6,22 @@ use App\Models\Members;
 use Illuminate\Http\Request;
 use App\Models\User;
 use DateTime;
+use Illuminate\Support\Facades\Auth;
 
 class MembersController extends Controller
 {
     // Liste des membres
     public function index()
     {
+        $user = Auth::user();
+
+        if ($user->role == 'admin') {
         $members = Members::all();
         return view('members.index', compact('members'));
+        } else {
+            return redirect()->back()->withErrors(['role' => 'Vous ne pouvez pas acceder à cette page']);
+        }
+
     }
 
     // Formulaire d'ajout

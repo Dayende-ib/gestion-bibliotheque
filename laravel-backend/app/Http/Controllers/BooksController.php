@@ -13,25 +13,16 @@ class BooksController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-{
-    $user = Auth::user();
-    $books = Books::all();
-    // if ($user->role == 'admin') {
-    //     // L'administrateur voit tous les livres
-    //     $books = Books::all();
-    // } else {
-    //     // Les utilisateurs normaux voient uniquement les livres qu'ils ont empruntés ou qui ne sont pas empruntés
-    //     $books = Books::whereDoesntHave('loans', function ($query) use ($user) {
-    //         $query->where('member_id', '!=', $user->id);
-    //     })->orWhereHas('loans', function ($query) use ($user) {
-    //         $query->where('member_id', $user->id);
-    //     })->get();
-    // }
+    public function index(Request $request)
+    {
+        $user = Auth::user();
+        $books = Books::inRandomOrder()->get();
 
+        $search = $request->input('search');
+        $books = Books::where('title', 'like', "%$search%")->orWhere('author', 'like', "%$search%")->get();
+        return view('books.index', compact('books'));
 
-    return view('books.index', compact('books'));
-}
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -46,18 +37,22 @@ class BooksController extends Controller
      */
     public function store(CreateBookRequest $request)
     {
-        try {
             $livre = new Books();
             $livre->title = $request->input('title');
             $livre->author = $request->input('author');
+            $livre->description = $request->input('description');
             $livre->isbn = $request->input('isbn');
             $livre->published_year = $request->input('published_year');
+            $livre->status = $request->input('status');
+
+            if ($request->hasFile('image')) {
+                $path = $request->file('image')->store('images', 'public');
+                $livre->image = $path;
+            }
 
             $livre->save();
 
-            return redirect()->route('books.index')->with('success', 'Livre ajouté avec succès.');
-        } catch (\Exception $e) {
-        }
+            return redirect()->route('books.index')->with('success', 'Book added successfully.');
     }
 
     /**
@@ -84,23 +79,41 @@ class BooksController extends Controller
         try {
             $book->title = $request->input('title');
             $book->author = $request->input('author');
-            $book->isbn = $request->input('isbn') ;
+            $book->isbn = $request->input('isbn');
             $book->published_year = $request->input('published_year');
+            $book->description = $request->input('description');
+            $book->status = $request->input('status');
 
-            $book->update();
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('books', 'public');
+                $book->image = $imagePath;
+            }
 
-            return redirect()->route('books.index')->with('success', 'Livre edité avec succès.');
+            $book->save();
+
+            return redirect()->route('books.index')->with('success', 'Livre édité avec succès.');
         
         } catch (\Exception $e) {
-           dd($e);
+            return redirect()->back()->withErrors(['error' => 'Une erreur est survenue lors de la mise à jour du livre.']);
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Books $books)
+    public function destroy($id)
     {
-        //
+        if (Auth::user()->role == 'admin') {
+            $book = Books::find($id);
+            if ($book) {
+                $book->delete();
+                return redirect()->route('books.index')->with('success', 'Livre supprimé avec succès');
+            } else {
+                return redirect()->route('books.index')->with('error', 'Livre non trouvé');
+            }
+        } else {
+            return redirect()->route('books.index')->with('error', 'Vous n\'avez pas les droits nécessaires pour supprimer ce livre');
+        }
     }
+    
 }
