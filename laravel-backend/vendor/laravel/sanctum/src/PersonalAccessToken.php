@@ -24,7 +24,8 @@ class PersonalAccessToken extends Model implements HasAbilities
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'lastname',
+        'firstname',
         'token',
         'abilities',
         'expires_at',
