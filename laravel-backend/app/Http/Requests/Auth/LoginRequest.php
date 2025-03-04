@@ -33,13 +33,13 @@ class LoginRequest extends FormRequest
     }
 
     public function messages()
-{
-    return [
-        'email.required' => 'L\'adresse e-mail est obligatoire.',
-        'email.email' => 'L\'adresse e-mail doit être une adresse e-mail valide.',
-        'password.required' => 'Le mot de passe est obligatoire.',
-    ];
-}
+    {
+        return [
+            'email.required' => 'L\'adresse e-mail est obligatoire.',
+            'email.email' => 'L\'adresse e-mail doit être une adresse e-mail valide.',
+            'password.required' => 'Le mot de passe est obligatoire.',
+        ];
+    }
 
     /**
      * Attempt to authenticate the request's credentials.

@@ -94,7 +94,7 @@
                             <strong>{{ $message }}</strong>
                         </span>
                         @enderror
-                        <img id="image-preview" src="{{ $book->image ? asset('storage/' . $book->image) : asset('build/images/default-book-cover.png') }}" alt="Book Image" style="max-width: 200px; margin-top: 10px;">
+                        <img id="image-preview" src="{{ $book->image ? asset($book->image) : asset('build/images/default-book-cover.png') }}" alt="Book Image" style="max-width: 200px; margin-top: 10px;">
                     </div>
                 </div>
             </div>

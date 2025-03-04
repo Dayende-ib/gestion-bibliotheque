@@ -13,8 +13,9 @@
     <body>
         <div class="container mt-4">
             <h1 class="text-center text-primary mb-4">Add a New Book</h1>
-            <form action="{{ route('books.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('books.store') }}" method="POST" enctype="multipart/form-data" >
                 @csrf
+
                 <!-- Champ Titre -->
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
@@ -41,7 +42,7 @@
                 <div class="mb-3">
                     <label for="description">{{ __('Description') }}</label>
                     <textarea id="description" class="form-control @error('description') is-invalid @enderror" name="description" required>{{ old('description') }}</textarea>
-                    <div id="description-counter" class="text-end text-muted">0 / 191</div>
+                    <div id="description-counter" class="text-end text-muted">0 / 515</div>
                     @error('description')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -74,7 +75,7 @@
                 <!-- Champ Image -->
                 <div class="mb-3">
                     <label for="image">{{ __('Book Image') }}</label>
-                    <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image">
+                    <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image" required>
                     @error('image')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -98,30 +99,11 @@
     </body>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const titleInput = document.getElementById('title');
-            const authorInput = document.getElementById('author');
             const descriptionInput = document.getElementById('description');
-            const isbnInput = document.getElementById('isbn');
-
-            const titleCounter = document.getElementById('title-counter');
-            const authorCounter = document.getElementById('author-counter');
             const descriptionCounter = document.getElementById('description-counter');
-            const isbnCounter = document.getElementById('isbn-counter');
-
-            titleInput.addEventListener('input', function () {
-                titleCounter.textContent = `${titleInput.value.length} / 255`;
-            });
-
-            authorInput.addEventListener('input', function () {
-                authorCounter.textContent = `${authorInput.value.length} / 255`;
-            });
 
             descriptionInput.addEventListener('input', function () {
-                descriptionCounter.textContent = `${descriptionInput.value.length} / 191`;
-            });
-
-            isbnInput.addEventListener('input', function () {
-                isbnCounter.textContent = `${isbnInput.value.length} / 13`;
+                descriptionCounter.textContent = `${descriptionInput.value.length} / 515`;
             });
         });
     </script>

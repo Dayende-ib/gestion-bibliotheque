@@ -16,10 +16,10 @@ class BooksController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $books = Books::inRandomOrder()->get();
+        $books = Books::all();
 
-        $search = $request->input('search');
-        $books = Books::where('title', 'like', "%$search%")->orWhere('author', 'like', "%$search%")->get();
+        //$search = $request->input('search');
+        //$books = Books::where('title', 'like', "%$search%")->orWhere('author', 'like', "%$search%")->get();
         return view('books.index', compact('books'));
 
     }
@@ -46,8 +46,12 @@ class BooksController extends Controller
             $livre->status = $request->input('status');
 
             if ($request->hasFile('image')) {
-                $path = $request->file('image')->store('images', 'public');
-                $livre->image = $path;
+                $imageName = time().'.'.$request->image->extension();
+                $request->image->move(public_path('images'), $imageName);
+                $livre->image = 'images/'.$imageName;
+
+                // $path = $request->file('image')->store('images', 'public');
+                // $livre->image = $path;
             }
 
             $livre->save();
@@ -85,8 +89,9 @@ class BooksController extends Controller
             $book->status = $request->input('status');
 
             if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('books', 'public');
-                $book->image = $imagePath;
+                $imageName = time().'.'.$request->image->extension();
+                $request->image->move(public_path('images'), $imageName);
+                $book->image = 'images/'.$imageName;
             }
 
             $book->save();

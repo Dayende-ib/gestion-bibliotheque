@@ -132,11 +132,11 @@
         @endif
 
         <div class="row">
-            @foreach($books as $book)
+            @forelse($books as $book)
                 <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
                     <div class="card custom-card">
                         @if($book->image != null)
-                            <img src="{{ asset('storage/' . $book->image) }}" alt="{{ $book->title }}">
+                            <img src="{{ asset($book->image) }}" alt="{{ $book->title }}">
                         @else
                             <img src="{{ asset('build/images/default-book-cover.png') }}" alt="Default Image">
                         @endif
@@ -164,7 +164,11 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="col-sm-12">
+                    <div class="alert alert-info">No books to show</div>
+                </div>
+            @endforelse
         </div>
 
         {{-- <div class="card shadow mb-4">

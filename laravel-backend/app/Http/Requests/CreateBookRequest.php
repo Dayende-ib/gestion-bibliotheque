@@ -33,7 +33,7 @@ class CreateBookRequest extends FormRequest
             'published_year' => 'required|integer|min:500|max:' . date('Y'),
             'status' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'description' => 'nullable|longText|max:515',
+            'description' => 'nullable|string|max:515',
         ];
     }
 
