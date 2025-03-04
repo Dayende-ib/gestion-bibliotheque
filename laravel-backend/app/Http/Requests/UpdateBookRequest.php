@@ -30,12 +30,12 @@ class UpdateBookRequest extends FormRequest
                 'required',
                 Rule::unique('books', 'isbn')->ignore($bookId),
             ],
-            'title' => 'required|string|max:255',
-            'author' => 'required|string|max:255',
-            'published_year' => 'required|integer|min:1500|max:' . date('Y'),
+            'title' => 'required|string|max:254',
+            'author' => 'required|string|max:254',
+            'published_year' => 'required|integer|min:500|max:' . date('Y'),
             'status' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'description' => 'nullable|string|max:191',
+            'description' => 'nullable|longText|max:515',
         ];
     }
 
@@ -43,17 +43,17 @@ class UpdateBookRequest extends FormRequest
         return [
             'title.required' => 'Le titre est obligatoire.',
             'title.string' => 'Le titre doit être une chaîne de caractères.',
-            'title.max' => 'Le titre ne peut pas dépasser 255 caractères.',
+            'title.max' => 'Le titre ne peut pas dépasser 254 caractères.',
             'author.required' => 'L\'auteur est obligatoire.',
             'author.string' => 'L\'auteur doit être une chaîne de caractères.',
-            'author.max' => 'L\'auteur ne peut pas dépasser 255 caractères.',
+            'author.max' => 'L\'auteur ne peut pas dépasser 254 caractères.',
             'isbn.required' => 'L\'ISBN est obligatoire.',
             'isbn.string' => 'L\'ISBN doit être une chaîne de caractères.',
             'isbn.max' => 'L\'ISBN ne peut pas dépasser 13 caractères.',
             'isbn.unique' => 'Ce ISBN existe déjà.',
             'published_year.required' => 'L\'année de publication est obligatoire.',
             'published_year.integer' => 'L\'année de publication doit être un nombre entier.',
-            'published_year.min' => 'L\'année de publication doit être au moins 1500.',
+            'published_year.min' => 'L\'année de publication doit être au moins 500.',
             'published_year.max' => 'L\'année de publication ne peut pas dépasser l\'année actuelle.',
             'status.required' => 'Le statut est obligatoire.',
             'status.string' => 'Le statut doit être une chaîne de caractères.',
@@ -61,7 +61,7 @@ class UpdateBookRequest extends FormRequest
             'image.mimes' => 'L\'image doit être au format jpeg, png, jpg, webp ou gif.',
             'image.max' => 'L\'image ne peut pas dépasser 2048 kilooctets.',
             'description.string' => 'La description doit être une chaîne de caractères.',
-            'description.max' => 'La description ne peut pas dépasser 191 caractères.',
+            'description.max' => 'La description ne peut pas dépasser 515 caractères.',
         ];
     }
 }

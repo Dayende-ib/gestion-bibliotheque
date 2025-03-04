@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->decimal('amount', 8, 2);
-            $table->enum('status', ['non paye', 'paye'])->default('non paye');
+            $table->enum('status', ['Paid', 'Unpaid'])->default('Unpaid');
             $table->timestamps();
         });
     }
