@@ -1,3 +1,5 @@
 .vscode
-/strorage/framework
-/storage/logs
+/storage/
+/bootstrap/cache/
+/*.log
+/public/storage/
