@@ -147,7 +147,7 @@
                 <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
                     <div class="card custom-card">
                         <?php if($book->image != null): ?>
-                            <img src="<?php echo e(asset($book->image)); ?>" alt="<?php echo e($book->title); ?>">
+                            <img src="<?php echo e(asset($book->image)); ?>" alt="<?php echo e($book->title); ?>" loading="lazy">
                         <?php else: ?>
                             <img src="<?php echo e(asset('build/images/default-book-cover.png')); ?>" alt="Default Image">
                         <?php endif; ?>

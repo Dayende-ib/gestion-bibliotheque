@@ -1,5 +1,5 @@
 .vscode
-/storage/
+/storage/*
 /bootstrap/cache/
 /*.log
 /public/storage/

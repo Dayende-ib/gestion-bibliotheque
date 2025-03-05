@@ -136,7 +136,7 @@
                 <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
                     <div class="card custom-card">
                         @if($book->image != null)
-                            <img src="{{ asset($book->image) }}" alt="{{ $book->title }}">
+                            <img src="{{ asset($book->image) }}" alt="{{ $book->title }}" loading="lazy">
                         @else
                             <img src="{{ asset('build/images/default-book-cover.png') }}" alt="Default Image">
                         @endif
