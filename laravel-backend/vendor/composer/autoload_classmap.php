@@ -6,6 +6,9 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Http\\Controllers\\Api\\AuthController' => $baseDir . '/app/Http/Controllers/Api/AuthController.php',
+    'App\\Http\\Controllers\\Api\\BookController' => $baseDir . '/app/Http/Controllers/Api/BookController.php',
+    'App\\Http\\Controllers\\Api\\LoanController' => $baseDir . '/app/Http/Controllers/Api/LoanController.php',
     'App\\Http\\Controllers\\Auth\\AuthenticatedSessionController' => $baseDir . '/app/Http/Controllers/Auth/AuthenticatedSessionController.php',
     'App\\Http\\Controllers\\Auth\\ConfirmablePasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmablePasswordController.php',
     'App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController' => $baseDir . '/app/Http/Controllers/Auth/EmailVerificationNotificationController.php',
@@ -17,6 +20,7 @@ return array(
     'App\\Http\\Controllers\\Auth\\VerifyEmailController' => $baseDir . '/app/Http/Controllers/Auth/VerifyEmailController.php',
     'App\\Http\\Controllers\\BooksController' => $baseDir . '/app/Http/Controllers/BooksController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
+    'App\\Http\\Controllers\\DashboardController' => $baseDir . '/app/Http/Controllers/DashboardController.php',
     'App\\Http\\Controllers\\LoansController' => $baseDir . '/app/Http/Controllers/LoansController.php',
     'App\\Http\\Controllers\\MembersController' => $baseDir . '/app/Http/Controllers/MembersController.php',
     'App\\Http\\Controllers\\PenalitesController' => $baseDir . '/app/Http/Controllers/PenalitesController.php',
@@ -27,6 +31,7 @@ return array(
     'App\\Http\\Requests\\ProfileUpdateRequest' => $baseDir . '/app/Http/Requests/ProfileUpdateRequest.php',
     'App\\Http\\Requests\\SaveLoanRequest' => $baseDir . '/app/Http/Requests/SaveLoanRequest.php',
     'App\\Http\\Requests\\UpdateBookRequest' => $baseDir . '/app/Http/Requests/UpdateBookRequest.php',
+    'App\\Models\\BannedEmail' => $baseDir . '/app/Models/BannedEmail.php',
     'App\\Models\\Books' => $baseDir . '/app/Models/Books.php',
     'App\\Models\\Loans' => $baseDir . '/app/Models/Loans.php',
     'App\\Models\\Members' => $baseDir . '/app/Models/Members.php',

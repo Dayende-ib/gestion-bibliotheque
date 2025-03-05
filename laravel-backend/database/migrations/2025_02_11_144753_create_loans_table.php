@@ -19,7 +19,7 @@ return new class extends Migration
 			$table->timestamp('borrowed_at')->useCurrent();
             $table->date('due_date');
             $table->timestamp('returned_at')->nullable();
-            $table->enum('status', ['Borrowed', 'Returned', 'Overdue'])->default('Borrowed');
+            $table->enum('status', ['Borrowed', 'Returned', 'Overdue', 'Cancelled'])->default('Borrowed');
             $table->timestamps();
         });
     }

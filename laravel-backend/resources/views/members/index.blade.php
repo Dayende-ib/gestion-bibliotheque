@@ -1,7 +1,8 @@
 <x-app-layout>
     <div class="container">
-        <h2>Liste des membres</h2>
-        <a href="{{ route('members.create') }}" class="btn btn-primary">Ajouter un membre</a>
+        @if (Auth::user())
+            <a href="{{ route('members.create') }}" class="btn btn-success w-25 mb-3">Add member</a>
+        @endif
     
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
@@ -15,34 +16,45 @@
                 </ul>
             </div>
         @endif
+
+        <!-- Search Form -->
+        <form method="GET" action="{{ route('members.index') }}" class="mb-3" id="search-form">
+            <div class="input-group">
+                <input type="text" name="search" id="search" class="form-control" placeholder="Rechercher un membre" value="{{ request('search') }}">
+                <button type="submit" class="btn btn-primary">Search</button>
+                <button type="button" id="clear-search" class="btn btn-secondary ms-2"><i class="fa fa-times"></i>Cancel</button>
+            </div>
+        </form>
     
         <table class="table table-bordered mt-3">
             <thead>
                 <tr>
-                    <th>Nom</th>
-                    <th>Téléphone</th>
-                    <th>Adresse</th>
-                    <th>Actions</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Email</th>
+                    <th>Join Date</th>
+                    <th>Expiry Date</th>
+                    <th>Status</th>
+                    <th></th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach($members as $member)
-                    <tr>
-                        <td>{{ $member->user->lastname }} {{ $member->user->firstname }}</td>
-                        <td>{{ $member->phone }}</td>
-                        <td>{{ $member->address }}</td>
-                        <td>
-                            <a href="{{ route('members.edit', $member) }}" class="btn btn-warning">Modifier</a>
-                            <form action="{{ route('members.destroy', $member) }}" method="POST" style="display:inline;">
-                                @csrf @method('DELETE')
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('Supprimer ce membre ?')">Supprimer</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
+            <tbody id="members-list">
+                @include('members.partials.members-list', ['members' => $members])
             </tbody>
         </table>
-    </div>
-</x-app-layout>
 
-</script>
+        <!-- Pagination Links -->
+        <div class="d-flex justify-content-center">
+            {{ $members->links() }}
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('clear-search').addEventListener('click', function() {
+                document.getElementById('search').value = '';
+                document.getElementById('search-form').submit();
+            });
+        });
+    </script>
+</x-app-layout>

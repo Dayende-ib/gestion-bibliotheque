@@ -5,40 +5,48 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" style="width: 4rem;" />
-                    </a>
-                    
+                    @if (Auth::user()->role == 'admin')
+                        <a href="{{ route('dashboard') }}">
+                            <x-application-logo class="block h-9 w-auto fill-current text-gray-800" style="width: 4rem;" />
+                        </a>
+                    @else
+                        <a href="{{ route('books.index') }}">
+                            <x-application-logo class="block h-9 w-auto fill-current text-gray-800" style="width: 4rem;" />
+                        </a>
+                    @endif
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
+                    @if (Auth::user()->role == 'admin')
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                    @endif
+
                     <x-nav-link :href="route('books.index')" :active="request()->routeIs('books.index') || request()->routeIs('books.create') || request()->routeIs('books.edit')">
                         {{ __('Books') }}
                     </x-nav-link>
                     @if (Auth::user()->role == 'admin')
-                    <x-nav-link :href="route('loans.index')" :active="request()->routeIs('loans.index')">
+                        <x-nav-link :href="route('loans.index')" :active="request()->routeIs('loans.index')">
                             {{ __('Loans') }}
                         </x-nav-link>
                     @else
-                    @if (!Auth::user()->member)
-                        <x-nav-link class="text-indigo-600" :href="route('members.create', ['user_id' => Auth::user()->id])" :active="request()->routeIs('members.create')">
-                            {{ __('Become a member') }}
-                        </x-nav-link>
-                    @endif
-                    <x-nav-link :href="route('loans.index')" :active="request()->routeIs('loans.index')">
-                            {{ __('My loans') }}
-                        </x-nav-link>
+                        @if (!Auth::user()->member)
+                            <x-nav-link class="text-indigo-600" :href="route('members.create', ['user_id' => Auth::user()->id])" :active="request()->routeIs('members.create')">    
+                                {{ __('Become a member') }}
+                            </x-nav-link>
+                        @endif
+                        <x-nav-link :href="route('loans.index')" :active="request()->routeIs('loans.index')">
+                                {{ __('My loans') }}
+                            </x-nav-link>
                     @endif
 
                     @if (Auth::user()->role == 'admin')
-                        <x-nav-link :href="route('members.index')" :active="request()->routeIs('members.index')">
+                        <x-nav-link :href="route('members.index')" :active="request()->routeIs('members.index') || request()->routeIs('members.create') || request()->routeIs('members.edit')">
                             {{ __('Members') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('penalites.index')" :active="request()->routeIs('penalites.index')">
+                        <x-nav-link :href="route('penalites.index')" :active="request()->routeIs('penalites.index') || request()->routeIs('penalites.create') || request()->routeIs('penalites.edit')">
                             {{ __('Penalities') }}
                         </x-nav-link>
                     @endif
@@ -62,6 +70,9 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        <x-dropdown-link :href="route('about')">
+                            {{ __('About us') }}
+                        </x-dropdown-link>
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>

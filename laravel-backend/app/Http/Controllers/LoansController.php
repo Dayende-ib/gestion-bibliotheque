@@ -18,19 +18,18 @@ class LoansController extends Controller
     public function index()
     {
         $user = Auth::user();
-        
 
-    if ($user->role == 'admin') {
-        // L'administrateur voit tous les emprunts
-        $loans = Loans::with('book')->paginate(10);
-    } else {
-        if (!$user->member) {
-            return redirect()->route('members.create')->withErrors(['errors' => 'Vous devez être membre pour voir vos emprunts. INSCRIVEZ VOUS ICI!!']);
+        if ($user->role == 'admin') {
+            // L'administrateur voit tous les emprunts
+            $loans = Loans::with('book')->paginate(10);
         } else {
-        // Les utilisateurs normaux voient uniquement leurs propres emprunts
-        $loans = Loans::with('book')->where('member_id', $user->member->id)->paginate(10);
+            if (!$user->member) {
+                return redirect()->route('members.create')->withErrors(['errors' => 'Vous devez être membre pour voir vos emprunts. INSCRIVEZ VOUS ICI!!']);
+            } else {
+            // Les utilisateurs normaux voient uniquement leurs propres emprunts
+            $loans = Loans::with('book')->where('member_id', $user->member->id)->paginate(10);
+            }
         }
-}
 
         return view('books.loans.index', compact('loans'));
     }
@@ -45,6 +44,12 @@ class LoansController extends Controller
         // Vérifiez si l'utilisateur est membre
         if (!$user->member) {
             return redirect()->route('books.index')->withErrors(['errors' => 'Vous devez être membre pour emprunter un livre.']);
+        }
+
+        $member = Members::where('user_id', Auth::user()->id)->first();
+
+        if ($member->status == 'Banned') {
+            return redirect()->back()->withErrors(['error' => 'Vous ne pouvez pas emprunter de livres car vous êtes banni.']);
         }
 
         $book = Books::findOrFail($book_id);
@@ -63,6 +68,12 @@ class LoansController extends Controller
         if (!Auth::check() || !Auth::user()->member) {
              return redirect()->back()->withErrors(['errors' => 'Vous devez être membre pour emprunter un livre.']);
          }
+
+         $member = Members::where('user_id', Auth::user()->id)->first();
+
+        if ($member->status == 'Banned') {
+            return redirect()->back()->withErrors(['error' => 'Vous ne pouvez pas emprunter de livres car vous êtes banni.']);
+        }
 
         // Check if the book is already borrowed
         $existingLoan = Loans::where('book_id', $request->input('book_id'))
@@ -105,7 +116,8 @@ class LoansController extends Controller
     }
 }
 
-    /**
+
+/**
      * Display the specified resource.
      */
     public function show(Loans $loans)
@@ -134,6 +146,28 @@ class LoansController extends Controller
      */
     public function destroy(Loans $loans)
     {
-        //
+        $loans->delete();
+        return redirect()->route('loans.index')->with('success', 'Emprunt supprimé avec succès.');
+    }
+
+    public function returnBook($id)
+    {
+        $loan = Loans::find($id);
+        if ($loan) {
+            // Update the loan status to 'Returned'
+            $loan->status = 'Returned';
+            $loan->save();
+
+            // Update the book status to 'Available'
+            $book = Books::find($loan->book_id);
+            if ($book) {
+                $book->status = 'Available';
+                $book->save();
+            }
+
+            return redirect()->route('loans.index')->with('success', 'Livre retourné avec succès.');
+        } else {
+            return redirect()->route('loans.index')->with('error', 'Emprunt non trouvé.');
+        }
     }
 }

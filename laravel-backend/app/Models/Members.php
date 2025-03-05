@@ -27,4 +27,12 @@ class Members extends Model
         return $this->hasOne(Members::class);
     }
     
+    public function cancelAllLoans()
+{
+    // Assuming you have a Loan model and a relationship set up
+    foreach ($this->loans as $loan) {
+        $loan->status = 'Cancelled';
+        $loan->save();
+    }
+}
 }

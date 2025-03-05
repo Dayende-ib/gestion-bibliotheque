@@ -10,13 +10,13 @@
 <?php $component->withAttributes([]); ?>
      <?php $__env->slot('header', null, []); ?> 
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            <?php echo e(__('Emprunts')); ?>
+            <?php echo e(__('Loans')); ?>
 
         </h2>
      <?php $__env->endSlot(); ?>
 
     <div class="container mt-4">
-        <h1 class="text-center text-primary">Liste des Emprunts</h1>
+        <h1 class="text-center text-primary">List of Loans</h1>
         
         <?php if(Session::get('success')): ?>
             <div class="alert alert-success" style="background-color: green; color: white;">
@@ -37,23 +37,45 @@
         <table class="table table-striped table-hover table-bordered">
             <thead class="table-dark">
                 <tr>
-                    <th>Livre</th>
-                    <th>Date d'emprunt</th>
-                    <th>Date de retour</th>
-                    <th>Statut</th>
+                    <?php if(Auth::user()->role == 'admin'): ?>
+                        <th class="bg-primary">Borrower Name</th>
+                        <th class="bg-primary">Borrower Phone</th>
+                        <th class="bg-primary">Borrower Status</th>
+                    <?php endif; ?>
+                    <th>Book</th>
+                    <th>Borrowed Date</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <?php $__empty_1 = true; $__currentLoopData = $loans; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $loan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <tr>
+                        <?php if(Auth::user()->role == 'admin'): ?>
+                            <td><?php echo e($loan->member->user->lastname); ?> <?php echo e($loan->member->user->firstname); ?></td>
+                            <td><?php echo e($loan->member->phone); ?></td>
+                            <td><?php echo e($loan->member->status); ?></td>    
+                        <?php endif; ?>
                         <td><?php echo e($loan->book->title); ?></td>
                         <td><?php echo e($loan->borrowed_at); ?></td>
                         <td><?php echo e($loan->due_date); ?></td>
                         <td><?php echo e($loan->status); ?></td>
+                        <td>
+                            <form action="<?php echo e(route('loans.return', $loan->id)); ?>" method="POST" style="display:inline;">
+                                <?php echo csrf_field(); ?>
+                                <button type="submit" class="btn btn-success">Return</button>
+                            </form>
+                            <form action="<?php echo e(route('loans.destroy', $loan->id)); ?>" method="POST" style="display:inline;">
+                                <?php echo csrf_field(); ?>
+                                <?php echo method_field('DELETE'); ?>
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <tr>
-                        <td class="text-center text-bg-info text-white" colspan="4">Aucun emprunt</td>
+                        <td class="text-center text-bg-info text-white" colspan="7">No loans</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
@@ -71,4 +93,5 @@
 <?php if (isset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
 <?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
 <?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
-<?php endif; ?><?php /**PATH C:\Users\PC\Desktop\gestion-bibliotheque\laravel-backend\resources\views/books/loans/index.blade.php ENDPATH**/ ?>
+<?php endif; ?>
+<?php /**PATH C:\Users\PC\Desktop\gestion-bibliotheque\laravel-backend\resources\views/books/loans/index.blade.php ENDPATH**/ ?>

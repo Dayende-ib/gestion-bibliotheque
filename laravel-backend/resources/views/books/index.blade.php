@@ -3,15 +3,20 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Books') }}
         </h2>
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="viewSwitch">
+            <label class="form-check-label" for="viewSwitch">Show book list (for research)</label>
+        </div>
     </x-slot>
     <head>
         <style>
             .form-inline {
                 margin-bottom: 20px;
+                position: relative;
             }
 
             .form-inline input[type="text"] {
-                width: 50%;
+                width: 100%;
                 padding: 10px;
                 font-size: 16px;
             }
@@ -28,6 +33,22 @@
 
             .form-inline button[type="submit"]:hover {
                 background-color: #23527c;
+            }
+
+            .clear-search {
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                background: none;
+                border: none;
+                font-size: 20px;
+                cursor: pointer;
+                display: none;
+            }
+
+            .clear-search.visible {
+                display: block;
             }
         </style>
          {{-- /*Style pour les grids*/ --}}
@@ -61,7 +82,7 @@
                 overflow: hidden;
                 display: -webkit-box;
                 -webkit-box-orient: vertical;
-                -webkit-line-clamp: 2; /* Number of lines to show */
+                -webkit-line-clamp: 3; /* Number of lines to show */
                 line-clamp: 2;
             }
 
@@ -77,7 +98,7 @@
             .custom-card:hover img {
                 height: auto; /* Fixed height on hover */
                 width: 100%;
-                transform: scale(0.9);
+                transform: scale(0.95);
                 
             }
 
@@ -131,7 +152,7 @@
             </div>
         @endif
 
-        <div class="row">
+        <div id="card-view" class="row">
             @forelse($books as $book)
                 <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
                     <div class="card custom-card">
@@ -147,7 +168,7 @@
                             <div class="card-actions">
                                 @if (Auth::user()->role == 'admin')
                                     <a href="{{ route('books.edit', $book->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                    <form action="{{ route('books.destroy', $book->id) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('books.destroy', $book->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this book?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm"> <i class="fa "></i>Delete</button>
@@ -171,15 +192,15 @@
             @endforelse
         </div>
 
-        {{-- <div class="card shadow mb-4">
+        <div id="list-view" class="card shadow mb-4" style="display: none;">
             <div class="card-header py-3">
                 <h3 class="m-0 h3 font-weight-bold text-primary">Books list</h3>
             </div>
             <div class="row w-60">
                 <div class="col-md-12">
                     <form class="form-inline" action="{{ route('books.index') }}" method="GET">
-                        <input type="text" id="search-input" class="form-control" name="search" placeholder="Rechercher un livre...">
-                        <button type="submit" class="btn btn-primary">Rechercher</button>
+                        <input type="text" id="search-input" class="form-control" name="search" placeholder="Search a book...">
+                        <button type="submit" class="btn btn-primary">Search</button>
                     </form>
                 </div>
             </div>
@@ -207,7 +228,7 @@
                                     @if (Auth::user()->role == 'admin')
                                         <td class="items-center ">
                                         <a href="{{ route('books.edit', $book->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                        <form action="{{ route('books.destroy', $book->id) }}" method="POST" style="display:inline;">
+                                        <form action="{{ route('books.destroy', $book->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this book?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -234,96 +255,86 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="row">
-                    <div class="col-sm-12 col-md-5">
-                        <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">Showing 21 to 30 of 57 entries</div>
-                    </div>
-                    <div class="col-sm-12 col-md-7">
-                        <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
-                            <ul class="pagination">
-                                <li class="paginate_button page-item previous" id="dataTable_previous">
-                                    <a href="#" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
-                                </li>
-                                <li class="paginate_button page-item ">
-                                    <a href="#" aria-controls="dataTable" data-dt-idx="1" tabindex="0" class="page-link">1</a>
-                                </li>
-                                <li class="paginate_button page-item ">
-                                    <a href="#" aria-controls="dataTable" data-dt-idx="2" tabindex="0" class="page-link">2</a>
-                                </li>
-                                <li class="paginate_button page-item active">
-                                    <a href="#" aria-controls="dataTable" data-dt-idx="3" tabindex="0" class="page-link">3</a>
-                                </li>
-                                <li class="paginate_button page-item ">
-                                    <a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">4</a>
-                                </li>
-                                <li class="paginate_button page-item ">
-                                    <a href="#" aria-controls="dataTable" data-dt-idx="5" tabindex="0" class="page-link">5</a>
-                                </li>
-                                <li class="paginate_button page-item ">
-                                    <a href="#" aria-controls="dataTable" data-dt-idx="6" tabindex="0" class="page-link">6</a>
-                                </li>
-                                <li class="paginate_button page-item next" id="dataTable_next">
-                                    <a href="#" aria-controls="dataTable" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
-    
-    
-
-    <!-- Add this modal dialog in the body of index.blade.php -->
-<div id="membershipModal" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Become a Member</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>You need to be a member to borrow a book. Would you like to become a member?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <a href="{{ route('members.create') }}" class="btn btn-primary">Become a Member</a>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-    function checkMembership(isMember, bookId) {
-        if (isMember) {
-            window.location.href = '/loans/create/' + bookId;
-        } else {
-            $('#membershipModal').modal('show');
+    <div id="membershipModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Become a Member</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>You need to be a member to borrow a book. Would you like to become a member?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a href="{{ route('members.create') }}" class="btn btn-primary">Become a Member</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkMembership(isMember, bookId) {
+            if (isMember) {
+                window.location.href = '/loans/create/' + bookId;
+            } else {
+                $('#membershipModal').modal('show');
+            }
         }
-    }
 
-    $(document).ready(function() {
-    var timeout;
-    $('#search-input').on('keyup', function() {
-        clearTimeout(timeout);
-        timeout = setTimeout(function() {
-            var search = $('#search-input').val();
-            $.ajax({
-                type: 'GET',
-                url: '/books/search',
-                data: {search: search},
-                success: function(data) {
-                    $('#books-table').html(data);
+        document.addEventListener('DOMContentLoaded', function() {
+            var searchInput = document.getElementById('search-input');
+            var clearSearchButton = document.createElement('button');
+            clearSearchButton.innerHTML = '&times;';
+            clearSearchButton.classList.add('clear-search');
+            searchInput.parentNode.appendChild(clearSearchButton);
+
+            searchInput.addEventListener('input', function() {
+                if (searchInput.value.length > 0) {
+                    clearSearchButton.classList.add('visible');
+                } else {
+                    clearSearchButton.classList.remove('visible');
                 }
             });
-        }, 500);
-    });
-});
 
-    
-</script>
+            clearSearchButton.addEventListener('click', function() {
+                searchInput.value = '';
+                clearSearchButton.classList.remove('visible');
+                searchInput.form.submit();
+            });
+
+            var viewSwitch = document.getElementById('viewSwitch');
+            var cardView = document.getElementById('card-view');
+            var listView = document.getElementById('list-view');
+
+            // Set the initial view based on localStorage
+            if (localStorage.getItem('view') === 'list') {
+                viewSwitch.checked = true;
+                cardView.style.display = 'none';
+                listView.style.display = 'block';
+            } else {
+                viewSwitch.checked = false;
+                cardView.style.display = 'flex';
+                listView.style.display = 'none';
+            }
+
+            viewSwitch.addEventListener('change', function() {
+                if (viewSwitch.checked) {
+                    cardView.style.display = 'none';
+                    listView.style.display = 'block';
+                    localStorage.setItem('view', 'list');
+                } else {
+                    cardView.style.display = 'flex';
+                    listView.style.display = 'none';
+                    localStorage.setItem('view', 'grid');
+                }
+            });
+        });
+    </script>
 </x-app-layout>

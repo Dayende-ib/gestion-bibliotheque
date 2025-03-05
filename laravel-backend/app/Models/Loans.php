@@ -11,7 +11,7 @@ class Loans extends Model
     protected $guarded = [];
 
     public function book(){
-        return $this->belongsTo(Books::class);
+        return $this->belongsTo(Books::class, 'book_id');
     }
 
     /**

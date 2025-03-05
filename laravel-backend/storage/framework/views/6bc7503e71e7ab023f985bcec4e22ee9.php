@@ -50,13 +50,27 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="phone" class="form-label">Phone</label>
-                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Fill here your phone" required>
+                        <input type="tel" class="form-control <?php $__errorArgs = ['phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" id="phone" name="phone" placeholder="Fill here your phone" required>
                     </div>
                 </div>
             </div>
             <div class="form-group mb-3">
                 <label for="address" class="form-label">Address</label>
-                <input type="text" class="form-control" id="address" name="address" placeholder="Fill here your address" required>
+                <input type="text" class="form-control <?php $__errorArgs = ['address'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" id="address" name="address" placeholder="Fill here your address" required>
             </div>
             <div class="form-group mb-3">
                 <label for="membership_number" class="form-label">Membership Number</label>
@@ -66,13 +80,27 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="join_date" class="form-label">Join Date</label>
-                        <input type="datetime-local" class="form-control" id="join_date" name="join_date" required>
+                        <input type="datetime-local" class="form-control <?php $__errorArgs = ['join_date'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" id="join_date" name="join_date" required>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="expiry_date" class="form-label">Expiry Date</label>
-                        <input type="date" class="form-control" id="expiry_date" name="expiry_date">
+                        <input type="date" class="form-control <?php $__errorArgs = ['expiry_date'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" id="expiry_date" value="<?php echo e(old('expiry_date')); ?>" name="expiry_date">
                     </div>
                 </div>
             </div>

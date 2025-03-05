@@ -5,22 +5,32 @@ namespace App\Http\Controllers;
 use App\Models\Members;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\BannedEmail;
+use App\Models\Loans;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 
 class MembersController extends Controller
 {
     // Liste des membres
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
+        $query = Members::query();
 
-        if ($user->role == 'admin') {
-        $members = Members::all();
-        return view('members.index', compact('members'));
-        } else {
+        if ($user->role != 'admin') {
             return redirect()->route('books.index');
         }
+
+        if ($request->has('search')) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('lastname', 'like', '%' . $request->search . '%')
+                  ->orWhere('firstname', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $members = $query->paginate(10);
+        return view('members.index', compact('members'));
 
     }
 
@@ -37,6 +47,7 @@ class MembersController extends Controller
     // Enregistrer un membre
     public function store(Request $request)
     { 
+        $user = Auth::user();
         // Vérifier si l'utilisateur a déjà un compte de membre
         $existingMember = Members::where('user_id', $request->user_id)->first();
         if ($existingMember) {
@@ -45,24 +56,35 @@ class MembersController extends Controller
         } else {
             // L'utilisateur n'a pas de compte de membre, continuer avec la création du compte
 
+            // If the user is not an admin, ensure they can only create a membership for themselves
+            if ($user->role != 'admin' && $request->user_id != $user->id) {
+                return redirect()->back()->withErrors(['user_id' => 'You can only create a membership account for yourself']);
+            }
+
         $request->validate([
             'user_id' => 'required|exists:users,id',
             'phone' => 'required|unique:members,phone',
-            'address' => 'required',
-            'join_date' => 'required|date',
-            'expiry_date' => 'required|date',
-            'status' => 'required',
+            'address' => 'required|min:2|max:254',
+            'join_date' => 'required|date|after_or_equal:today',
+            'expiry_date' => 'required|date|after:join_date',
+            'status' => 'required|in:Active,Inactive,Banned',
         ], [
-            'user_id.required' => 'Le champ utilisateur est obligatoire',
-            'user_id.exists' => 'L\'utilisateur n\'existe pas',
-            'phone.required' => 'Le champ téléphone est obligatoire',
-            'phone.unique' => 'Le téléphone est déjà utilisé',
-            'address.required' => 'Le champ adresse est obligatoire',
-            'join_date.required' => 'Le champ date d\'adhésion est obligatoire',
-            'join_date.date' => 'Le champ date d\'adhésion doit être une date',
-            'expiry_date.required' => 'Le champ date d\'expiration est obligatoire',
-            'expiry_date.date' => 'Le champ date d\'expiration doit être une date',
-            'status.required' => 'Le champ statut est obligatoire',
+            'user_id.required' => 'The user field is required',
+            'user_id.exists' => 'The user does not exist',
+            'phone.required' => 'The phone field is required',
+            'phone.unique' => 'The phone number is already in use',
+            'phone.regex' => 'The phone format is invalid',
+            'address.required' => 'The address field is required',
+            'address.min' => 'The address must be at least 02 characters',
+            'address.max' => 'The address must not exceed 254 characters',
+            'join_date.required' => 'The join date field is required',
+            'join_date.date' => 'The join date must be a valid date',
+            'join_date.before_or_equal' => 'The join date cannot be in the future',
+            'expiry_date.required' => 'The expiry date field is required',
+            'expiry_date.date' => 'The expiry date must be a valid date',
+            'expiry_date.after' => 'The expiry date must be after the join date',
+            'status.required' => 'The status field is required',
+            'status.in' => 'The status must be either "Active", "Inactive", or "Banned"',
         ]);
 
         $member = new Members();
@@ -92,20 +114,58 @@ class MembersController extends Controller
     public function update(Request $request, Members $member)
     {
         $request->validate([
-            'phone' => 'required',
-            'address' => 'required',
+            'phone' => 'required|exists:members,phone',
+            'address' => 'required|min:2|max:254',
+            'join_date' => 'required|date|after_or_equal:today',
+            'expiry_date' => 'required|date|after:join_date',
+            'status' => 'required|in:Active,Inactive,Banned',
+        ], [
+            'user_id.required' => 'The user field is required',
+            'user_id.exists' => 'The user does not exist',
+            'phone.required' => 'The phone field is required',
+            'phone.exists' => 'The phone number is already in use',
+            'address.required' => 'The address field is required',
+            'address.min' => 'The address must be at least 02 characters',
+            'address.max' => 'The address must not exceed 254 characters',
+            'join_date.required' => 'The join date field is required',
+            'join_date.date' => 'The join date must be a valid date',
+            'join_date.before_or_equal' => 'The join date cannot be in the future',
+            'expiry_date.required' => 'The expiry date field is required',
+            'expiry_date.date' => 'The expiry date must be a valid date',
+            'expiry_date.after' => 'The expiry date must be after the join date',
+            'status.required' => 'The status field is required',
+            'status.in' => 'The status must be either "Active", "Inactive", or "Banned"',
         ]);
-
-        $member->update($request->all());
-
-        return redirect()->route('members.index')->with('success', 'Membre mis à jour.');
+    
+        // If the member is banned, cancel all their borrowings and save their email
+        if ($request->status == 'Banned') {
+            // Delete all borrowings
+            Loans::where('member_id', $member->id)->delete();
+    
+            // Save the email to prevent future account creation
+            BannedEmail::create(['email' => $member->user->email]);
+        }else {
+            // Delete the email from the banned emails table
+            BannedEmail::where('email', $member->user->email)->delete();
+        }
+    
+        $member->phone = $request->input('phone');
+        $member->address = $request->input('address');
+        $member->join_date = $request->input('join_date');
+        $member->expiry_date = $request->input('expiry_date');
+        $member->status = $request->input('status');
+        $member->save();
+    
+        return redirect()->route('members.index')->with('success', 'Member updated successfully.');
     }
 
     // Supprimer un membre
     public function destroy(Members $member)
     {
-        $member->delete();
+        if(Auth::user()->role == 'admin') {
+            $member->delete();
         return redirect()->route('members.index')->with('success', 'Membre supprimé.');
+        }
     }
 
     private function generateMembershipNumber()

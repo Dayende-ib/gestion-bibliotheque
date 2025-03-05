@@ -1,12 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Emprunts') }}
+            {{ __('Loans') }}
         </h2>
     </x-slot>
 
     <div class="container mt-4">
-        <h1 class="text-center text-primary">Liste des Emprunts</h1>
+        <h1 class="text-center text-primary">List of Loans</h1>
         
         @if(Session::get('success'))
             <div class="alert alert-success" style="background-color: green; color: white;">
@@ -26,23 +26,45 @@
         <table class="table table-striped table-hover table-bordered">
             <thead class="table-dark">
                 <tr>
-                    <th>Livre</th>
-                    <th>Date d'emprunt</th>
-                    <th>Date de retour</th>
-                    <th>Statut</th>
+                    @if (Auth::user()->role == 'admin')
+                        <th class="bg-primary">Borrower Name</th>
+                        <th class="bg-primary">Borrower Phone</th>
+                        <th class="bg-primary">Borrower Status</th>
+                    @endif
+                    <th>Book</th>
+                    <th>Borrowed Date</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($loans as $loan)
                     <tr>
+                        @if (Auth::user()->role == 'admin')
+                            <td>{{ $loan->member->user->lastname }} {{ $loan->member->user->firstname }}</td>
+                            <td>{{ $loan->member->phone }}</td>
+                            <td>{{ $loan->member->status }}</td>    
+                        @endif
                         <td>{{ $loan->book->title }}</td>
                         <td>{{ $loan->borrowed_at }}</td>
                         <td>{{ $loan->due_date }}</td>
                         <td>{{ $loan->status }}</td>
+                        <td>
+                            <form action="{{ route('loans.return', $loan->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-success">Return</button>
+                            </form>
+                            <form action="{{ route('loans.destroy', $loan->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 @empty
                     <tr>
-                        <td class="text-center text-bg-info text-white" colspan="4">Aucun emprunt</td>
+                        <td class="text-center text-bg-info text-white" colspan="7">No loans</td>
                     </tr>
                 @endforelse
             </tbody>

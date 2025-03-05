@@ -16,10 +16,16 @@ class BooksController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $books = Books::all();
+        $search = $request->input('search');
+        $query = Books::query();
 
-        //$search = $request->input('search');
-        //$books = Books::where('title', 'like', "%$search%")->orWhere('author', 'like', "%$search%")->get();
+        if ($search) {
+            $query->where('title', 'like', '%' . $search . '%')
+                ->orWhere('author', 'like', '%' . $search . '%')
+                ->orWhere('isbn', 'like', '%' . $search . '%');
+        }
+        $books = $query->orderBy('created_at', 'desc')->paginate(10);
+
         return view('books.index', compact('books'));
 
     }

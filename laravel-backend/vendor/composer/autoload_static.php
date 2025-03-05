@@ -608,6 +608,9 @@ class ComposerStaticInit626b9e7ddd47fb7eff9aaa53cce0c9ad
     );
 
     public static $classMap = array (
+        'App\\Http\\Controllers\\Api\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/AuthController.php',
+        'App\\Http\\Controllers\\Api\\BookController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/BookController.php',
+        'App\\Http\\Controllers\\Api\\LoanController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/LoanController.php',
         'App\\Http\\Controllers\\Auth\\AuthenticatedSessionController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/AuthenticatedSessionController.php',
         'App\\Http\\Controllers\\Auth\\ConfirmablePasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmablePasswordController.php',
         'App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/EmailVerificationNotificationController.php',
@@ -619,6 +622,7 @@ class ComposerStaticInit626b9e7ddd47fb7eff9aaa53cce0c9ad
         'App\\Http\\Controllers\\Auth\\VerifyEmailController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/VerifyEmailController.php',
         'App\\Http\\Controllers\\BooksController' => __DIR__ . '/../..' . '/app/Http/Controllers/BooksController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\DashboardController' => __DIR__ . '/../..' . '/app/Http/Controllers/DashboardController.php',
         'App\\Http\\Controllers\\LoansController' => __DIR__ . '/../..' . '/app/Http/Controllers/LoansController.php',
         'App\\Http\\Controllers\\MembersController' => __DIR__ . '/../..' . '/app/Http/Controllers/MembersController.php',
         'App\\Http\\Controllers\\PenalitesController' => __DIR__ . '/../..' . '/app/Http/Controllers/PenalitesController.php',
@@ -629,6 +633,7 @@ class ComposerStaticInit626b9e7ddd47fb7eff9aaa53cce0c9ad
         'App\\Http\\Requests\\ProfileUpdateRequest' => __DIR__ . '/../..' . '/app/Http/Requests/ProfileUpdateRequest.php',
         'App\\Http\\Requests\\SaveLoanRequest' => __DIR__ . '/../..' . '/app/Http/Requests/SaveLoanRequest.php',
         'App\\Http\\Requests\\UpdateBookRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UpdateBookRequest.php',
+        'App\\Models\\BannedEmail' => __DIR__ . '/../..' . '/app/Models/BannedEmail.php',
         'App\\Models\\Books' => __DIR__ . '/../..' . '/app/Models/Books.php',
         'App\\Models\\Loans' => __DIR__ . '/../..' . '/app/Models/Loans.php',
         'App\\Models\\Members' => __DIR__ . '/../..' . '/app/Models/Members.php',
