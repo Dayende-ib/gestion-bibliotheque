@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\LoanController;
+use App\Http\Controllers\Api\MemberController;
 
 // Ajout de la route pour la création de compte et la connexion
 Route::post('/login', [AuthController::class, 'login']);
@@ -23,6 +24,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/loans', [LoanController::class, 'store']);
     Route::patch('/loans/{loan}', [LoanController::class, 'update']);
     Route::delete('/loans/{loan}', [LoanController::class, 'destroy']);
+
+    // Member Management Routes
+    Route::get('/members', [MemberController::class, 'index']);
+    Route::post('/members', [MemberController::class, 'store']);
+    Route::get('/members/{member}', [MemberController::class, 'show']);
+    Route::put('/members/{member}', [MemberController::class, 'update']);
+    Route::delete('/members/{member}', [MemberController::class, 'destroy']);
 });
 
 // Ajout de la route de test
