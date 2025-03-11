@@ -7,6 +7,15 @@
  *
  * @author IBRAHIM DAYENDE
  */
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 public class dashboard extends javax.swing.JFrame {
 
     /**
@@ -14,6 +23,7 @@ public class dashboard extends javax.swing.JFrame {
      */
     public dashboard() {
         initComponents();
+        loadBooks();
     }
 
     /**
@@ -25,17 +35,120 @@ public class dashboard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        container_tabbed = new javax.swing.JTabbedPane();
+        jPanelDashboard = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanelBook = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        bookTable = new javax.swing.JTable();
+        addBookButton = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        container_tabbed.setBackground(new java.awt.Color(255, 255, 255));
+        container_tabbed.setForeground(new java.awt.Color(0, 204, 153));
+        container_tabbed.setTabPlacement(javax.swing.JTabbedPane.LEFT);
+
+        jPanelDashboard.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 204, 204));
+        jLabel1.setText("DASHBOARD");
+
+        javax.swing.GroupLayout jPanelDashboardLayout = new javax.swing.GroupLayout(jPanelDashboard);
+        jPanelDashboard.setLayout(jPanelDashboardLayout);
+        jPanelDashboardLayout.setHorizontalGroup(
+            jPanelDashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDashboardLayout.createSequentialGroup()
+                .addContainerGap(367, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(362, 362, 362))
+        );
+        jPanelDashboardLayout.setVerticalGroup(
+            jPanelDashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDashboardLayout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addGap(0, 587, Short.MAX_VALUE))
+        );
+
+        container_tabbed.addTab("Dashboard", jPanelDashboard);
+
+        jPanelBook.setBackground(new java.awt.Color(255, 255, 255));
+
+        bookTable.setAutoCreateRowSorter(true);
+        bookTable.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        bookTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Title", "author", "publication year", "ISBN", "Status"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        bookTable.setDebugGraphicsOptions(javax.swing.DebugGraphics.BUFFERED_OPTION);
+        bookTable.setShowGrid(true);
+        jScrollPane1.setViewportView(bookTable);
+
+        addBookButton.setBackground(new java.awt.Color(0, 204, 51));
+        addBookButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        addBookButton.setForeground(new java.awt.Color(255, 255, 255));
+        addBookButton.setText("Add book");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
+        jLabel2.setText("Book list");
+
+        javax.swing.GroupLayout jPanelBookLayout = new javax.swing.GroupLayout(jPanelBook);
+        jPanelBook.setLayout(jPanelBookLayout);
+        jPanelBookLayout.setHorizontalGroup(
+            jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelBookLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBookLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(373, 373, 373))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBookLayout.createSequentialGroup()
+                        .addGroup(jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(addBookButton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 857, Short.MAX_VALUE))
+                        .addGap(17, 17, 17))))
+        );
+        jPanelBookLayout.setVerticalGroup(
+            jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBookLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addGap(47, 47, 47)
+                .addComponent(addBookButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(jScrollPane1)
+                .addGap(44, 44, 44))
+        );
+
+        container_tabbed.addTab("Book", jPanelBook);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(container_tabbed)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(container_tabbed)
         );
 
         pack();
@@ -44,6 +157,54 @@ public class dashboard extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+
+     private void loadBooks() {
+        try {
+            String response = callApiWithToken("http://localhost:8000/api/books");
+            List<Book> books = parseBooks(response);
+            DefaultTableModel model = (DefaultTableModel) bookTable.getModel();
+            for (Book book : books) {
+                model.addRow(new Object[]{book.getTitle(), book.getAuthor(), book.getPublicationYear(), book.getIsbn(), book.getStatus()});
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Failed to load books", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private String callApiWithToken(String apiUrl) throws Exception {
+        URL url = new URL(apiUrl);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+
+        // Ajouter le token dans les en-têtes de la requête
+        String token = UserSession.getToken();
+        conn.setRequestProperty("Authorization", "Bearer " + token);
+
+        int responseCode = conn.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            StringBuilder response;
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                String inputLine;
+                response = new StringBuilder();
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+            }
+
+            return response.toString();
+        } else {
+            throw new Exception("Échec de l'appel à l'API, code de réponse: " + responseCode);
+        }
+    }
+
+    private List<Book> parseBooks(String response) {
+        // Parse the JSON response to extract the list of books
+        // This is a simple example, you might want to use a JSON library like Gson or Jackson
+        List<Book> books = new ArrayList<>();
+        // Add parsing logic here
+        return books;
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -69,13 +230,20 @@ public class dashboard extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new dashboard().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new dashboard().setVisible(true);
         });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addBookButton;
+    private javax.swing.JTable bookTable;
+    private javax.swing.JTabbedPane container_tabbed;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanelBook;
+    private javax.swing.JPanel jPanelDashboard;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

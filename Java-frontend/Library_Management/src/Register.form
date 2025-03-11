@@ -107,23 +107,21 @@
                               <Component id="inputLastname" alignment="0" max="32767" attributes="0"/>
                               <Component id="inputFirstname" alignment="0" max="32767" attributes="0"/>
                               <Component id="inputEmail" alignment="0" max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="confPass_error" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel3" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
-                                  <Component id="jLabel6" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="lastname_error" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="firstname_error" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="email_error" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="pass_error" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
+                              <Component id="confPass_error" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel3" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
+                              <Component id="jLabel6" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lastname_error" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="firstname_error" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="email_error" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="pass_error" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="jLabel8" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
-                                  <Component id="jLabel12" alignment="0" min="-2" pref="143" max="-2" attributes="0"/>
-                                  <Component id="jLabel10" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
                               </Group>
+                              <Component id="jLabel8" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
+                              <Component id="jLabel12" alignment="0" min="-2" pref="143" max="-2" attributes="0"/>
+                              <Component id="jLabel10" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
