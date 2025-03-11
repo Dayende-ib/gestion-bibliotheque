@@ -1,7 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
+import java.util.function.IntBinaryOperator;
 
 /**
  *
@@ -10,7 +8,7 @@
 public class Book {
     private String title;
     private String author;
-    private String publicationYear;
+    private int publicationYear;
     private String isbn;
     private String status;
 
@@ -32,12 +30,13 @@ public class Book {
         this.author = author;
     }
 
-    public String getPublicationYear() {
+    public int getPublicationYear() {
         return publicationYear;
     }
 
-    public void setPublicationYear(String publicationYear) {
+    public void setPublicationYear(int publicationYear) {
         this.publicationYear = publicationYear;
+        //published_year
     }
 
     public String getIsbn() {

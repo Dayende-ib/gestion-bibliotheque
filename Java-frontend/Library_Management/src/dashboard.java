@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
 /**
  *
  * @author IBRAHIM DAYENDE
@@ -16,6 +11,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class dashboard extends javax.swing.JFrame {
 
     /**
@@ -91,7 +89,7 @@ public class dashboard extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -100,6 +98,7 @@ public class dashboard extends javax.swing.JFrame {
         });
         bookTable.setDebugGraphicsOptions(javax.swing.DebugGraphics.BUFFERED_OPTION);
         bookTable.setShowGrid(true);
+        bookTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(bookTable);
 
         addBookButton.setBackground(new java.awt.Color(0, 204, 51));
@@ -163,6 +162,7 @@ public class dashboard extends javax.swing.JFrame {
             String response = callApiWithToken("http://localhost:8000/api/books");
             List<Book> books = parseBooks(response);
             DefaultTableModel model = (DefaultTableModel) bookTable.getModel();
+            model.setRowCount(0); // Clear existing rows
             for (Book book : books) {
                 model.addRow(new Object[]{book.getTitle(), book.getAuthor(), book.getPublicationYear(), book.getIsbn(), book.getStatus()});
             }
@@ -198,10 +198,20 @@ public class dashboard extends javax.swing.JFrame {
     }
 
     private List<Book> parseBooks(String response) {
-        // Parse the JSON response to extract the list of books
-        // This is a simple example, you might want to use a JSON library like Gson or Jackson
         List<Book> books = new ArrayList<>();
-        // Add parsing logic here
+        JSONArray jsonArray = new JSONArray(response);
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            Book book = new Book();
+            book.setTitle(jsonObject.getString("title"));
+            book.setAuthor(jsonObject.getString("author"));
+            book.setPublicationYear(jsonObject.getInt("published_year"));
+            book.setIsbn(jsonObject.getString("isbn"));
+            book.setStatus(jsonObject.getString("status"));
+            books.add(book);
+        }
+
         return books;
     }
 

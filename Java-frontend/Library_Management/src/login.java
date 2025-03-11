@@ -1,5 +1,4 @@
 import java.awt.HeadlessException;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -48,8 +47,47 @@ public class login extends javax.swing.JFrame {
 
     private String authenticateUser() {
         // Code pour authentifier l'utilisateur et retourner le token
-        // Exemple simplifié :
-        return "dummyToken";
+        String email = email_input.getText();
+        String password = new String(pass_input.getPassword());
+        String token = null;
+
+        try {
+            URL url = new URL("http://localhost:8000/api/login");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json; utf-8");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
+
+            JSONObject jsonInput = new JSONObject();
+            jsonInput.put("email", email);
+            jsonInput.put("password", password);
+
+            try (OutputStream os = conn.getOutputStream()) {
+                byte[] input = jsonInput.toString().getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+
+            int responseCode = conn.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))) {
+                    StringBuilder response = new StringBuilder();
+                    String responseLine;
+                    while ((responseLine = br.readLine()) != null) {
+                        response.append(responseLine.trim());
+                    }
+                    JSONObject jsonResponse = new JSONObject(response.toString());
+                    token = jsonResponse.getString("token");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Login failed: " + responseCode, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Login failed: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return token;
     }
 
     /**
@@ -322,7 +360,7 @@ public class login extends javax.swing.JFrame {
             String token = parseToken(response.toString());
             UserSession.setToken(token);
             
-            //this.dispose();
+            this.dispose();
             //launchMainPage();
             
         } else if (jsonResponse.has("errors")) {
