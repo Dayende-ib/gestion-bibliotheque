@@ -66,6 +66,13 @@ class AuthController extends Controller
         return response()->json(['message' => 'User created successfully', 'user' => $user], 201);
     }
 
+    public function getUser(Request $request)
+    {
+        $user = $request->user();
+        return response()->json(['user' => $user, 'token' => $user->currentAccessToken()->plainTextToken], 200);
+    }
+
+
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();

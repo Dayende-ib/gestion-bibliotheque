@@ -12,6 +12,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
+Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'getUser']);
+
 Route::middleware('auth:sanctum')->group(function () {
     // Book Management Routes
     Route::get('/books', [BookController::class, 'index']);
