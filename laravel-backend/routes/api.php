@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/books/{book}', [BookController::class, 'destroy']);
 
     // Loan Management Routes
-    Route::post('/loans', [LoanController::class, 'store']);
+    Route::get('/user/loans', [LoanController::class, 'getUserLoans']);
     Route::patch('/loans/{loan}', [LoanController::class, 'update']);
     Route::delete('/loans/{loan}', [LoanController::class, 'destroy']);
 

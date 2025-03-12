@@ -10,7 +10,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    {{ __("Vous etes connecté!") }}
+                    {{ __("You are connected!") }}
                 </div>
             </div>
             <div class="row m-5">
@@ -22,7 +22,7 @@
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        Total Livres</div>
+                                        Total Books</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalBooks }}</div>
                                 </div>
                                 <div class="col-auto">
@@ -40,7 +40,7 @@
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                        Total Emprunts</div>
+                                        Total Loans</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalLoans }}</div>
                                 </div>
                                 <div class="col-auto">
@@ -58,7 +58,7 @@
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                        Total Utilisateurs</div>
+                                        Total Users</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalUsers }}</div>
                                 </div>
                                 <div class="col-auto">
@@ -76,7 +76,7 @@
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                        Total Membres</div>
+                                        Total Members</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalMembers }}</div>
                                 </div>
                                 <div class="col-auto">
@@ -96,7 +96,7 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900">
-                {{ __("Vous n'etes pas connecté!") }}
+                {{ __("You are not connected!") }}
             </div>
         </div>
     </div>

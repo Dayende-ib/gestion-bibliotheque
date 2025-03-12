@@ -361,7 +361,7 @@ public class login extends javax.swing.JFrame {
             UserSession.setToken(token);
             
             this.dispose();
-            //launchMainPage();
+            launchMainPage();
             
         } else if (jsonResponse.has("errors")) {
             JSONObject errors = jsonResponse.getJSONObject("errors");

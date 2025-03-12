@@ -29,6 +29,7 @@ public class dashboard extends javax.swing.JFrame {
         rowSorter = new TableRowSorter<>((DefaultTableModel) bookTable.getModel());
         bookTable.setRowSorter(rowSorter);
         loadBooks();
+        loadLoans();
         searchField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(javax.swing.event.DocumentEvent e) {
@@ -226,7 +227,6 @@ public class dashboard extends javax.swing.JFrame {
         );
 
         searchField.getAccessibleContext().setAccessibleName("Search");
-        searchField.getAccessibleContext().setAccessibleDescription("Faire une recherche");
 
         javax.swing.GroupLayout jPanelBookLayout = new javax.swing.GroupLayout(jPanelBook);
         jPanelBook.setLayout(jPanelBookLayout);
@@ -277,9 +277,17 @@ public class dashboard extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Book title", "Borrowed Date	", "Due Date	", "Status"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(TableLoan);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -436,6 +444,39 @@ public class dashboard extends javax.swing.JFrame {
         }
 
         return books;
+    }
+
+    private void loadLoans() {
+        try {
+            String response = callApiWithToken("http://localhost:8000/api/user/loans");
+            List<Loan> loans = parseLoans(response);
+            DefaultTableModel model = (DefaultTableModel) TableLoan.getModel();
+            model.setRowCount(0); // Clear existing rows
+            for (Loan loan : loans) {
+                model.addRow(new Object[]{loan.getBookTitle(), loan.getBorrowedDate(), loan.getDueDate(), loan.getStatus()});
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(this, "Failed to load loans", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private List<Loan> parseLoans(String response) {
+        List<Loan> loans = new ArrayList<>();
+        JSONArray jsonArray = new JSONArray(response);
+    
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            System.out.println(jsonArray.getJSONObject(i));
+            Loan loan = new Loan();
+            loan.setBookTitle(jsonObject.getJSONObject("book").getString("title"));
+            loan.setBorrowedDate(jsonObject.getString("borrowed_at"));
+            loan.setDueDate(jsonObject.getString("due_date"));
+            loan.setStatus(jsonObject.getString("status"));
+            loans.add(loan);
+        }
+    
+        return loans;
     }
 
     public static void main(String args[]) {
