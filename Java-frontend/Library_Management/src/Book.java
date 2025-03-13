@@ -11,6 +11,7 @@ public class Book {
     private int publicationYear;
     private String isbn;
     private String status;
+    private String description;
 
     // Getters and setters
 
@@ -53,5 +54,13 @@ public class Book {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
