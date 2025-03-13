@@ -43,6 +43,7 @@ class BooksController extends Controller
      */
     public function store(CreateBookRequest $request)
     {
+        try {
             $livre = new Books();
             $livre->title = $request->input('title');
             $livre->author = $request->input('author');
@@ -55,22 +56,22 @@ class BooksController extends Controller
                 $imageName = time().'.'.$request->image->extension();
                 $request->image->move(public_path('images'), $imageName);
                 $livre->image = 'images/'.$imageName;
-
-                // $path = $request->file('image')->store('images', 'public');
-                // $livre->image = $path;
             }
 
             $livre->save();
 
             return redirect()->route('books.index')->with('success', 'Book added successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'An error occurred while adding the book.']);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Books $books)
+    public function show(Books $book)
     {
-        //
+        return view('books.show', compact('book'));
     }
 
     /**

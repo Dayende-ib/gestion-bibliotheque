@@ -6,5 +6,5 @@ logo_app.ai
 /storage/
 /laravel-backend/bootstrap/cache/
 /*.log
-/laravel-backend/public/storage/
+/laravel-backend/public/storage/*
 /laravel-backend/public/images/

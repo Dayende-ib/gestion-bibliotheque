@@ -166,6 +166,7 @@
                             <p class="card-text">{{ $book->description }}</p>
                             <p class="card-author mt-2 font-bold text-primary text-right">{{ $book->author }}</p>
                             <div class="card-actions">
+                                <a href="{{ route('books.show', $book->id) }}" class="btn btn-info btn-sm">Show</a>
                                 @if (Auth::user()->role == 'admin')
                                     <a href="{{ route('books.edit', $book->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                     <form action="{{ route('books.destroy', $book->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this book?');">

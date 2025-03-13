@@ -1,6 +1,7 @@
 .vscode
-/storage/*
+/storage/
 /bootstrap/cache/
 /*.log
 /public/storage/
 /public/images/
+storage/
