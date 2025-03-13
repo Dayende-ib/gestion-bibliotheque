@@ -12,6 +12,8 @@ public class BookDetailsDialog extends JDialog {
     private JLabel statusLabel;
     private JButton borrowButton;
     private JButton returnButton;
+    private JTextArea descriptionArea;
+    private JScrollPane descriptionScrollPane;
 
     public BookDetailsDialog(Frame parent, Book book) {
         super(parent, "Book Details", true);
@@ -25,6 +27,14 @@ public class BookDetailsDialog extends JDialog {
         publicationYearLabel = new JLabel("Publication Year: " + book.getPublicationYear());
         isbnLabel = new JLabel("ISBN: " + book.getIsbn());
         statusLabel = new JLabel("Status: " + book.getStatus());
+        
+        // Dans le constructeur, après l'initialisation des autres composants
+        descriptionArea = new JTextArea();
+        descriptionArea.setEditable(false);
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
+        descriptionScrollPane = new JScrollPane(descriptionArea);
+        descriptionScrollPane.setPreferredSize(new Dimension(400, 100));
 
         borrowButton = new JButton("Borrow");
         returnButton = new JButton("Return");

@@ -592,6 +592,7 @@ public class dashboard extends javax.swing.JFrame {
             book.setAuthor(jsonObject.getString("author"));
             book.setPublicationYear(jsonObject.getInt("published_year"));
             book.setIsbn(jsonObject.getString("isbn"));
+            book.setDescription(jsonObject.optString("description", ""));
             book.setStatus(jsonObject.getString("status"));
             books.add(book);
         }
