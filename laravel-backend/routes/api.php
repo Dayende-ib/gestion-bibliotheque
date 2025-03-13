@@ -18,12 +18,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // Book Management Routes
     Route::get('/books', [BookController::class, 'index']);
     Route::post('/books', [BookController::class, 'store']);
-    Route::get('/books/{book}', [BookController::class, 'show']);
-    Route::put('/books/{book}', [BookController::class, 'update']);
-    Route::delete('/books/{book}', [BookController::class, 'destroy']);
 
     // Loan Management Routes
-    Route::get('/user/loans', [LoanController::class, 'getUserLoans']);
+    
     Route::patch('/loans/{loan}', [LoanController::class, 'update']);
     Route::delete('/loans/{loan}', [LoanController::class, 'destroy']);
 
@@ -33,6 +30,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/members/{member}', [MemberController::class, 'show']);
     Route::put('/members/{member}', [MemberController::class, 'update']);
     Route::delete('/members/{member}', [MemberController::class, 'destroy']);
+
+    Route::get('/user/loans', [LoanController::class, 'getUserLoans']);
+    Route::post('/books/return/{bookId}', [LoanController::class, 'returnBook']);
 });
 
 // Ajout de la route de test

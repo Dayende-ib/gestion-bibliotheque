@@ -1,10 +1,19 @@
 public class Loan {
+    private int bookId;
     private String bookTitle;
     private String borrowedDate;
     private String dueDate;
     private String status;
 
     // Getters and setters
+    public int getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
+    }
+
     public String getBookTitle() {
         return bookTitle;
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Books;
+use App\Models\Loans;
 use Illuminate\Http\Request;
 
 class BookController extends Controller

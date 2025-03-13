@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -88,6 +89,100 @@ public class dashboard extends javax.swing.JFrame {
     private void launchLoginPage() {
         java.awt.EventQueue.invokeLater(() -> new login().setVisible(true));
     }
+    
+    private void returnBook(int bookId) {
+        if (bookId <= 0) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Invalid book ID",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "Are you sure you want to return this book?",
+            "Confirm Return",
+            JOptionPane.YES_NO_OPTION
+        );
+        
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                // Create JSON payload with book ID
+                JSONObject payload = new JSONObject();
+                payload.put("id", bookId);
+
+                // Make POST request with payload
+                String response = callApiWithTokenPOST("http://localhost:8000/api/books/return/" + bookId, payload.toString());
+                
+                JSONObject jsonResponse = new JSONObject(response);
+                
+                if (jsonResponse.has("message")) {
+                    JOptionPane.showMessageDialog(
+                        this,
+                        jsonResponse.getString("message"),
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE
+                    );
+                } else {
+                    JOptionPane.showMessageDialog(
+                        this,
+                        "Book returned successfully",
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE
+                    );
+                }
+                
+                loadLoans(); // Refresh loans after return
+            } catch (Exception e) {
+                String errorMessage = "Failed to return book";
+                if (e.getMessage() != null && !e.getMessage().isEmpty()) {
+                    errorMessage += ": " + e.getMessage();
+                }
+                JOptionPane.showMessageDialog(
+                    this,
+                    errorMessage,
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
+    }
+
+    private String callApiWithTokenPOST(String apiUrl, String payload) throws Exception {
+        URL url = new URL(apiUrl);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setDoOutput(true);
+
+        // Add token in request headers
+        String token = UserSession.getToken();
+        conn.setRequestProperty("Authorization", "Bearer " + token);
+
+        // Write payload to request body
+        try (OutputStream os = conn.getOutputStream()) {
+            byte[] input = payload.getBytes("utf-8");
+            os.write(input, 0, input.length);
+        }
+
+        int responseCode = conn.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            StringBuilder response;
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                String inputLine;
+                response = new StringBuilder();
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+            }
+            return response.toString();
+        } else {
+            throw new Exception("Échec de l'appel à l'API, code de réponse: " + responseCode);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -101,6 +196,8 @@ public class dashboard extends javax.swing.JFrame {
         container_tabbed = new javax.swing.JTabbedPane();
         jPanelDashboard = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         jPanelBook = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         bookTable = new javax.swing.JTable();
@@ -112,6 +209,8 @@ public class dashboard extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         TableLoan = new javax.swing.JTable();
+        jLabel5 = new javax.swing.JLabel();
+        returnBookButton = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel_logout = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -135,6 +234,12 @@ public class dashboard extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(0, 204, 204));
         jLabel1.setText("DASHBOARD");
 
+        jLabel6.setFont(new java.awt.Font("Lato", 0, 14)); // NOI18N
+        jLabel6.setText("Welcome dear");
+
+        jLabel7.setFont(new java.awt.Font("Lato Black", 1, 14)); // NOI18N
+        jLabel7.setText("User name");
+
         javax.swing.GroupLayout jPanelDashboardLayout = new javax.swing.GroupLayout(jPanelDashboard);
         jPanelDashboard.setLayout(jPanelDashboardLayout);
         jPanelDashboardLayout.setHorizontalGroup(
@@ -143,12 +248,22 @@ public class dashboard extends javax.swing.JFrame {
                 .addContainerGap(343, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(362, 362, 362))
+            .addGroup(jPanelDashboardLayout.createSequentialGroup()
+                .addGap(233, 233, 233)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelDashboardLayout.setVerticalGroup(
             jPanelDashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelDashboardLayout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(0, 432, Short.MAX_VALUE))
+                .addGap(122, 122, 122)
+                .addGroup(jPanelDashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addGap(0, 292, Short.MAX_VALUE))
         );
 
         container_tabbed.addTab("Dashboard", jPanelDashboard);
@@ -261,7 +376,7 @@ public class dashboard extends javax.swing.JFrame {
                         .addGap(31, 31, 31)
                         .addComponent(addBookButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -271,17 +386,17 @@ public class dashboard extends javax.swing.JFrame {
 
         TableLoan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Book title", "Borrowed Date	", "Due Date	", "Status"
+                "ID", "Book title", "Borrowed Date	", "Due Date	", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -290,22 +405,48 @@ public class dashboard extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(TableLoan);
 
+        jLabel5.setText("jLabel5");
+
+        returnBookButton.setBackground(new java.awt.Color(255, 153, 51));
+        returnBookButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        returnBookButton.setForeground(new java.awt.Color(255, 255, 255));
+        returnBookButton.setText("Return book");
+        returnBookButton.setToolTipText("Select in the table the book to return");
+        returnBookButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                returnBookButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 794, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addGap(392, 392, 392)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(returnBookButton, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 829, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(139, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(returnBookButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        returnBookButton.getAccessibleContext().setAccessibleDescription("");
 
         container_tabbed.addTab("My loans", jPanel2);
 
@@ -317,7 +458,7 @@ public class dashboard extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 465, Short.MAX_VALUE)
+            .addGap(0, 475, Short.MAX_VALUE)
         );
 
         container_tabbed.addTab("Members", jPanel3);
@@ -356,7 +497,7 @@ public class dashboard extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addGap(94, 94, 94)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(197, Short.MAX_VALUE))
+                .addContainerGap(207, Short.MAX_VALUE))
         );
 
         container_tabbed.addTab("Logout", jPanel_logout);
@@ -380,9 +521,21 @@ public class dashboard extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         UserSession.clearToken();
-                dispose();
-                launchLoginPage();
+        dispose();
+        launchLoginPage();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void returnBookButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnBookButtonActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = TableLoan.getSelectedRow();
+        if (selectedRow != -1) {
+            DefaultTableModel model = (DefaultTableModel) TableLoan.getModel();
+            int bookId = (int) model.getValueAt(selectedRow, 0);
+            returnBook(bookId);
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a loan to return", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_returnBookButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -427,7 +580,7 @@ public class dashboard extends javax.swing.JFrame {
             throw new Exception("Échec de l'appel à l'API, code de réponse: " + responseCode);
         }
     }
-
+  
     private List<Book> parseBooks(String response) {
         List<Book> books = new ArrayList<>();
         JSONArray jsonArray = new JSONArray(response);
@@ -453,11 +606,10 @@ public class dashboard extends javax.swing.JFrame {
             DefaultTableModel model = (DefaultTableModel) TableLoan.getModel();
             model.setRowCount(0); // Clear existing rows
             for (Loan loan : loans) {
-                model.addRow(new Object[]{loan.getBookTitle(), loan.getBorrowedDate(), loan.getDueDate(), loan.getStatus()});
+                model.addRow(new Object[]{loan.getBookId(), loan.getBookTitle(), loan.getBorrowedDate(), loan.getDueDate(), loan.getStatus()});
             }
         } catch (Exception e) {
-            System.out.println(e);
-            JOptionPane.showMessageDialog(this, "Failed to load loans", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e + "Failed to load loans", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -467,8 +619,8 @@ public class dashboard extends javax.swing.JFrame {
     
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
-            System.out.println(jsonArray.getJSONObject(i));
             Loan loan = new Loan();
+            loan.setBookId(jsonObject.getJSONObject("book").getInt("id"));
             loan.setBookTitle(jsonObject.getJSONObject("book").getString("title"));
             loan.setBorrowedDate(jsonObject.getString("borrowed_at"));
             loan.setDueDate(jsonObject.getString("due_date"));
@@ -520,6 +672,9 @@ public class dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -528,6 +683,7 @@ public class dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel_logout;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton returnBookButton;
     private javax.swing.JTextField searchField;
     // End of variables declaration//GEN-END:variables
 }
