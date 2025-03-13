@@ -51,20 +51,30 @@
                         <td>{{ $loan->due_date }}</td>
                         <td>{{ $loan->status }}</td>
                         <td>
-                            <form action="{{ route('loans.return', $loan->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                <button type="submit" class="btn btn-success">Return</button>
-                            </form>
-                            <form action="{{ route('loans.destroy', $loan->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
+                            
+                            @if (Auth::user()->role == 'admin')
+                                <form action="{{ route('loans.destroy', $loan->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            @else
+                                @if ($loan->status == 'returned')
+                                    <button class="btn btn-success" disabled>Returned</button>
+                                @endif     
+                                @if ($loan->status == 'Borrowed')
+                                    <form action="{{ route('loans.return', $loan->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary">Return</button>
+                                    </form>
+                                @endif     
+                            @endif
+                            
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td class="text-center text-bg-info text-white" colspan="7">No loans</td>
+                        <td class="text-center text-bg-info text-white" colspan="8">No loans</td>
                     </tr>
                 @endforelse
             </tbody>
