@@ -3,6 +3,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import javax.swing.JOptionPane;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 /**
  *
@@ -272,42 +274,59 @@ public class Register extends javax.swing.JFrame {
     }//GEN-LAST:event_inputEmailActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        String lastname = inputLastname.getText();
-        String firstname = inputFirstname.getText();
-        String email = inputEmail.getText();
-        String password = inputPass.getText();
-        String passwordConfirmation = inputConfPass.getText();
+        // Récupérer les valeurs des champs de saisie
+    String lastname = inputLastname.getText();
+    String firstname = inputFirstname.getText();
+    String email = inputEmail.getText();
+    String password = inputPass.getText();
+    String passwordConfirmation = inputConfPass.getText();
 
-        try {
-            // URL de l'API
-            URL url = new URL("http://localhost:8000/api/register");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json; utf-8");
-            conn.setRequestProperty("Accept", "application/json");
-            conn.setDoOutput(true);
+    try {
+        // URL de l'API
+        URL url = new URL("http://localhost:8000/api/register");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json; utf-8");
+        conn.setRequestProperty("Accept", "application/json");
+        conn.setDoOutput(true);
 
-            // Corps de la requête
-            String jsonInputString = String.format(
-                "{\"lastname\": \"%s\", \"firstname\": \"%s\", \"email\": \"%s\", \"password\": \"%s\", \"password_confirmation\": \"%s\"}",
-                lastname, firstname, email, password, passwordConfirmation
-            );
+        // Corps de la requête
+        String jsonInputString = String.format(
+            "{\"lastname\": \"%s\", \"firstname\": \"%s\", \"email\": \"%s\", \"password\": \"%s\", \"password_confirmation\": \"%s\"}",
+            lastname, firstname, email, password, passwordConfirmation
+        );
 
-            try (OutputStream os = conn.getOutputStream()) {
-                byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
-                os.write(input, 0, input.length);
+        // Débogage : afficher le corps de la requête
+        System.out.println("Corps de la requête : " + jsonInputString);
+
+        // Envoyer la requête
+        try (OutputStream os = conn.getOutputStream()) {
+            byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
+            os.write(input, 0, input.length);
+        }
+
+        // Débogage : vérifier le code de réponse
+        int code = conn.getResponseCode();
+        System.out.println("Code de réponse : " + code);
+
+        if (code == 201) {
+            JOptionPane.showMessageDialog(null, "Compte créé avec succès !");
+        } else if (code == 422) {
+            // Lire la réponse d'erreur
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getErrorStream(), StandardCharsets.UTF_8))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+                JOptionPane.showMessageDialog(null, "Erreur de validation : " + response.toString());
             }
-
-            int code = conn.getResponseCode();
-            if (code == 201) {
-                JOptionPane.showMessageDialog(null, "Compte créé avec succès !");
-            } else {
-                JOptionPane.showMessageDialog(null, "Échec de la création du compte. Code de réponse : " + code);
-            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Échec de la création du compte. Code de réponse : " + code);
+        }
         } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Une erreur s'est produite : " + e.getMessage());
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Une erreur s'est produite : " + e.getMessage());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
