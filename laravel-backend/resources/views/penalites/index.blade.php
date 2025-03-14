@@ -21,27 +21,22 @@
                 <td>{{ $penalty->member->user->lastname }} {{ $penalty->member->user->firstname }}</td>
                 <td>{{ $penalty->start_date }}</td>
                 <td>{{ $penalty->end_date }}</td>
-                <td>{{ $penalty->amount }}</td>
+                <td>{{ $penalty->calculateAmountDue() }}</td>
                 <td>
-                  <a href="{{ route('penalites.show', $penalty->id) }}" class="btn btn-primary">Show</a>
-                  <a href="{{ route('penalites.edit', $penalty->id) }}" class="btn btn-secondary">Edit</a>
                   <form action="{{ route('penalites.destroy', $penalty->id) }}" method="POST" style="display: inline-block">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Delete</button>
                   </form>
                 </td>
-
               </tr>
-              @empty
+            @empty
               <tr>
                 <td colspan="6">Nothing to show</td>
+              </tr>
             @endforelse
           </tbody>
         </table>
-        @if (Auth::user()->role = 'admin')
-          <button><a href="{{ route('penalites.create') }}" class="btn btn-primary">Add penalty</a></button>
-        @endif
       </div>
     </div>
   </div>

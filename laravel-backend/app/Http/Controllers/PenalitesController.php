@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Members;
 use App\Models\Penalites;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class PenalitesController extends Controller
 {
@@ -43,10 +44,16 @@ class PenalitesController extends Controller
         $penalty->member_id = $request->input('member_id');
         $penalty->start_date = $request->input('start_date');
         $penalty->end_date = $request->input('end_date');
-        $penalty->amount = $request->input('amount');
+        // Calculate the number of days late
+        $startDate = Carbon::parse($request->input('start_date'));
+        $endDate = Carbon::now();
+        $daysLate = $endDate->diffInDays($startDate);
+
+        // Calculate the penalty amount
+        $penalty->amount = abs($daysLate * 500); // 500 francs CFA per day
         $penalty->save();
 
-        return redirect()->route('penalties.index');
+        return redirect()->route('penalites.index');
     }
 
     /**
@@ -76,8 +83,11 @@ class PenalitesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Penalites $penalites)
+    public function destroy($id)
     {
-        //
+        $penalty = Penalites::findOrFail($id);
+        $penalty->delete();
+
+        return redirect()->route('penalites.index')->with('success', 'Pénalité supprimée avec succès.');
     }
 }
