@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DashboardController;
 
 Route::get('/', [DashboardController::class, 'index'])->middleware(['auth'], 'verified')->name('dashboard');
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'], 'verified')->name('dashboard');
 
 Route::get('/about', function () {
     return view('about');
