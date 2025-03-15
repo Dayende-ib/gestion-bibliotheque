@@ -177,6 +177,7 @@
                             <p class="card-text"><?php echo e($book->description); ?></p>
                             <p class="card-author mt-2 font-bold text-primary text-right"><?php echo e($book->author); ?></p>
                             <div class="card-actions">
+                                <a href="<?php echo e(route('books.show', $book->id)); ?>" class="btn btn-info btn-sm">Show</a>
                                 <?php if(Auth::user()->role == 'admin'): ?>
                                     <a href="<?php echo e(route('books.edit', $book->id)); ?>" class="btn btn-warning btn-sm">Edit</a>
                                     <form action="<?php echo e(route('books.destroy', $book->id)); ?>" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this book?');">
@@ -357,4 +358,5 @@
 <?php if (isset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
 <?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
 <?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
-<?php endif; ?><?php /**PATH C:\Users\PC\Desktop\gestion-bibliotheque\laravel-backend\resources\views/books/index.blade.php ENDPATH**/ ?>
+<?php endif; ?>
+<?php /**PATH C:\Users\PC\Desktop\gestion-bibliotheque\laravel-backend\resources\views/books/index.blade.php ENDPATH**/ ?>

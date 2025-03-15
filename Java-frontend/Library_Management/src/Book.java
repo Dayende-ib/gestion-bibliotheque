@@ -6,6 +6,7 @@ import java.util.function.IntBinaryOperator;
  * @author IBRAHIM DAYENDE
  */
 public class Book {
+    private int id;
     private String title;
     private String author;
     private int publicationYear;
@@ -15,6 +16,14 @@ public class Book {
 
     // Getters and setters
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public String getTitle() {
         return title;
     }

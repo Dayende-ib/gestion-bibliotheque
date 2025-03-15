@@ -169,18 +169,18 @@ class MembersController extends Controller
     }
 
     private function generateMembershipNumber()
-{
-    $date = new DateTime();
-    $year = $date->format('Y');
-    $month = $date->format('m');
-    $day = $date->format('d');
-    $hour = $date->format('H');
-    $minute = $date->format('i');
-    $second = $date->format('s');
-    $random = rand(100, 999);
+    {
+        $date = new DateTime();
+        $year = $date->format('Y');
+        $month = $date->format('m');
+        $day = $date->format('d');
+        $hour = $date->format('H');
+        $minute = $date->format('i');
+        $second = $date->format('s');
+        $random = rand(100, 999);
 
-    $membershipNumber = "M" . $year . $month . $day . $hour . $minute . $second . $random;
+        $membershipNumber = "M" . $year . $month . $day . $hour . $minute . $second . $random;
 
-    return $membershipNumber;
-}
+        return $membershipNumber;
+    }
 }

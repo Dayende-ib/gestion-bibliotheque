@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('members', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('phone');
-            $table->string('address');
+            $table->string('phone')->unique()->nullable();
+            $table->string('address')->nullable();
 			$table->string('membership_number')->unique();
             $table->date('join_date');
             $table->date('expiry_date')->nullable();
