@@ -1,7 +1,9 @@
 .vscode
 /storage/
 /bootstrap/cache/
-/*.log
 /public/storage/
 /public/images/
+/public/build
 storage/
+/*.log
+*.log
