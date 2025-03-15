@@ -31,8 +31,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/members/{member}', [MemberController::class, 'update']);
     Route::delete('/members/{member}', [MemberController::class, 'destroy']);
 
+    //Priorité
     Route::get('/user/loans', [LoanController::class, 'getUserLoans']);
     Route::post('/books/return/{bookId}', [LoanController::class, 'returnBook']);
+    Route::post('/books/borrow/{bookId}', [LoanController::class, 'borrowBook']);
+
 });
 
 // Ajout de la route de test

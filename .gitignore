@@ -1,10 +1,6 @@
 .git
 logo_app.ai
-/laravel-backend/strorage/
-/laravel-backend/storage/
-/laravel-backend/.vscode
-/storage/
-/laravel-backend/bootstrap/cache/
 /*.log
-/laravel-backend/public/storage/*
-/laravel-backend/public/images/
+*.log
+laravel-backend/storage/logs/laravel.log
+laravel-backend/storage/framework/views/*

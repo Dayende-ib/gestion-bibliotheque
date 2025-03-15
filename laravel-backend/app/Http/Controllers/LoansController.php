@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveLoanRequest;
+
 use App\Models\Loans;
 use App\Models\Books;
 use App\Models\Penalites;
 use App\Models\Members;
+use App\Models\LoansHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
 class LoansController extends Controller
 {
     /**
@@ -150,13 +151,46 @@ class LoansController extends Controller
         return redirect()->route('loans.index')->with('success', 'Emprunt supprimé avec succès.');
     }
 
+    public function history(Request $request)
+    {
+        $query = LoansHistory::with(['user', 'book'])
+            ->orderBy('returned_at', 'desc');
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->whereHas('user', function($q) use ($search) {
+                $q->where('name', 'like', '%'.$search.'%');
+            })->orWhereHas('book', function($q) use ($search) {
+                $q->where('title', 'like', '%'.$search.'%');
+            });
+        }
+
+        if ($request->has('start_date')) {
+            $query->whereDate('borrowed_at', '>=', $request->input('start_date'));
+        }
+
+        if ($request->has('end_date')) {
+            $query->whereDate('borrowed_at', '<=', $request->input('end_date'));
+        }
+
+        $loansHistory = $query->paginate(10);
+
+        return view('books.loansHistory', compact('loansHistory'));
+    }
+
     public function returnBook($id)
     {
         $loan = Loans::find($id);
         if ($loan) {
-            // Update the loan status to 'Returned'
-            $loan->status = 'Returned';
-            $loan->save();
+            // Create a new record in the loans_history table
+            LoansHistory::create([
+                'user_id' => $loan->member->user_id,
+                'book_id' => $loan->book_id,
+                'borrowed_at' => $loan->borrowed_at,
+                'returned_at' => now(),
+            ]);
+
+            
 
             // Update the book status to 'Available'
             $book = Books::find($loan->book_id);
@@ -164,6 +198,9 @@ class LoansController extends Controller
                 $book->status = 'Available';
                 $book->save();
             }
+
+            // Delete the loan record from the loans table
+            $loan->delete();
 
             return redirect()->route('loans.index')->with('success', 'Livre retourné avec succès.');
         } else {

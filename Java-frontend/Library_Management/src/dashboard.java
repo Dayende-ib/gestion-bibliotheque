@@ -65,20 +65,24 @@ public class dashboard extends javax.swing.JFrame {
                     int selectedRow = bookTable.getSelectedRow();
                     if (selectedRow != -1) {
                         DefaultTableModel model = (DefaultTableModel) bookTable.getModel();
-                        String title = (String) model.getValueAt(selectedRow, 0);
-                        String author = (String) model.getValueAt(selectedRow, 1);
-                        int publicationYear = (int) model.getValueAt(selectedRow, 2);
-                        String isbn = (String) model.getValueAt(selectedRow, 3);
-                        String status = (String) model.getValueAt(selectedRow, 4);
-
+                        int id = (int) model.getValueAt(selectedRow, 0);
+                        String title = (String) model.getValueAt(selectedRow, 1);
+                        String author = (String) model.getValueAt(selectedRow, 2);
+                        int publicationYear = (int) model.getValueAt(selectedRow, 3);
+                        String isbn = (String) model.getValueAt(selectedRow, 4);
+                        String status = (String) model.getValueAt(selectedRow, 5);
+                        String description = (String) model.getValueAt(selectedRow, 6);
+                        
                         Book book = new Book();
+                        book.setId(id);
                         book.setTitle(title);
                         book.setAuthor(author);
                         book.setPublicationYear(publicationYear);
                         book.setIsbn(isbn);
                         book.setStatus(status);
+                        book.setDescription(description);
 
-                        BookDetailsDialog dialog = new BookDetailsDialog(dashboard.this, book);
+                        BookDetailsDialog dialog = new BookDetailsDialog(dashboard.this, book, dashboard.this);
                         dialog.setVisible(true);
                     }
                 }
@@ -227,6 +231,11 @@ public class dashboard extends javax.swing.JFrame {
         container_tabbed.setFont(new java.awt.Font("Lato Black", 0, 16)); // NOI18N
         container_tabbed.setName(""); // NOI18N
         container_tabbed.setPreferredSize(new java.awt.Dimension(980, 465));
+        container_tabbed.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                container_tabbedMouseClicked(evt);
+            }
+        });
 
         jPanelDashboard.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -271,25 +280,25 @@ public class dashboard extends javax.swing.JFrame {
         jPanelBook.setBackground(new java.awt.Color(255, 255, 255));
 
         bookTable.setAutoCreateRowSorter(true);
-        bookTable.setBackground(new java.awt.Color(204, 204, 204));
+        bookTable.setBackground(new java.awt.Color(204, 255, 255));
         bookTable.setFont(new java.awt.Font("Lato", 0, 14)); // NOI18N
         bookTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title", "Author", "Publication year", "ISBN", "Status"
+                "ID", "Title", "Author", "Publication year", "ISBN", "Status", "Description"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -403,9 +412,15 @@ public class dashboard extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        TableLoan.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(TableLoan);
+        if (TableLoan.getColumnModel().getColumnCount() > 0) {
+            TableLoan.getColumnModel().getColumn(0).setPreferredWidth(2);
+        }
 
-        jLabel5.setText("jLabel5");
+        jLabel5.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Your Loans List");
 
         returnBookButton.setBackground(new java.awt.Color(255, 153, 51));
         returnBookButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -423,16 +438,15 @@ public class dashboard extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addGap(392, 392, 392)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(returnBookButton, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 829, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(15, Short.MAX_VALUE))
+                    .addComponent(returnBookButton, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 829, Short.MAX_VALUE))
+                .addGap(15, 15, 15))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(345, 345, 345)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -440,10 +454,10 @@ public class dashboard extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(returnBookButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(31, 31, 31))
         );
 
         returnBookButton.getAccessibleContext().setAccessibleDescription("");
@@ -537,18 +551,38 @@ public class dashboard extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_returnBookButtonActionPerformed
 
+    private void container_tabbedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_container_tabbedMouseClicked
+        // TODO add your handling code here:
+        loadBooks();
+        loadLoans();
+    }//GEN-LAST:event_container_tabbedMouseClicked
+
     /**
      * @param args the command line arguments
      */
 
-     private void loadBooks() {
+    public void refreshTable() {
+        loadBooks();
+    }
+
+    private void loadBooks() {
         try {
             String response = callApiWithToken("http://localhost:8000/api/books");
             List<Book> books = parseBooks(response);
             DefaultTableModel model = (DefaultTableModel) bookTable.getModel();
             model.setRowCount(0); // Clear existing rows
             for (Book book : books) {
-                model.addRow(new Object[]{book.getTitle(), book.getAuthor(), book.getPublicationYear(), book.getIsbn(), book.getStatus()});
+                model.addRow(new Object[]{
+                    book.getId(),
+                    book.getTitle(), 
+                    book.getAuthor(), 
+                    book.getPublicationYear(), 
+                    book.getIsbn(), 
+                    book.getStatus(), 
+                    book.getDescription(),
+                });
+                    
+                    
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Failed to load books", "Error", JOptionPane.ERROR_MESSAGE);
@@ -588,11 +622,12 @@ public class dashboard extends javax.swing.JFrame {
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             Book book = new Book();
+            book.setId(jsonObject.getInt("id"));
             book.setTitle(jsonObject.getString("title"));
             book.setAuthor(jsonObject.getString("author"));
             book.setPublicationYear(jsonObject.getInt("published_year"));
             book.setIsbn(jsonObject.getString("isbn"));
-            book.setDescription(jsonObject.optString("description", ""));
+            book.setDescription(jsonObject.getString("description"));
             book.setStatus(jsonObject.getString("status"));
             books.add(book);
         }
