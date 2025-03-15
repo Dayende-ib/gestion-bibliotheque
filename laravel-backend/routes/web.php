@@ -44,6 +44,10 @@ Route::middleware('auth')->group(function () {
      // Route for returning a book
      Route::post('/loans/{id}/return', [LoansController::class, 'returnBook'])->name('loans.return');
 
+     // Route for loan history
+     Route::get('/loans/history', [LoansController::class, 'history'])->name('loans.history');
+
+
 });
 
 require __DIR__.'/auth.php';

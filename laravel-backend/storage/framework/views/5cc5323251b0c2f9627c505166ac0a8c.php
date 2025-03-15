@@ -17,6 +17,7 @@
 
     <div class="container mt-4">
         <h1 class="text-center text-primary">List of Loans</h1>
+        <a class="btn btn-primary" href="<?php echo e(route('loans.history')); ?>">View loans history</a>
         
         <?php if(Session::get('success')): ?>
             <div class="alert alert-success" style="background-color: green; color: white;">
@@ -62,20 +63,30 @@
                         <td><?php echo e($loan->due_date); ?></td>
                         <td><?php echo e($loan->status); ?></td>
                         <td>
-                            <form action="<?php echo e(route('loans.return', $loan->id)); ?>" method="POST" style="display:inline;">
-                                <?php echo csrf_field(); ?>
-                                <button type="submit" class="btn btn-success">Return</button>
-                            </form>
-                            <form action="<?php echo e(route('loans.destroy', $loan->id)); ?>" method="POST" style="display:inline;">
-                                <?php echo csrf_field(); ?>
-                                <?php echo method_field('DELETE'); ?>
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
+                            
+                            <?php if(Auth::user()->role == 'admin'): ?>
+                                <form action="<?php echo e(route('loans.destroy', $loan->id)); ?>" method="POST" style="display:inline;">
+                                    <?php echo csrf_field(); ?>
+                                    <?php echo method_field('DELETE'); ?>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            <?php else: ?>
+                                <?php if($loan->status == 'returned'): ?>
+                                    <button class="btn btn-success" disabled>Returned</button>
+                                <?php endif; ?>     
+                                <?php if($loan->status == 'Borrowed'): ?>
+                                    <form action="<?php echo e(route('loans.return', $loan->id)); ?>" method="POST" style="display:inline;">
+                                        <?php echo csrf_field(); ?>
+                                        <button type="submit" class="btn btn-primary">Return</button>
+                                    </form>
+                                <?php endif; ?>     
+                            <?php endif; ?>
+                            
                         </td>
                     </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <tr>
-                        <td class="text-center text-bg-info text-white" colspan="7">No loans</td>
+                        <td class="text-center text-bg-info text-white" colspan="8">No loans</td>
                     </tr>
                 <?php endif; ?>
             </tbody>

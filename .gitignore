@@ -3,3 +3,4 @@ logo_app.ai
 /*.log
 *.log
 laravel-backend/storage/logs/laravel.log
+laravel-backend/storage/framework/views/*

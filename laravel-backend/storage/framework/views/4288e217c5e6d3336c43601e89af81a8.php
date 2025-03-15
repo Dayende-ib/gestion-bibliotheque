@@ -112,6 +112,15 @@
                 
             }
 
+            .custom-card .stretched-link {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 1;
+            }
+
             .card-body {
                 flex: 1;
                 display: flex;
@@ -139,6 +148,11 @@
                 font-weight: bold;
                 color: #007bff; /* Primary color */
             }
+
+            .custom-card .card-body, .custom-card .card-actions {
+                
+                z-index: 2;
+            }
         </style>
     </head>
     
@@ -165,38 +179,38 @@
 
         <div id="card-view" class="row">
             <?php $__empty_1 = true; $__currentLoopData = $books; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $book): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card custom-card">
-                        <?php if($book->image != null): ?>
-                            <img src="<?php echo e(asset($book->image)); ?>" alt="<?php echo e($book->title); ?>" loading="lazy">
-                        <?php else: ?>
-                            <img src="<?php echo e(asset('build/images/default-book-cover.png')); ?>" alt="Default Image">
-                        <?php endif; ?>
-                        <div class="card-body">
-                            <h5 class="card-title"><?php echo e($book->title); ?></h5>
-                            <p class="card-text"><?php echo e($book->description); ?></p>
-                            <p class="card-author mt-2 font-bold text-primary text-right"><?php echo e($book->author); ?></p>
-                            <div class="card-actions">
-                                <a href="<?php echo e(route('books.show', $book->id)); ?>" class="btn btn-info btn-sm">Show</a>
-                                <?php if(Auth::user()->role == 'admin'): ?>
-                                    <a href="<?php echo e(route('books.edit', $book->id)); ?>" class="btn btn-warning btn-sm">Edit</a>
-                                    <form action="<?php echo e(route('books.destroy', $book->id)); ?>" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this book?');">
-                                        <?php echo csrf_field(); ?>
-                                        <?php echo method_field('DELETE'); ?>
-                                        <button type="submit" class="btn btn-danger btn-sm"> <i class="fa "></i>Delete</button>
-                                    </form>
+            <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+                <div class="card custom-card">
+                    <a href="<?php echo e(route('books.show', $book->id)); ?>" class="stretched-link"></a>
+                    <?php if($book->image != null): ?>
+                        <img src="<?php echo e(asset($book->image)); ?>" alt="<?php echo e($book->title); ?>" loading="lazy">
+                    <?php else: ?>
+                        <img src="<?php echo e(asset('build/images/default-book-cover.png')); ?>" alt="Default Image">
+                    <?php endif; ?>
+                    <div class="card-body">
+                        <h5 class="card-title"><?php echo e($book->title); ?></h5>
+                        <p class="card-text"><?php echo e($book->description); ?></p>
+                        <p class="card-author mt-2 font-bold text-primary text-right"><?php echo e($book->author); ?></p>
+                        <div class="card-actions">
+                            <a href="<?php echo e(route('books.show', $book->id)); ?>" class="btn btn-info btn-sm">Show</a>
+                            <?php if(Auth::user()->role == 'admin'): ?>
+                                <a href="<?php echo e(route('books.edit', $book->id)); ?>" class="btn btn-warning btn-sm">Edit</a>
+                                <form action="<?php echo e(route('books.destroy', $book->id)); ?>" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this book?');">
+                                    <?php echo csrf_field(); ?>
+                                    <?php echo method_field('DELETE'); ?>
+                                    <button type="submit" class="btn btn-danger btn-sm"> <i class="fa "></i>Delete</button>
+                                </form>
+                            <?php else: ?>
+                                <?php if($book->status == 'Borrowed'): ?>
+                                    <a href="#" class="btn btn-secondary btn-sm disabled">Borrowed</a>
                                 <?php else: ?>
-                                    <?php if($book->status == 'Borrowed'): ?>
-                                        <a href="#" class="btn btn-secondary btn-sm disabled">Borrowed</a>
-                                    <?php else: ?>
-                                        <a href="#" onclick="checkMembership(<?php echo e(Auth::user()->member ? 'true' : 'false'); ?>, <?php echo e($book->id); ?>)" class="btn btn-primary btn-sm">Borrow</a>
-                                        <a href="#" class="btn btn-secondary btn-sm">Return</a>
-                                    <?php endif; ?>
+                                    <a href="#" onclick="checkMembership(<?php echo e(Auth::user()->member ? 'true' : 'false'); ?>, <?php echo e($book->id); ?>)" class="btn btn-primary btn-sm">Borrow</a>
                                 <?php endif; ?>
-                            </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
+            </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                 <div class="col-sm-12">
                     <div class="alert alert-info">No books to show</div>
@@ -219,7 +233,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
+                        <thead class="thead-dark">
                             <tr>
                                 <th>Title</th>
                                 <th>Author</th>
@@ -239,6 +253,7 @@
                                     <td><?php echo e($book->status); ?></td>
                                     <?php if(Auth::user()->role == 'admin'): ?>
                                         <td class="items-center ">
+                                        <a href="<?php echo e(route('books.show', $book->id)); ?>" class="btn btn-info btn-sm">Show</a>
                                         <a href="<?php echo e(route('books.edit', $book->id)); ?>" class="btn btn-warning btn-sm">Edit</a>
                                         <form action="<?php echo e(route('books.destroy', $book->id)); ?>" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this book?');">
                                             <?php echo csrf_field(); ?>
@@ -254,6 +269,7 @@
                                             
                                         <?php else: ?>
                                             <td>
+                                            <a href="<?php echo e(route('books.show', $book->id)); ?>" class="btn btn-info btn-sm">Show</a>
                                             <a href="#" onclick="checkMembership(<?php echo e(Auth::user()->member ? 'true' : 'false'); ?>, <?php echo e($book->id); ?>)" class="btn btn-primary btn-sm">Borrow</a>
                                             </td>
                                         <?php endif; ?>
