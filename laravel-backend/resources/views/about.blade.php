@@ -19,7 +19,7 @@
                             ['name' => 'DIALLO Djeneba', 'email' => 'djeneba.diallo@example.com'],
                             ['name' => 'BATIONO Jonathan', 'email' => 'jonathan.bationo@example.com'],
                             ['name' => 'GUISSOU Ali', 'email' => 'ali.guissou@example.com'],
-                            ['name' => 'OUEDRAOGO Moumouni', 'email' => 'moumouni.ouedraogo@example.com']
+                            ['name' => 'OUEDRAOGO Moumouni', 'email' => 'moumouniouedraogotech@gmail.com']
                         ] as $developer)
                             <li class="bg-blue-800 bg-opacity-50 p-4 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                                 <p class="font-semibold">{{ $developer['name'] }}</p>
