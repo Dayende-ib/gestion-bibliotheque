@@ -11,6 +11,7 @@ use App\Models\Members;
 use App\Models\LoansHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 class LoansController extends Controller
 {
     /**
@@ -107,48 +108,27 @@ class LoansController extends Controller
                 $penalty->loan_id = $loan->id; // Assign the loan_id to the penalty
                 $penalty->start_date = $loan->borrowed_at; // Set start_date to loan_date
                 $penalty->end_date = $loan->due_date; // Set end_date to return_date
-                $penalty->amount = 0.00; // Set a fixed penalty amount or calculate as needed
+
+                $startDate = Carbon::parse($request->input('borrowed_at'));
+                $endDate = Carbon::now();
+                $daysLate = $endDate->diffInDays($startDate);
+                
+                $penalty->amount = abs($daysLate * 500); // 500 francs CFA per day
                 $penalty->save();
 
-            return redirect()->route('loans.index')->with('success', 'Emprunt ajouté avec succès.');
+            return redirect()->route('books.loans.index')->with('success', 'Emprunt ajouté avec succès.');
         }
     } catch (\Exception $e) {
         dd($e);
     }
 }
-
-
-/**
-     * Display the specified resource.
-     */
-    public function show(Loans $loans)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Loans $loans)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Loans $loans)
-    {
-        //
-    }
-
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Loans $loans)
     {
         $loans->delete();
-        return redirect()->route('loans.index')->with('success', 'Emprunt supprimé avec succès.');
+        return redirect()->route('books.loans.index')->with('success', 'Emprunt supprimé avec succès.');
     }
 
     public function history(Request $request)
@@ -159,9 +139,9 @@ class LoansController extends Controller
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->whereHas('user', function($q) use ($search) {
-                $q->where('name', 'like', '%'.$search.'%');
+                $q->where('name', 'like', '%' .$search. '%');
             })->orWhereHas('book', function($q) use ($search) {
-                $q->where('title', 'like', '%'.$search.'%');
+                $q->where('title', 'like', '%' .$search. '%');
             });
         }
 
@@ -175,8 +155,9 @@ class LoansController extends Controller
 
         $loansHistory = $query->paginate(10);
 
-        return view('books.loansHistory', compact('loansHistory'));
+        return view('books.loans.Historique', compact('loansHistory'));
     }
+
 
     public function returnBook($id)
     {

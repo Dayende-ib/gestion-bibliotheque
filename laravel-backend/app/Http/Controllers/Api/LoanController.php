@@ -19,16 +19,19 @@ class LoanController extends Controller
         // Récupérer l'utilisateur connecté
         $user = Auth::user();
         
-        // Vérifier si l'utilisateur a un membre associé
-        if (!$user->member) {
-            return response()->json(['message' => 'Aucun membre associé à cet utilisateur'], 404);
+        if(Auth::user()->role == 'admin') {
+            $loans = Loans::with('book')->get();
+            return response()->json($loans, 200);
+        } else {
+            // Vérifier si l'utilisateur a un membre associé
+            if (!$user->member) {
+                return response()->json(['message' => 'Aucun membre associé à cet utilisateur'], 404);
+            }
+            // Récupérer les emprunts du membre avec les informations du livre
+            $loans = Loans::with('book')
+                ->where('member_id', $user->member->id)
+                ->get();
         }
-
-        // Récupérer les emprunts du membre avec les informations du livre
-        $loans = Loans::with('book')
-            ->where('member_id', $user->member->id)
-            ->get();
-
         return response()->json($loans, 200);
     }
 

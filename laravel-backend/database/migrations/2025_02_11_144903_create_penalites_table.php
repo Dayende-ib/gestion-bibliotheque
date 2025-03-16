@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('member_id')->constrained('members')->onDelete('cascade');
             $table->date('start_date');
             $table->date('end_date');
-            $table->decimal('amount', 8, 2);
+            $table->decimal('amount', 8);
             $table->enum('status', ['Paid', 'Unpaid'])->default('Unpaid');
             $table->timestamps();
         });

@@ -11,6 +11,7 @@ use App\Http\Controllers\DashboardController;
 
 Route::get('/', [DashboardController::class, 'index'])->middleware(['auth'], 'verified')->name('dashboard');
 
+
 Route::get('/about', function () {
     return view('about');
 })->name('about');
@@ -35,9 +36,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/loans/create/{book_id}', [LoansController::class, 'create'])->name('loans.create');
      }
      Route::post('/loans', [LoansController::class, 'store'])->name('loans.store');
-     Route::get('/loans/{id}', [LoansController::class, 'show'])->name('loans.show');
-     Route::get('/loans/{id}/edit', [LoansController::class, 'edit'])->name('loans.edit');
-     Route::patch('/loans/{id}', [LoansController::class, 'update'])->name('loans.update');
      Route::delete('/loans/{id}', [LoansController::class, 'destroy'])->name('loans.destroy');
 
      // Route for returning a book
@@ -45,7 +43,6 @@ Route::middleware('auth')->group(function () {
 
      // Route for loan history
      Route::get('/loans/history', [LoansController::class, 'history'])->name('loans.history');
-
 
 });
 

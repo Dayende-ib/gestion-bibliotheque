@@ -553,8 +553,8 @@ public class dashboard extends javax.swing.JFrame {
 
     private void container_tabbedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_container_tabbedMouseClicked
         // TODO add your handling code here:
-        loadBooks();
-        loadLoans();
+        //loadBooks();
+        //loadLoans();
     }//GEN-LAST:event_container_tabbedMouseClicked
 
     /**

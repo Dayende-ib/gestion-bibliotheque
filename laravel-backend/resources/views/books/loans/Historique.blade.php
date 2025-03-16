@@ -1,4 +1,4 @@
-
+<x-app-layout>
     <div class="container">
         <h1>Historique des Emprunts</h1>
 
@@ -32,14 +32,13 @@
             <tbody>
                 @foreach($loansHistory as $history)
                     <tr>
-                        <td>{{ $history->user->name }}</td>
+                        <td>{{ $history->user->lastname }} {{ $history->user->firstname }}</td>
                         <td>{{ $history->book->title }}</td>
-                        <td>{{ $history->borrowed_at->format('d/m/Y') }}</td>
-                        <td>{{ $history->returned_at ? $history->returned_at->format('d/m/Y') : 'Non retourné' }}</td>
+                        <td>{{ $history->borrowed_at }}</td>
+                        <td>{{ $history->returned_at ? $history->returned_at : 'Non retourné' }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-
-        {{ $loansHistory->links() }}
     </div>
+</x-app-layout>

@@ -7,7 +7,7 @@
 
     <div class="container mt-4">
         <h1 class="text-center text-primary">List of Loans</h1>
-        <a class="btn btn-primary" href="{{ route('loans.history') }}">View loans history</a>
+        <a class="btn btn-primary mb-5" href="{{ route('loans.history') }}" >View loans history</a>
         
         @if(Session::get('success'))
             <div class="alert alert-success" style="background-color: green; color: white;">

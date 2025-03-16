@@ -1,4 +1,3 @@
-
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -86,4 +85,3 @@
         ul li:nth-child(5) { animation-delay: 0.5s; }
     </style>
 </x-app-layout>
->>>>>>> Tabnine >>>>>>>// {"source":"chat"}
