@@ -29,8 +29,11 @@ public class dashboard extends javax.swing.JFrame {
         initComponents();
         rowSorter = new TableRowSorter<>((DefaultTableModel) bookTable.getModel());
         bookTable.setRowSorter(rowSorter);
+        
         loadBooks();
         loadLoans();
+        loadMembers();
+                
         searchField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(javax.swing.event.DocumentEvent e) {
@@ -140,6 +143,7 @@ public class dashboard extends javax.swing.JFrame {
                 }
                 
                 loadLoans(); // Refresh loans after return
+                loadBooks();// Refresh book after return
             } catch (Exception e) {
                 String errorMessage = "Failed to return book";
                 if (e.getMessage() != null && !e.getMessage().isEmpty()) {
@@ -202,6 +206,7 @@ public class dashboard extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        refreshbtn0 = new javax.swing.JLabel();
         jPanelBook = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         bookTable = new javax.swing.JTable();
@@ -210,12 +215,24 @@ public class dashboard extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         searchField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        refreshbtn1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         TableLoan = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         returnBookButton = new javax.swing.JButton();
+        refreshbtn2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        addMemberButton = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLabel8 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        searchMember = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        delMemberButton = new javax.swing.JButton();
+        refreshbtn3 = new javax.swing.JLabel();
         jPanel_logout = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -249,6 +266,15 @@ public class dashboard extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Lato Black", 1, 14)); // NOI18N
         jLabel7.setText("User name");
 
+        refreshbtn0.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        refreshbtn0.setForeground(new java.awt.Color(0, 153, 255));
+        refreshbtn0.setText("Refresh page");
+        refreshbtn0.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                refreshbtn0MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelDashboardLayout = new javax.swing.GroupLayout(jPanelDashboard);
         jPanelDashboard.setLayout(jPanelDashboardLayout);
         jPanelDashboardLayout.setHorizontalGroup(
@@ -256,7 +282,9 @@ public class dashboard extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDashboardLayout.createSequentialGroup()
                 .addContainerGap(343, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(362, 362, 362))
+                .addGap(250, 250, 250)
+                .addComponent(refreshbtn0, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addGroup(jPanelDashboardLayout.createSequentialGroup()
                 .addGap(233, 233, 233)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -267,12 +295,16 @@ public class dashboard extends javax.swing.JFrame {
         jPanelDashboardLayout.setVerticalGroup(
             jPanelDashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelDashboardLayout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(122, 122, 122)
+                .addGroup(jPanelDashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addGroup(jPanelDashboardLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(refreshbtn0, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(108, 108, 108)
                 .addGroup(jPanelDashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addGap(0, 292, Short.MAX_VALUE))
+                .addGap(0, 282, Short.MAX_VALUE))
         );
 
         container_tabbed.addTab("Dashboard", jPanelDashboard);
@@ -352,6 +384,15 @@ public class dashboard extends javax.swing.JFrame {
 
         searchField.getAccessibleContext().setAccessibleName("Search");
 
+        refreshbtn1.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        refreshbtn1.setForeground(new java.awt.Color(0, 153, 255));
+        refreshbtn1.setText("Refresh page");
+        refreshbtn1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                refreshbtn1MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelBookLayout = new javax.swing.GroupLayout(jPanelBook);
         jPanelBook.setLayout(jPanelBookLayout);
         jPanelBookLayout.setHorizontalGroup(
@@ -360,10 +401,6 @@ public class dashboard extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addGroup(jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBookLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addGap(373, 373, 373))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBookLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 833, Short.MAX_VALUE)
                         .addGap(17, 17, 17))
                     .addGroup(jPanelBookLayout.createSequentialGroup()
@@ -371,21 +408,28 @@ public class dashboard extends javax.swing.JFrame {
                         .addGap(29, 29, 29)
                         .addComponent(addBookButton, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBookLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(261, 261, 261)
+                .addComponent(refreshbtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanelBookLayout.setVerticalGroup(
             jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBookLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2)
+                .addGroup(jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(refreshbtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
                 .addGroup(jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanelBookLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelBookLayout.createSequentialGroup()
-                        .addGap(31, 31, 31)
+                        .addGap(23, 23, 23)
                         .addComponent(addBookButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -433,46 +477,198 @@ public class dashboard extends javax.swing.JFrame {
             }
         });
 
+        refreshbtn2.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        refreshbtn2.setForeground(new java.awt.Color(0, 153, 255));
+        refreshbtn2.setText("Refresh page");
+        refreshbtn2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                refreshbtn2MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(returnBookButton, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 829, Short.MAX_VALUE))
-                .addGap(15, 15, 15))
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(345, 345, 345)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 244, Short.MAX_VALUE)
+                .addComponent(refreshbtn2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(returnBookButton, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel5)
-                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(refreshbtn2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(returnBookButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31))
+                .addContainerGap())
         );
 
         returnBookButton.getAccessibleContext().setAccessibleDescription("");
 
         container_tabbed.addTab("My loans", jPanel2);
 
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+
+        addMemberButton.setBackground(new java.awt.Color(0, 204, 102));
+        addMemberButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        addMemberButton.setForeground(new java.awt.Color(255, 255, 255));
+        addMemberButton.setText("Add new member");
+        addMemberButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addMemberButtonActionPerformed(evt);
+            }
+        });
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Lastname", "Phone", "Address", "Email", "Join date", "Expiry date", "Status"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable1.setColumnSelectionAllowed(true);
+        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTable1.setShowGrid(true);
+        jTable1.setShowHorizontalLines(true);
+        jTable1.setSurrendersFocusOnKeystroke(true);
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        jScrollPane3.setViewportView(jTable1);
+        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("Members list");
+
+        searchMember.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        searchMember.setToolTipText("Faire une recherche");
+
+        jLabel9.setText("Search a member");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(searchMember, javax.swing.GroupLayout.PREFERRED_SIZE, 630, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchMember, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        delMemberButton.setBackground(new java.awt.Color(204, 51, 0));
+        delMemberButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        delMemberButton.setForeground(new java.awt.Color(255, 255, 255));
+        delMemberButton.setText("Delete member");
+        delMemberButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delMemberButtonActionPerformed(evt);
+            }
+        });
+
+        refreshbtn3.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        refreshbtn3.setForeground(new java.awt.Color(0, 153, 255));
+        refreshbtn3.setText("Refresh page");
+        refreshbtn3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                refreshbtn3MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(351, 351, 351)
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(refreshbtn3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane3)))
+                .addContainerGap())
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(delMemberButton, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(addMemberButton)
+                        .addContainerGap(51, Short.MAX_VALUE))))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(7, 7, 7)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel8)
+                    .addComponent(refreshbtn3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(addMemberButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(delMemberButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 869, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 475, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         container_tabbed.addTab("Members", jPanel3);
@@ -511,12 +707,10 @@ public class dashboard extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addGap(94, 94, 94)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(207, Short.MAX_VALUE))
+                .addContainerGap(229, Short.MAX_VALUE))
         );
 
         container_tabbed.addTab("Logout", jPanel_logout);
-
-        container_tabbed.setSelectedIndex(1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -540,7 +734,6 @@ public class dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void returnBookButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnBookButtonActionPerformed
-        // TODO add your handling code here:
         int selectedRow = TableLoan.getSelectedRow();
         if (selectedRow != -1) {
             DefaultTableModel model = (DefaultTableModel) TableLoan.getModel();
@@ -557,12 +750,40 @@ public class dashboard extends javax.swing.JFrame {
         //loadLoans();
     }//GEN-LAST:event_container_tabbedMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
+    private void addMemberButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMemberButtonActionPerformed
+        // TODO add your handling code here:
+        new MemberManagement().setVisible(true);
+    }//GEN-LAST:event_addMemberButtonActionPerformed
+
+    private void delMemberButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delMemberButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_delMemberButtonActionPerformed
+
+    private void refreshbtn0MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshbtn0MouseClicked
+        refreshTable();
+    }//GEN-LAST:event_refreshbtn0MouseClicked
+
+    private void refreshbtn1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshbtn1MouseClicked
+        // TODO add your handling code here:
+        loadBooks();
+        loadLoans();
+    }//GEN-LAST:event_refreshbtn1MouseClicked
+
+    private void refreshbtn2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshbtn2MouseClicked
+        // TODO add your handling code here:
+        loadLoans();
+        loadBooks();
+    }//GEN-LAST:event_refreshbtn2MouseClicked
+
+    private void refreshbtn3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshbtn3MouseClicked
+        // TODO add your handling code here:
+        loadMembers();
+    }//GEN-LAST:event_refreshbtn3MouseClicked
 
     public void refreshTable() {
         loadBooks();
+        loadLoans();
+        loadMembers();
     }
 
     private void loadBooks() {
@@ -666,6 +887,49 @@ public class dashboard extends javax.swing.JFrame {
     
         return loans;
     }
+    
+    private void loadMembers() {
+        try {
+            String response = callApiWithToken("http://localhost:8000/api/members");
+            List<Member> members = parseMembers(response);
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0); // Clear existing rows
+            for (Member member : members) {
+                model.addRow(new Object[]{
+                    member.getLastname(),
+                    member.getPhone(),
+                    member.getAddress(),
+                    member.getEmail(),
+                    member.getJoin_date(),
+                    member.getExpiry_date(),
+                    member.getStatus(),
+                });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Failed to load members" + e, "Error", JOptionPane.ERROR_MESSAGE);
+            System.err.println(""+e);
+        }
+    }
+
+    private List<Member> parseMembers(String response) {
+        List<Member> members = new ArrayList<>();
+        JSONArray jsonArray = new JSONArray(response);
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            Member member = new Member();
+            member.setLastname(jsonObject.getJSONObject("user").getString("lastname"));
+            member.setPhone(jsonObject.optString("phone", "N/R"));
+            member.setAddress(jsonObject.optString("address", "N/R"));
+            member.setEmail(jsonObject.getJSONObject("user").getString("email"));
+            member.setJoin_date(jsonObject.getString("join_date"));
+            member.setExpiry_date(jsonObject.getString("expiry_date"));
+            member.setStatus(jsonObject.getString("status"));
+            members.add(member);
+        }
+
+        return members;
+    }
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -701,8 +965,10 @@ public class dashboard extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TableLoan;
     private javax.swing.JButton addBookButton;
+    private javax.swing.JButton addMemberButton;
     private javax.swing.JTable bookTable;
     private javax.swing.JTabbedPane container_tabbed;
+    private javax.swing.JButton delMemberButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -711,15 +977,26 @@ public class dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanelBook;
     private javax.swing.JPanel jPanelDashboard;
     private javax.swing.JPanel jPanel_logout;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel refreshbtn0;
+    private javax.swing.JLabel refreshbtn1;
+    private javax.swing.JLabel refreshbtn2;
+    private javax.swing.JLabel refreshbtn3;
     private javax.swing.JButton returnBookButton;
     private javax.swing.JTextField searchField;
+    private javax.swing.JTextField searchMember;
     // End of variables declaration//GEN-END:variables
 }

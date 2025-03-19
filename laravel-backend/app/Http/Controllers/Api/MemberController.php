@@ -17,24 +17,20 @@ class MemberController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $query = Members::query();
+        // $query = Members::query();
 
-        // Vérifier si l'utilisateur est un administrateur
-        if ($user->role != 'admin') {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
+        
+        $members = Members::with('user')->get();
+        return response()->json($members, 200);
 
-        // Filtrer les membres par recherche si le paramètre 'search' est présent
-        if (request()->has('search')) {
-            $query->whereHas('user', function ($q) {
-                $q->where('lastname', 'like', '%' . request('search') . '%')
-                  ->orWhere('firstname', 'like', '%' . request('search') . '%');
-            });
-        }
+        // // Vérifier si l'utilisateur est un administrateur
+        // if ($user->role != 'admin') {
+        //     return response()->json(['error' => 'Unauthorized'], 403);
+        // }
 
-        // Paginer les résultats
-        $members = $query->paginate(10);
-        return response()->json($members);
+        // // Paginer les résultats
+        // $members = $query->paginate(10);
+        // return response()->json($members);
     }
 
     // Méthode pour créer un nouveau membre
