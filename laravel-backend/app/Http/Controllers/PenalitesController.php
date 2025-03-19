@@ -14,7 +14,7 @@ class PenalitesController extends Controller
      */
     public function index()
     {
-        $penalties = Penalites::all();
+        $penalties = Penalites::paginate(10);
 
         return view('penalites.index', compact('penalties'));
     }

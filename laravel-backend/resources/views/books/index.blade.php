@@ -174,7 +174,7 @@
                     @if($book->image != null)
                         <img src="{{ asset($book->image) }}" alt="{{ $book->title }}" loading="lazy">
                     @else
-                        <img src="{{ asset('build/images/default-book-cover.png') }}" alt="Default Image">
+                        <img src="{{ asset('build/image/default-book-cover.jpg') }}" alt="Default Image">
                     @endif
                     <div class="card-body">
                         <h5 class="card-title">{{ $book->title }}</h5>
@@ -271,6 +271,10 @@
                             @endforelse
                         </tbody>
                     </table>
+                    <!-- Pagination Links -->
+                    <div class="d-flex justify-content-center">
+                        {{ $books->links() }}
+                    </div>
                 </div>
             </div>
         </div>

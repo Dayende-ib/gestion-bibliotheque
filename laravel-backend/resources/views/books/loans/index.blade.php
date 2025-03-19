@@ -32,7 +32,7 @@
                         <th class="bg-primary">Borrower Phone</th>
                         <th class="bg-primary">Borrower Status</th>
                     @endif
-                    <th>Book</th>
+                    <th>Book title</th>
                     <th>Borrowed Date</th>
                     <th>Due Date</th>
                     <th>Status</th>
@@ -80,7 +80,9 @@
                 @endforelse
             </tbody>
         </table>
-
-        {{ $loans->links() }}
+        <!-- Pagination Links -->
+        <div class="d-flex justify-content-center">
+            {{ $loans->links() }}
+        </div>
     </div>
 </x-app-layout>

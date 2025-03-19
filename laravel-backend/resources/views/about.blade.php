@@ -23,7 +23,7 @@
                         ] as $developer)
                             <li class="bg-blue-800 bg-opacity-50 p-4 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                                 <p class="font-semibold">{{ $developer['name'] }}</p>
-                                <p class="text-sm text-blue-200"><a href="mailto:{{ $developer['email'] }}?subject=Your Library Management Projet">{{ $developer['email'] }}</a></p>
+                                <p class="text-sm text-blue-200"><a href="mailto:{{ $developer['email'] }}?subject=Your Library Management Projet CS26">{{ $developer['email'] }}</a></p>
                             </li>
                         @endforeach
                     </ul>

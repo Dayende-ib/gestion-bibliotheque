@@ -8,3 +8,4 @@ storage/
 /*.log
 *.log
 storage/framework/views/*
+storage/

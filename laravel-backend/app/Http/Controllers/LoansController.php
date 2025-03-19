@@ -116,7 +116,7 @@ class LoansController extends Controller
                 $penalty->amount = abs($daysLate * 500); // 500 francs CFA per day
                 $penalty->save();
 
-            return redirect()->route('books.loans.index')->with('success', 'Emprunt ajouté avec succès.');
+            return redirect()->route('loans.index')->with('success', 'Emprunt ajouté avec succès.');
         }
     } catch (\Exception $e) {
         dd($e);
@@ -125,10 +125,35 @@ class LoansController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Loans $loans)
+    public function destroy($id)
     {
-        $loans->delete();
-        return redirect()->route('books.loans.index')->with('success', 'Emprunt supprimé avec succès.');
+        $loan = Loans::find($id);
+        if($loan){
+            // Create a new record in the loans_history table
+            LoansHistory::create([
+                'user_id' => $loan->member->user_id,
+                'book_id' => $loan->book_id,
+                'borrowed_at' => $loan->borrowed_at,
+                'returned_at' => now(),
+            ]);
+                
+                
+            // Update the book status to 'Available'
+            $book = Books::find($loan->book_id);
+            if ($book) {
+                $book->status = 'Available';
+                $book->save();
+            }
+            $loan->delete();
+            return redirect()->route('loans.index')->with('success', 'Loans deleted.');
+        } else {
+            return redirect()->route('loans.index')->with('error', 'Loans unavailable.');
+        }
+
+            
+
+            
+       
     }
 
     public function history(Request $request)

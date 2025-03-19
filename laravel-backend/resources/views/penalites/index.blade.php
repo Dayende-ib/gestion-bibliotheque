@@ -2,7 +2,6 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <h2>Pénalités</h2>
         <table class="table table-striped">
           <thead>
             <tr>
@@ -37,6 +36,10 @@
             @endforelse
           </tbody>
         </table>
+        <!-- Pagination Links -->
+        <div class="d-flex justify-content-center">
+          {{ $penalties->links() }}
+      </div>
       </div>
     </div>
   </div>

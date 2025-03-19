@@ -12,15 +12,15 @@
             </div>
             <div class="mb-3">
                 <label>Address:</label>
-                <input type="text" name="address" class="form-control" value="{{ $member->address }}" required>
+                <input type="text" name="address" class="form-control" value="{{ $member->address }}" readonly>
             </div>
             <div class="mb-3">
                 <label>Join Date:</label>
-                <input type="date" name="join_date" class="form-control" value="{{ $member->join_date }}" required>
+                <input type="date" name="join_date" class="form-control" value="{{ $member->join_date }}" readonly>
             </div>
             <div class="mb-3">
                 <label>Expiry Date:</label>
-                <input type="date" name="expiry_date" class="form-control" value="{{ $member->expiry_date }}" required>
+                <input type="date" name="expiry_date" class="form-control" value="{{ $member->expiry_date }}" readonly>
             </div>
             <div class="mb-3">
                 <label>Status:</label>

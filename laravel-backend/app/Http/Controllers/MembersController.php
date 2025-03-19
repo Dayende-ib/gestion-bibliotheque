@@ -113,30 +113,28 @@ class MembersController extends Controller
     // Mettre à jour un membre
     public function update(Request $request, Members $member)
     {
-        $request->validate([
-            'phone' => 'required|exists:members,phone',
-            'address' => 'required|min:2|max:254',
-            'join_date' => 'required|date|after_or_equal:today',
-            'expiry_date' => 'required|date|after:join_date',
-            'status' => 'required|in:Active,Inactive,Banned',
-        ], [
-            'user_id.required' => 'The user field is required',
-            'user_id.exists' => 'The user does not exist',
-            'phone.required' => 'The phone field is required',
-            'phone.exists' => 'The phone number is already in use',
-            'address.required' => 'The address field is required',
-            'address.min' => 'The address must be at least 02 characters',
-            'address.max' => 'The address must not exceed 254 characters',
-            'join_date.required' => 'The join date field is required',
-            'join_date.date' => 'The join date must be a valid date',
-            'join_date.before_or_equal' => 'The join date cannot be in the future',
-            'expiry_date.required' => 'The expiry date field is required',
-            'expiry_date.date' => 'The expiry date must be a valid date',
-            'expiry_date.after' => 'The expiry date must be after the join date',
-            'status.required' => 'The status field is required',
-            'status.in' => 'The status must be either "Active", "Inactive", or "Banned"',
-        ]);
-    
+        // $request->validate([
+        //     'phone' => 'required|exists:members,phone',
+        //     'address' => 'required|min:2|max:254',
+        //     'join_date' => 'required|date|after_or_equal:today',
+        //     'expiry_date' => 'required|date|after:join_date',
+        //     'status' => 'required|in:Active,Inactive,Banned',
+        // ], [
+        //     'phone.required' => 'The phone field is required',
+        //     'phone.exists' => 'The phone number is already in use',
+        //     'address.required' => 'The address field is required',
+        //     'address.min' => 'The address must be at least 02 characters',
+        //     'address.max' => 'The address must not exceed 254 characters',
+        //     'join_date.required' => 'The join date field is required',
+        //     'join_date.date' => 'The join date must be a valid date',
+        //     'join_date.before_or_equal' => 'The join date cannot be in the future',
+        //     'expiry_date.required' => 'The expiry date field is required',
+        //     'expiry_date.date' => 'The expiry date must be a valid date',
+        //     'expiry_date.after' => 'The expiry date must be after the join date',
+        //     'status.required' => 'The status field is required',
+        //     'status.in' => 'The status must be either "Active", "Inactive", or "Banned"',
+        // ]);
+
         // If the member is banned, cancel all their borrowings and save their email
         if ($request->status == 'Banned') {
             // Delete all borrowings
@@ -148,11 +146,11 @@ class MembersController extends Controller
             // Delete the email from the banned emails table
             BannedEmail::where('email', $member->user->email)->delete();
         }
-    
-        $member->phone = $request->input('phone');
-        $member->address = $request->input('address');
-        $member->join_date = $request->input('join_date');
-        $member->expiry_date = $request->input('expiry_date');
+        
+        // $member->phone = $request->input('phone');
+        // $member->address = $request->input('address');
+        // $member->join_date = $request->input('join_date');
+        // $member->expiry_date = $request->input('expiry_date');
         $member->status = $request->input('status');
         $member->save();
     
