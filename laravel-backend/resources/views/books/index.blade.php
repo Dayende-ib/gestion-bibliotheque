@@ -140,9 +140,9 @@
             }
 
             .custom-card .card-body, .custom-card .card-actions {
-                
                 z-index: 2;
             }
+
         </style>
     </head>
     

@@ -12,24 +12,20 @@ use App\Http\Controllers\DashboardController;
 Route::get('/', [DashboardController::class, 'index'])->middleware(['auth'], 'verified')->name('dashboard');
 
 
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
-
 Route::middleware('auth')->group(function () {
         
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('books',BooksController::class);
-    Route::resource('penalites',PenalitesController::class);
-    Route::resource('members', MembersController::class);
+   Route::resource('books',BooksController::class);
+   Route::resource('penalites',PenalitesController::class);
+   Route::resource('members', MembersController::class);
 
-    // Route pour afficher la liste des loans
+   /* Route pour afficher la liste des loans */
      Route::get('/loans', [LoansController::class, 'index'])->name('loans.index');
 
-    // Route pour les emprunts
+    //* Route pour les emprunts
      if (Auth::check() && Auth::user()->role == 'admin') {
         Route::get('/loans/create', [LoansController::class, 'create'])->name('loans.create');
      } else {
@@ -43,6 +39,11 @@ Route::middleware('auth')->group(function () {
 
      // Route for loan history
      Route::get('/loans/history', [LoansController::class, 'history'])->name('loans.history');
+
+   Route::get('/about', function () {
+      return view('about');
+   })->name('about');
+  
 
 });
 

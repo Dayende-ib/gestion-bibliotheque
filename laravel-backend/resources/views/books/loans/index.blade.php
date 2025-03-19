@@ -57,6 +57,7 @@
                                 <form action="{{ route('loans.destroy', $loan->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
+
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
                             @else

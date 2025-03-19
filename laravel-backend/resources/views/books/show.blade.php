@@ -8,12 +8,12 @@
     <div class="container mt-2">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-3">{{ $book->title }}</h3>
+                <h2 class="mb-3 h2 text-bold text-capitalize">{{ $book->title }}</h2>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-8">
-                        <p class="mb-1"><strong>Author:</strong> {{ $book->author }}</p>
+                        <p class="mb-1 text-capitalize"><strong>Author:</strong> {{ $book->author }}</p>
                         <p class="mb-1"><strong>ISBN:</strong> {{ $book->isbn }}</p>
                         <p class="mb-1"><strong>Published Year:</strong> {{ $book->published_year }}</p>
                         <p class="mb-1"><strong>Description:</strong> {{ $book->description }}</p>

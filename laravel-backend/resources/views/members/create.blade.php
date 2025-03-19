@@ -1,6 +1,10 @@
 <x-app-layout>
     <div class="container mt-5">
-        <h2 class="mb-4 h2 text-center">ADD NEW MEMBER</h2>
+        @if (Auth::user()->role == 'admin')
+            <h2 class="mb-4 h2 text-center">ADD NEW MEMBER</h2>
+        @else
+            <h2 class="mb-4 h2 text-center">BECOME A MEMBER</h2>
+        @endif
 
         @if($errors->any())
             <div class="alert alert-danger">

@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="container">
-        @if (Auth::user())
+        @if (Auth::user()->role == 'admin')
             <a href="{{ route('members.create') }}" class="btn btn-success w-25 mb-3">Add member</a>
         @endif
     
