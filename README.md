@@ -44,7 +44,7 @@ php artisan serve
 
 ## ScreenShots
 <img src="Screenshots/image1.png" width="100%" /><br /> <br />
-<img src="Screenshots/image.png" width="100%" /><br /> <br />
+<img src="Screenshots/image2.png" width="100%" /><br /> <br />
 ```
 Make sure to leave a start ✨✨
 ```
