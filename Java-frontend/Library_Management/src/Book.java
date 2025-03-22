@@ -13,6 +13,7 @@ public class Book {
     private String isbn;
     private String status;
     private String description;
+    private String imagePath;
 
     // Getters and setters
 
@@ -72,4 +73,15 @@ public class Book {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String ImagePath) {
+        this.imagePath = ImagePath;
+    }
+
+    
+  
 }
