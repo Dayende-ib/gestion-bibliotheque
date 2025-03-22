@@ -3,6 +3,7 @@
  * @author IBRAHIM DAYENDE
  */
 
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
@@ -27,6 +28,7 @@ public class dashboard extends javax.swing.JFrame {
         initComponents();
         rowSorter = new TableRowSorter<>((DefaultTableModel) bookTable.getModel());
         bookTable.setRowSorter(rowSorter);
+        memberTable.setRowSorter(new TableRowSorter<>((DefaultTableModel) memberTable.getModel()));
         
         loadBooks();
         loadLoans();
@@ -57,6 +59,25 @@ public class dashboard extends javax.swing.JFrame {
             @Override
             public void changedUpdate(javax.swing.event.DocumentEvent e) {
                 
+            }
+            
+        });
+        
+        // Add document listener for searchMember
+        searchMember.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                filterMembers();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                filterMembers();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                filterMembers();
             }
         });
         
@@ -95,6 +116,16 @@ public class dashboard extends javax.swing.JFrame {
         });
     }
     
+        private void filterMembers() {
+        String text = searchMember.getText();
+        TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) memberTable.getRowSorter();
+        if (text.trim().length() == 0) {
+            sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+        }
+    }
+        
     private void launchLoginPage() {
         java.awt.EventQueue.invokeLater(() -> new login().setVisible(true));
     }
@@ -219,11 +250,6 @@ public class dashboard extends javax.swing.JFrame {
     private void initComponents() {
 
         container_tabbed = new javax.swing.JTabbedPane();
-        jPanelDashboard = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        refreshbtn0 = new javax.swing.JLabel();
         jPanelBook = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         bookTable = new javax.swing.JTable();
@@ -250,6 +276,8 @@ public class dashboard extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         delMemberButton = new javax.swing.JButton();
         refreshbtn3 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        genReportButton = new javax.swing.JButton();
         jPanel_logout = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -270,61 +298,6 @@ public class dashboard extends javax.swing.JFrame {
                 container_tabbedMouseClicked(evt);
             }
         });
-
-        jPanelDashboard.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 204, 204));
-        jLabel1.setText("DASHBOARD");
-
-        jLabel6.setFont(new java.awt.Font("Lato", 0, 14)); // NOI18N
-        jLabel6.setText("Welcome dear");
-
-        jLabel7.setFont(new java.awt.Font("Lato Black", 1, 14)); // NOI18N
-        jLabel7.setText("User name");
-
-        refreshbtn0.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
-        refreshbtn0.setForeground(new java.awt.Color(0, 153, 255));
-        refreshbtn0.setText("Refresh page");
-        refreshbtn0.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                refreshbtn0MouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanelDashboardLayout = new javax.swing.GroupLayout(jPanelDashboard);
-        jPanelDashboard.setLayout(jPanelDashboardLayout);
-        jPanelDashboardLayout.setHorizontalGroup(
-            jPanelDashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDashboardLayout.createSequentialGroup()
-                .addContainerGap(343, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(250, 250, 250)
-                .addComponent(refreshbtn0, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(jPanelDashboardLayout.createSequentialGroup()
-                .addGap(233, 233, 233)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanelDashboardLayout.setVerticalGroup(
-            jPanelDashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelDashboardLayout.createSequentialGroup()
-                .addGroup(jPanelDashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addGroup(jPanelDashboardLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(refreshbtn0, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(108, 108, 108)
-                .addGroup(jPanelDashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addGap(0, 282, Short.MAX_VALUE))
-        );
-
-        container_tabbed.addTab("Dashboard", jPanelDashboard);
 
         jPanelBook.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -418,7 +391,7 @@ public class dashboard extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addGroup(jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBookLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 833, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 849, Short.MAX_VALUE)
                         .addGap(17, 17, 17))
                     .addGroup(jPanelBookLayout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -510,7 +483,7 @@ public class dashboard extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(345, 345, 345)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 244, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 260, Short.MAX_VALUE)
                 .addComponent(refreshbtn2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
@@ -692,6 +665,37 @@ public class dashboard extends javax.swing.JFrame {
 
         container_tabbed.addTab("Members", jPanel3);
 
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setForeground(new java.awt.Color(255, 255, 255));
+
+        genReportButton.setBackground(new java.awt.Color(204, 255, 0));
+        genReportButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        genReportButton.setText("Generate report");
+        genReportButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                genReportButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(101, 101, 101)
+                .addComponent(genReportButton, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(628, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(54, 54, 54)
+                .addComponent(genReportButton, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(352, Short.MAX_VALUE))
+        );
+
+        container_tabbed.addTab("Report", jPanel6);
+
         jPanel_logout.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel4.setFont(new java.awt.Font("Lato Black", 1, 18)); // NOI18N
@@ -713,7 +717,7 @@ public class dashboard extends javax.swing.JFrame {
         jPanel_logoutLayout.setHorizontalGroup(
             jPanel_logoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_logoutLayout.createSequentialGroup()
-                .addContainerGap(338, Short.MAX_VALUE)
+                .addContainerGap(354, Short.MAX_VALUE)
                 .addGroup(jPanel_logoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -726,7 +730,7 @@ public class dashboard extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addGap(94, 94, 94)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(229, Short.MAX_VALUE))
+                .addContainerGap(195, Short.MAX_VALUE))
         );
 
         container_tabbed.addTab("Logout", jPanel_logout);
@@ -781,25 +785,26 @@ public class dashboard extends javax.swing.JFrame {
         int selectedRow = memberTable.getSelectedRow();
         if (selectedRow != -1) {
             DefaultTableModel model = (DefaultTableModel) memberTable.getModel();
-            int memberId = Integer.parseInt(model.getValueAt(selectedRow, 0).toString()); // Convertir en entier
+            Object idValue = model.getValueAt(selectedRow, 0); // Assurez-vous que l'ID est récupéré à partir de la première colonne
+            if (idValue instanceof Integer) {
+                int memberId = (Integer) idValue;
 
-            int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this member?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION) {
-                try {
-                    callApiToDeleteMember(memberId);
-                    loadMembers(); // Refresh members list after deletion
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(this, "Failed to delete member", "Error", JOptionPane.ERROR_MESSAGE);
+                int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this member?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    try {
+                        callApiToDeleteMember(memberId);
+                        loadMembers(); // Refresh members list after deletion
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(this, "Failed to delete member", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
+            } else {
+                JOptionPane.showMessageDialog(this, "Invalid member ID", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Please select a member to delete", "Warning", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_delMemberButtonActionPerformed
-
-    private void refreshbtn0MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshbtn0MouseClicked
-        refreshTable();
-    }//GEN-LAST:event_refreshbtn0MouseClicked
 
     private void refreshbtn1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshbtn1MouseClicked
         // TODO add your handling code here:
@@ -818,6 +823,50 @@ public class dashboard extends javax.swing.JFrame {
         loadMembers();
     }//GEN-LAST:event_refreshbtn3MouseClicked
 
+    private void genReportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genReportButtonActionPerformed
+        // TODO add your handling code here:
+         try {
+        // Collect data to be sent to the Python script
+        List<Member> members = loadMembersData();
+        String jsonData = new JSONArray(members).toString();
+
+        // Call the Python script
+        String scriptPath = "c:\\Users\\BNT\\Documents\\gestion-bibliotheque\\Python\\generate_report.py";
+        String report = callPythonScript(scriptPath, jsonData);
+
+        // Display the report
+        JTextArea textArea = new JTextArea(report);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        scrollPane.setPreferredSize(new Dimension(500, 500));
+        JOptionPane.showMessageDialog(this, scrollPane, "Generated Report", JOptionPane.INFORMATION_MESSAGE);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Failed to generate report: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_genReportButtonActionPerformed
+
+    private String callPythonScript(String scriptPath, String jsonData) throws Exception {
+    ProcessBuilder processBuilder = new ProcessBuilder("python", scriptPath, jsonData);
+    processBuilder.redirectErrorStream(true);
+    Process process = processBuilder.start();
+
+    StringBuilder output = new StringBuilder();
+    try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            output.append(line).append("\n");
+        }
+    }
+
+    int exitCode = process.waitFor();
+    if (exitCode != 0) {
+        throw new Exception("Python script execution failed with exit code " + exitCode);
+    }
+
+    return output.toString();
+}
+    
     public void refreshTable() {
         loadBooks();
         loadLoans();
@@ -1000,10 +1049,21 @@ public class dashboard extends javax.swing.JFrame {
             member.setUser(user);
             
             members.add(member);
-        }
-
+        } 
         return members;
     }
+    
+    private List<Member> loadMembersData() {
+    // This method should return the list of members to be included in the report
+    // For simplicity, we will use the existing loadMembers method
+    try {
+        String response = callApiWithToken("http://localhost:8000/api/members");
+        return parseMembers(response);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Failed to load members data", "Error", JOptionPane.ERROR_MESSAGE);
+        return new ArrayList<>();
+    }
+}
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1043,14 +1103,12 @@ public class dashboard extends javax.swing.JFrame {
     private javax.swing.JTable bookTable;
     private javax.swing.JTabbedPane container_tabbed;
     private javax.swing.JButton delMemberButton;
+    private javax.swing.JButton genReportButton;
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -1058,14 +1116,13 @@ public class dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanelBook;
-    private javax.swing.JPanel jPanelDashboard;
     private javax.swing.JPanel jPanel_logout;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable memberTable;
-    private javax.swing.JLabel refreshbtn0;
     private javax.swing.JLabel refreshbtn1;
     private javax.swing.JLabel refreshbtn2;
     private javax.swing.JLabel refreshbtn3;
