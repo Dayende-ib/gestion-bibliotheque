@@ -18,6 +18,7 @@ public class Member {
     private String join_date;
     private String expiry_date;
     private String status;
+      private User user;
 
     public int getId() {
         return id;
@@ -97,6 +98,14 @@ public class Member {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
     
     

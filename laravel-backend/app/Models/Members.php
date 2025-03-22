@@ -8,7 +8,7 @@ class Members extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'phone', 'address'];
+    protected $fillable = ['user_id', 'phone', 'address', 'join_date', 'expiry_date', 'status', 'membership_number'];
 
     // Relation avec l'utilisateur
     public function user()

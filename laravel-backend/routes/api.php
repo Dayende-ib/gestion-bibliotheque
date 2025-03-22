@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\LoanController;
 use App\Http\Controllers\Api\MemberController;
+use App\Http\Controllers\Api\UserController;
 
 // Ajout de la route pour la création de compte et la connexion
 Route::post('/login', [AuthController::class, 'login']);
@@ -27,14 +28,16 @@ Route::middleware('auth:sanctum')->group(function () {
     // Member Management Routes
     Route::get('/members', [MemberController::class, 'index']);
     Route::post('/members', [MemberController::class, 'store']);
-    Route::get('/members/{member}', [MemberController::class, 'show']);
-    Route::put('/members/{member}', [MemberController::class, 'update']);
     Route::delete('/members/{member}', [MemberController::class, 'destroy']);
 
     //Priorité
     Route::get('/user/loans', [LoanController::class, 'getUserLoans']);
     Route::post('/books/return/{bookId}', [LoanController::class, 'returnBook']);
     Route::post('/books/borrow/{bookId}', [LoanController::class, 'borrowBook']);
+
+    
+    // Route to get non-members
+    Route::get('/users/non-members', [UserController::class, 'getNonMembers']);
 
 });
 
