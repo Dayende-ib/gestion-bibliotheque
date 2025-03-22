@@ -57,7 +57,7 @@ public class dashboard extends javax.swing.JFrame {
     
             @Override
             public void changedUpdate(javax.swing.event.DocumentEvent e) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                
             }
         });
         
@@ -75,6 +75,7 @@ public class dashboard extends javax.swing.JFrame {
                         String isbn = (String) model.getValueAt(selectedRow, 4);
                         String status = (String) model.getValueAt(selectedRow, 5);
                         String description = (String) model.getValueAt(selectedRow, 6);
+                        String image = (String) model.getValueAt(selectedRow, 7);
                         
                         Book book = new Book();
                         book.setId(id);
@@ -83,9 +84,11 @@ public class dashboard extends javax.swing.JFrame {
                         book.setPublicationYear(publicationYear);
                         book.setIsbn(isbn);
                         book.setStatus(status);
+                        book.setImagePath("http://localhost:8000/" + image); // Set the image path based on ISBN or another identifier
                         book.setDescription(description);
 
                         BookDetailsDialog dialog = new BookDetailsDialog(dashboard.this, book, dashboard.this);
+                      
                         dialog.setVisible(true);
                     }
                 }
@@ -316,21 +319,21 @@ public class dashboard extends javax.swing.JFrame {
         bookTable.setFont(new java.awt.Font("Lato", 0, 14)); // NOI18N
         bookTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Title", "Author", "Publication year", "ISBN", "Status", "Description"
+                "ID", "Title", "Author", "Publication year", "ISBN", "Status", "Description", "image"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -558,7 +561,6 @@ public class dashboard extends javax.swing.JFrame {
         jTable1.setColumnSelectionAllowed(true);
         jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTable1.setShowGrid(true);
-        jTable1.setShowHorizontalLines(true);
         jTable1.setSurrendersFocusOnKeystroke(true);
         jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(jTable1);
@@ -801,6 +803,7 @@ public class dashboard extends javax.swing.JFrame {
                     book.getIsbn(), 
                     book.getStatus(), 
                     book.getDescription(),
+                    book.getImagePath(),
                 });
                     
                     
@@ -850,6 +853,7 @@ public class dashboard extends javax.swing.JFrame {
             book.setIsbn(jsonObject.getString("isbn"));
             book.setDescription(jsonObject.getString("description"));
             book.setStatus(jsonObject.getString("status"));
+            book.setImagePath(jsonObject.getString("image"));
             books.add(book);
         }
 
@@ -918,12 +922,12 @@ public class dashboard extends javax.swing.JFrame {
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             Member member = new Member();
-            member.setLastname(jsonObject.getJSONObject("user").getString("lastname"));
+            member.setLastname(jsonObject.getJSONObject("user").optString("lastname", "N/R"));
             member.setPhone(jsonObject.optString("phone", "N/R"));
             member.setAddress(jsonObject.optString("address", "N/R"));
             member.setEmail(jsonObject.getJSONObject("user").getString("email"));
-            member.setJoin_date(jsonObject.getString("join_date"));
-            member.setExpiry_date(jsonObject.getString("expiry_date"));
+            member.setJoin_date(jsonObject.optString("join_date", "N/R"));
+            member.setExpiry_date(jsonObject.optString("expiry_date", "N/R"));
             member.setStatus(jsonObject.getString("status"));
             members.add(member);
         }

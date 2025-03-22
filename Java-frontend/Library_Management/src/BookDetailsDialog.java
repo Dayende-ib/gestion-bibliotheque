@@ -1,143 +1,153 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import javax.swing.*;  
+import java.awt.*;  
+import java.awt.event.ActionEvent;  
+import java.io.IOException;  
+import java.net.HttpURLConnection;  
+import java.net.URL;  
+import java.awt.image.BufferedImage;  
+import javax.imageio.ImageIO;  
 
+public class BookDetailsDialog extends JDialog {  
+    private Book book;  
+    private JLabel titleLabel, authorLabel, publicationYearLabel, isbnLabel, statusLabel, imageLabel;  
+    private JButton borrowButton, returnButton;  
+    private JTextArea descriptionArea;  
+    private dashboard dashboard;  
 
-public class BookDetailsDialog extends JDialog {
-    private Book book;
-    private JLabel titleLabel;
-    private JLabel authorLabel;
-    private JLabel publicationYearLabel;
-    private JLabel isbnLabel;
-    private JLabel statusLabel;
-    private JButton borrowButton;
-    private JButton returnButton;
-    private JTextArea descriptionArea;
-    private dashboard dashboard;
+    public BookDetailsDialog(Frame parent, Book book, dashboard dashboard) {  
+        super(parent, "Book Details", true);  
+        this.book = book;  
+        this.dashboard = dashboard;  
+        initComponents();  
+    }  
 
-    public BookDetailsDialog(Frame parent, Book book, dashboard dashboard) {
-        this.dashboard = dashboard;
-        super(parent, "Book Details", true);
-        this.book = book;
-        initComponents();
-    }
+    private void initComponents() {  
+        // Titre
+        titleLabel = new JLabel("<html><body style='width: 300px;'><b>📖 " + book.getTitle() + "</b></body></html>");  
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+ 
 
-    void initComponents() {
-        titleLabel = new JLabel("Title: " + book.getTitle());
-        authorLabel = new JLabel("Author: " + book.getAuthor());
-        publicationYearLabel = new JLabel("Publication Year: " + book.getPublicationYear());
-        isbnLabel = new JLabel("ISBN: " + book.getIsbn());
-        statusLabel = new JLabel("Status: " + book.getStatus());
-        descriptionArea = new JTextArea();
-        descriptionArea.setEditable(false);
-        descriptionArea.setLineWrap(true);
-        descriptionArea.setWrapStyleWord(true);
-        descriptionArea.setText(book.getDescription() != null ? book.getDescription() : "Aucune description disponible");
+        // Informations du livre
+        authorLabel = new JLabel("✍️ Author: " + book.getAuthor());  
+        publicationYearLabel = new JLabel("📅 Year: " + book.getPublicationYear());  
+        isbnLabel = new JLabel("🔢 ISBN: " + book.getIsbn());  
+        statusLabel = new JLabel("🟢 Status: " + book.getStatus());  
 
-        borrowButton = new JButton("Borrow");
-        returnButton = new JButton("Return");
+        // Description avec un JScrollPane
+        descriptionArea = new JTextArea(5, 30);  
+        descriptionArea.setEditable(false);  
+        descriptionArea.setLineWrap(true);  
+        descriptionArea.setWrapStyleWord(true);  
+        descriptionArea.setText(book.getDescription() != null ? book.getDescription() : "No description available");  
+        JScrollPane descriptionScroll = new JScrollPane(descriptionArea);  
 
-        borrowButton.addActionListener((ActionEvent e) -> {
-            // Code pour emprunter le livre
-            borrowBook();
-        });
+        // Chargement de l'image
+        imageLabel = new JLabel();  
+        loadBookImage(book.getImagePath());  
 
-        returnButton.addActionListener((ActionEvent e) -> {
-            // Code pour rendre le livre
-            returnBook();
-        });
+        // Boutons
+        borrowButton = new JButton("📥 Borrow");  
+        returnButton = new JButton("📤 Return");  
 
-        setLayout(new GridLayout(8, 1));
-        add(titleLabel);
-        add(authorLabel);
-        add(publicationYearLabel);
-        add(isbnLabel);
-        add(descriptionArea);
-        add(statusLabel);
-        add(borrowButton);
-        add(returnButton);
+        borrowButton.addActionListener((ActionEvent e) -> borrowBook());  
+        returnButton.addActionListener((ActionEvent e) -> returnBook());  
 
-        setPreferredSize(new Dimension(500, 600));
-        pack();
-        setLocationRelativeTo(getParent());
-    }
-
-    private void borrowBook() {
-        try {
-            // Create API URL
-            String url = "http://localhost:8000/api/books/borrow/" + book.getId();
-
-            // Create HTTP connection
-            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("Accept", "application/json");
-            connection.setDoOutput(true);
-
-            String token = UserSession.getToken();
-            connection.setRequestProperty("Authorization", "Bearer " + token);
-
-            // Send request
-            int responseCode = connection.getResponseCode();
-
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                StringBuilder response;
-                try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-                    String inputLine;
-                    response = new StringBuilder();
-                    while ((inputLine = in.readLine()) != null) {
-                        response.append(inputLine);
-                        System.out.println(response);
-                    }
-                }
-
-                System.out.println(response);
-                JOptionPane.showMessageDialog(this, "Book borrowed successfully!");
-                dashboard.refreshTable();
-                dispose();
-
-            } else {
-                JOptionPane.showMessageDialog(this, "Failed to borrow book", "Error: " + responseCode, JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (HeadlessException | IOException e) {
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        // Désactiver les boutons selon l'état du livre
+        if (book.getStatus().equalsIgnoreCase("Borrowed")) {
+            borrowButton.setEnabled(false);
+        } else {
+            returnButton.setEnabled(false);
         }
 
-    }
+        // Layout principal
+        setLayout(new BorderLayout());  
 
-    private void returnBook() {
-        try {
-            // Create API URL
-            String url = "http://localhost:8000/api/books/return/" + book.getId();
+        // Panel principal avec GridBagLayout pour un meilleur positionnement
+        JPanel mainPanel = new JPanel(new GridBagLayout());  
+        GridBagConstraints gbc = new GridBagConstraints();  
+        gbc.gridx = 0;  
+        gbc.gridy = 0;  
+        gbc.gridwidth = 2;  
+        gbc.insets = new Insets(10, 10, 10, 10);  
 
-            // Create HTTP connection
-            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("Accept", "application/json");
-            connection.setDoOutput(true);
+        mainPanel.add(titleLabel, gbc);  
 
-            String token = UserSession.getToken();
-            connection.setRequestProperty("Authorization", "Bearer " + token);
+        gbc.gridy++;  
+        mainPanel.add(imageLabel, gbc);  
 
-            // Send request
-            int responseCode = connection.getResponseCode();
+        gbc.gridwidth = 1;  
+        gbc.gridy++;  
+        gbc.anchor = GridBagConstraints.WEST;  
+        mainPanel.add(authorLabel, gbc);  
 
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                JOptionPane.showMessageDialog(this, "Book returned successfully!");
-                dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Failed to return book", "Error", JOptionPane.ERROR_MESSAGE);
+        gbc.gridy++;  
+        mainPanel.add(publicationYearLabel, gbc);  
+
+        gbc.gridy++;  
+        mainPanel.add(isbnLabel, gbc);  
+
+        gbc.gridy++;  
+        mainPanel.add(statusLabel, gbc);  
+
+        gbc.gridy++;  
+        gbc.gridwidth = 2;  
+        mainPanel.add(descriptionScroll, gbc);  
+
+        // Panel pour les boutons
+        JPanel buttonPanel = new JPanel();  
+        buttonPanel.add(borrowButton);  
+        buttonPanel.add(returnButton);  
+
+        add(mainPanel, BorderLayout.CENTER);  
+        add(buttonPanel, BorderLayout.SOUTH);  
+
+        setPreferredSize(new Dimension(450, 700));  
+        pack();  
+        setLocationRelativeTo(getParent());  
+    }  
+
+    private void loadBookImage(String imageUrl) {  
+        try {  
+            if (imageUrl == null || imageUrl.isEmpty()) {
+                throw new IOException("Image path is empty");
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-    
-    
+            URL url = new URL(imageUrl);  
+            BufferedImage img = ImageIO.read(url);  
+            ImageIcon icon = new ImageIcon(img.getScaledInstance(200, 300, Image.SCALE_SMOOTH));  
+            imageLabel.setIcon(icon);  
+        } catch (IOException e) {  
+            imageLabel.setText("📷 No Image Available");  
+        }  
+    }  
+
+    private void borrowBook() {  
+        sendRequest("http://localhost:8000/api/books/borrow/" + book.getId(), "Book borrowed successfully!", "Failed to borrow book");  
+    }  
+
+    private void returnBook() {  
+        sendRequest("http://localhost:8000/api/books/return/" + book.getId(), "Book returned successfully!", "Failed to return book");  
+    }  
+
+    private void sendRequest(String url, String successMessage, String errorMessage) {  
+        try {  
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();  
+            connection.setRequestMethod("POST");  
+            connection.setRequestProperty("Content-Type", "application/json");  
+            connection.setRequestProperty("Accept", "application/json");  
+            connection.setRequestProperty("Authorization", "Bearer " + UserSession.getToken());  
+            connection.setDoOutput(true);  
+
+            int responseCode = connection.getResponseCode();  
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {  
+                JOptionPane.showMessageDialog(this, successMessage);  
+                dashboard.refreshTable();  
+                dispose();  
+            } else {  
+                JOptionPane.showMessageDialog(this, errorMessage, "Error: " + responseCode, JOptionPane.ERROR_MESSAGE);  
+            }  
+        } catch (Exception e) {  
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);  
+        }  
+    }  
 }
