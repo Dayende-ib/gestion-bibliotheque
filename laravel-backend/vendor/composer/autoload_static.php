@@ -210,9 +210,9 @@ class ComposerStaticInit626b9e7ddd47fb7eff9aaa53cce0c9ad
         ),
         'phpDocumentor\\Reflection\\' => 
         array (
-            0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
-            1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
-            2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+            0 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+            2 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
         ),
         'Whoops\\' => 
         array (
@@ -608,9 +608,6 @@ class ComposerStaticInit626b9e7ddd47fb7eff9aaa53cce0c9ad
     );
 
     public static $classMap = array (
-        'App\\Http\\Controllers\\Api\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/AuthController.php',
-        'App\\Http\\Controllers\\Api\\BookController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/BookController.php',
-        'App\\Http\\Controllers\\Api\\LoanController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/LoanController.php',
         'App\\Http\\Controllers\\Auth\\AuthenticatedSessionController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/AuthenticatedSessionController.php',
         'App\\Http\\Controllers\\Auth\\ConfirmablePasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmablePasswordController.php',
         'App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/EmailVerificationNotificationController.php',
@@ -636,6 +633,7 @@ class ComposerStaticInit626b9e7ddd47fb7eff9aaa53cce0c9ad
         'App\\Models\\BannedEmail' => __DIR__ . '/../..' . '/app/Models/BannedEmail.php',
         'App\\Models\\Books' => __DIR__ . '/../..' . '/app/Models/Books.php',
         'App\\Models\\Loans' => __DIR__ . '/../..' . '/app/Models/Loans.php',
+        'App\\Models\\LoansHistory' => __DIR__ . '/../..' . '/app/Models/LoansHistory.php',
         'App\\Models\\Members' => __DIR__ . '/../..' . '/app/Models/Members.php',
         'App\\Models\\Penalites' => __DIR__ . '/../..' . '/app/Models/Penalites.php',
         'App\\Models\\Reports' => __DIR__ . '/../..' . '/app/Models/Reports.php',

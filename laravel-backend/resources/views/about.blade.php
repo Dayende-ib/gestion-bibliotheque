@@ -17,7 +17,7 @@
                         @foreach([
                             ['name' => 'OUGDA Ibrahim Dayende', 'email' => 'o.ibrahimdayende@gmail.com'],
                             ['name' => 'DIALLO Djeneba', 'email' => 'djeneba.diallo@example.com'],
-                            ['name' => 'BATIONO Jonathan', 'email' => 'jonathan.bationo@example.com'],
+                            ['name' => 'BATIONO Jonathan', 'email' => 'bationojonathan5@gmail.com'],
                             ['name' => 'GUISSOU Ali', 'email' => 'ali.guissou@example.com'],
                             ['name' => 'OUEDRAOGO Moumouni', 'email' => 'moumouniouedraogotech@gmail.com']
                         ] as $developer)

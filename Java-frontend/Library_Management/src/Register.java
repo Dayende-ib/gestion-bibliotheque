@@ -296,9 +296,6 @@ public class Register extends javax.swing.JFrame {
             lastname, firstname, email, password, passwordConfirmation
         );
 
-        // Débogage : afficher le corps de la requête
-        System.out.println("Corps de la requête : " + jsonInputString);
-
         // Envoyer la requête
         try (OutputStream os = conn.getOutputStream()) {
             byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);

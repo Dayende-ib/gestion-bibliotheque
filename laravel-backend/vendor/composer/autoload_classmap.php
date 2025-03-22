@@ -6,9 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'App\\Http\\Controllers\\Api\\AuthController' => $baseDir . '/app/Http/Controllers/Api/AuthController.php',
-    'App\\Http\\Controllers\\Api\\BookController' => $baseDir . '/app/Http/Controllers/Api/BookController.php',
-    'App\\Http\\Controllers\\Api\\LoanController' => $baseDir . '/app/Http/Controllers/Api/LoanController.php',
     'App\\Http\\Controllers\\Auth\\AuthenticatedSessionController' => $baseDir . '/app/Http/Controllers/Auth/AuthenticatedSessionController.php',
     'App\\Http\\Controllers\\Auth\\ConfirmablePasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmablePasswordController.php',
     'App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController' => $baseDir . '/app/Http/Controllers/Auth/EmailVerificationNotificationController.php',
@@ -34,6 +31,7 @@ return array(
     'App\\Models\\BannedEmail' => $baseDir . '/app/Models/BannedEmail.php',
     'App\\Models\\Books' => $baseDir . '/app/Models/Books.php',
     'App\\Models\\Loans' => $baseDir . '/app/Models/Loans.php',
+    'App\\Models\\LoansHistory' => $baseDir . '/app/Models/LoansHistory.php',
     'App\\Models\\Members' => $baseDir . '/app/Models/Members.php',
     'App\\Models\\Penalites' => $baseDir . '/app/Models/Penalites.php',
     'App\\Models\\Reports' => $baseDir . '/app/Models/Reports.php',
