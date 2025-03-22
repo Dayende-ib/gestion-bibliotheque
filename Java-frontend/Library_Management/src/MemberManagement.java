@@ -81,7 +81,7 @@ public class MemberManagement extends JFrame {
 
         try {
             // URL of the API
-            URL url = new URL("http://localhost:8000/api/members");
+            URL url = new URL("http://127.0.0.1:8000/api/members");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
