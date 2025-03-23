@@ -353,7 +353,7 @@ public class login extends javax.swing.JFrame {
         JSONObject jsonResponse = new JSONObject(response.toString());
 
         if (code == 200) {
-            submit_button.setText("Connexion réussie !");
+            submit_button.setText("Connected Successfuly !");
             
             // Parse the response to get the token
             String token = parseToken(response.toString());
@@ -382,27 +382,23 @@ public class login extends javax.swing.JFrame {
             }
         }
     } catch (HeadlessException | IOException | JSONException e) {
-        JOptionPane.showMessageDialog(null, "Une erreur s'est produite : " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "An error occur : " + e.getMessage());
     }
     
     }//GEN-LAST:event_submit_buttonActionPerformed
 
     private void register_textMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_register_textMouseClicked
-        
         this.dispose();
         launchRegisterPage();
     }//GEN-LAST:event_register_textMouseClicked
 
     private String parseToken(String response) {
         // Parse the JSON response to extract the token
-        // This is a simple example, you might want to use a JSON library like Gson or Jackson
         int tokenStart = response.indexOf("\"token\":\"") + 9;
         int tokenEnd = response.indexOf("\"", tokenStart);
         return response.substring(tokenStart, tokenEnd);
     }
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

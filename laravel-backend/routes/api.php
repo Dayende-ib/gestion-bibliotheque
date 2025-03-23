@@ -8,11 +8,12 @@ use App\Http\Controllers\Api\LoanController;
 use App\Http\Controllers\Api\MemberController;
 use App\Http\Controllers\Api\UserController;
 
-// Ajout de la route pour la création de compte et la connexion
+// Log in, sign up and logout route
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
+//Route to get Connected user data and Token
 Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'getUser']);
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -20,28 +21,24 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/books', [BookController::class, 'index']);
     Route::post('/books', [BookController::class, 'store']);
 
-    // Loan Management Routes
-    
-    Route::patch('/loans/{loan}', [LoanController::class, 'update']);
-    Route::delete('/loans/{loan}', [LoanController::class, 'destroy']);
-
     // Member Management Routes
     Route::get('/members', [MemberController::class, 'index']);
     Route::post('/members', [MemberController::class, 'store']);
     Route::delete('/members/{member}', [MemberController::class, 'destroy']);
 
-    //Priorité
+    //Route to get connected User Loans
     Route::get('/user/loans', [LoanController::class, 'getUserLoans']);
+
+    //Route to borrow and return bbook
     Route::post('/books/return/{bookId}', [LoanController::class, 'returnBook']);
     Route::post('/books/borrow/{bookId}', [LoanController::class, 'borrowBook']);
 
-    
     // Route to get non-members
     Route::get('/users/non-members', [UserController::class, 'getNonMembers']);
 
 });
 
-// Ajout de la route de test
+// Route de test
 Route::get('/test', function () {
     return response()->json(['message' => 'API is working!'], 200);
 });

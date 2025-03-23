@@ -20,7 +20,8 @@ composer install
 ````
 install js dependencies
 ```
-npm install && npm run dev
+npm install
+npm run dev
 ````
 create .env file
 ```

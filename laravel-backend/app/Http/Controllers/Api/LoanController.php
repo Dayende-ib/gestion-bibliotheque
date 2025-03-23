@@ -51,6 +51,8 @@ class LoanController extends Controller
                 $book->save();
             }
 
+            $loan->delete();
+
             return response()->json(['message' => 'Livre retourné avec succès'], 200);
         } else {
             return response()->json(['message' => 'Emprunt non trouvé'], 404);

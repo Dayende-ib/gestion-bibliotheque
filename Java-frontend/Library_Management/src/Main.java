@@ -13,7 +13,6 @@ public class Main {
     }
 
     private static boolean isUserLoggedIn() {
-        // Exemple : vérifier la présence d'un token dans les préférences ou un fichier
         String token = UserSession.getToken();
         return token != null && !token.isEmpty();
     }
